@@ -1,4 +1,4 @@
-package org.paradise.microservice.userpreference;
+package org.paradise.microservice.userpreference.config;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.BasicAWSCredentials;

@@ -1,4 +1,4 @@
-package org.paradise.microservice.userpreference;
+package org.paradise.microservice.userpreference.config;
 
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
 import org.paradise.microservice.userpreference.service.dynamodb.DynamoDbTableCreateMode;
