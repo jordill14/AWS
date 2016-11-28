@@ -1,0 +1,152 @@
+buildscript {
+ 
+    ext {
+        nexus = {
+            credentials {
+                username nexusBuildUserToken
+                password nexusBuildPassToken
+            }
+            url nexusRepoURL
+        }
+    }
+
+    repositories {
+        maven(nexus)
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${dependencyVersionSpringBootGradlePlugin}")
+        classpath("net.researchgate:gradle-release:${dependencyVersionGradleReleasePlugin}")
+        classpath("org.owasp:dependency-check-gradle:${dependencyVersionGradleDependencyCheckPlugin}")
+    }
+}
+
+repositories {
+    maven(nexus)
+}
+
+// IDE plugins
+apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
+
+// Java dev plugins
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'jdepend'
+apply plugin: 'spring-boot'
+apply plugin: 'maven'
+
+// code quality plugins
+apply plugin: 'checkstyle'
+apply plugin: 'sonar-runner'
+
+// release plugins
+apply plugin: 'net.researchgate.release'
+
+//dependency check plugin
+apply plugin: 'org.owasp.dependencycheck'
+
+dependencyCheck {
+    failBuildOnCVSS=11
+    suppressionFile='config/dependencycheck/suppressions.xml'
+}
+
+// project artifact info
+group = groupId
+archivesBaseName = artifactId
+
+// configure plugins
+
+sonarRunner {
+    sonarProperties {
+        property 'sonar.projectKey', "${group}:${archivesBaseName}"
+        property 'sonar.projectName', "Microservice - ${archivesBaseName}"
+        property 'sonar.projectVersion', version
+        property "sonar.host.url", sonarHostURL
+        property "sonar.jdbc.url", sonarJDBCURL
+        property "sonar.jdbc.username", sonarJDBCUsername
+        property "sonar.jdbc.password", sonarJDBCPassword
+        property 'sonar.language', 'java'
+        property 'sonar.jacoco.reportPath', "${buildDir}/jacoco/jacoco.exec"
+        property 'sonar.exclusions', 'resources/**/*'
+  }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: nexusReleaseURL) {
+                authentication(userName: nexusBuildUserToken, password: nexusBuildPassToken);
+            }
+            snapshotRepository(url: nexusSnapshotURL) {
+                authentication(userName: nexusBuildUserToken, password: nexusBuildPassToken);
+            }
+        }
+    }
+}
+
+jacoco {
+    toolVersion = "${dependencyVersionJacocoTool}"
+    reportsDir = file("${buildDir}/jacocoReportDir")
+}
+
+test {
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacoco.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+
+release {
+    git {
+        requireBranch = /master|integration.*/
+        pushToCurrentBranch = true
+    }
+}
+
+
+checkstyle {
+  toolVersion = "6.0"
+}
+
+// only tag a release if the upload of the artefacts to Nexus was successful
+afterReleaseBuild.dependsOn uploadArchives
+
+// configure project specific properties/dependencies
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Add a provided configuration.
+// This is used to add jar dependencies that are needed for compile time only
+// but should not be bundled in the war/ear projects.
+configurations { provided }
+
+sourceSets.main.compileClasspath += [configurations.provided]
+sourceSets.test.compileClasspath += [configurations.provided]
+sourceSets.test.runtimeClasspath += [configurations.provided]
+
+// optional: if using 'eclipse' plugin
+eclipse.classpath.plusConfigurations += [configurations.provided]
+
+dependencies {
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter', version :dependencyVersionSpringBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version :dependencyVersionSpringBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: dependencyVersionSpringBoot
+
+  // AWS SDK DynamoDB
+  compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: dependencyVersionAWSSDKDynamoDB
+
+  // test dependencies
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: dependencyVersionSpringBoot
+}

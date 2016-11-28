@@ -1,0 +1,21 @@
+## Global application config
+application:
+  id: Paradise
+  name: userpreference
+
+
+## AWS
+cloud.aws:
+  # amount of time to wait (in milliseconds) when initially establishing a request connection before giving up and timing out. A value of 0 means infinity, and is not recommended.
+  connection.timeout: 5000
+  # maximum number of allowed open HTTP connections
+  connection.max: 500
+  # amount of time to wait (in milliseconds) for data to be transfered over an established, open connection before the connection times out and is closed. A value of 0 means infinity, and isn't recommended.
+  socket.timeout: 5000
+  credentials.accessKey: [AccessKey]
+  credentials.secretKey: [SecretKey]
+  region.static: ap-southeast-2
+
+## AWS DynamoDB
+dynamo:
+  endpoint: "http://localhost:8000"

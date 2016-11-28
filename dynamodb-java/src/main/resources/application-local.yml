@@ -1,0 +1,8 @@
+## AWS DynamoDB
+dynamo:
+  endpoint: "http://localhost:8000"
+  throughput.read.units: 100
+  throughput.write.units: 100
+  creation.mode: DROP
+  creation.timeout: 120000
+  userpreference.table: USER_PREFERENCE
