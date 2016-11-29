@@ -1,32 +1,42 @@
-package org.paradise.microservice.userpreference.service.dynamodb;
+package org.paradise.microservice.userpreference.domain;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedJson;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-@DynamoDBTable(tableName = "REPLACED_BY_VALUE_IN_PROPERTIES_FILE")
-public class UserPreferenceTable {
+/**
+ * Created by terrence on 28/11/2016.
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class UserPreferences {
 
-    @DynamoDBHashKey
+    @Valid
+    @NotNull
+    @JsonProperty("c_number")
     private String cNumber;
 
-    @DynamoDBRangeKey
-    private String preferenceType;
-
-    @DynamoDBAttribute
+    @JsonProperty("apbcn")
     private String apbcn;
 
-    @DynamoDBAttribute
+    @Valid
+    @NotNull
+    @JsonProperty("preference_type")
+    private PreferenceType preferenceType;
+
+    @Valid
+    @JsonProperty("date_time_created")
     private String dateTimeCreated;
 
-    @DynamoDBAttribute
+    @Valid
+    @JsonProperty("date_time_updated")
     private String dateTimeUpdated;
 
-    @DynamoDBTypeConvertedJson
+    @Valid
+    @NotNull
+    @JsonProperty("preferences")
     private Map<String, Object> preferences;
 
 
@@ -46,11 +56,11 @@ public class UserPreferenceTable {
         this.apbcn = apbcn;
     }
 
-    public String getPreferenceType() {
+    public PreferenceType getPreferenceType() {
         return preferenceType;
     }
 
-    public void setPreferenceType(String preferenceType) {
+    public void setPreferenceType(PreferenceType preferenceType) {
         this.preferenceType = preferenceType;
     }
 

@@ -11,13 +11,13 @@ import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class DynamoDbTableUtils {
+public final class DynamoDBTableUtils {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DynamoDbTableUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DynamoDBTableUtils.class);
 
     private static DynamoDBMapper dynamoDBMapper = null;
 
-    private DynamoDbTableUtils() {
+    private DynamoDBTableUtils() {
 
     }
 

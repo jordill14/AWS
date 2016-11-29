@@ -1,8 +1,8 @@
 package org.paradise.microservice.userpreference.config;
 
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
-import org.paradise.microservice.userpreference.service.dynamodb.DynamoDbTableCreateMode;
-import org.paradise.microservice.userpreference.service.dynamodb.DynamoDbTableUtils;
+import org.paradise.microservice.userpreference.service.dynamodb.DynamoDBTableCreateMode;
+import org.paradise.microservice.userpreference.service.dynamodb.DynamoDBTableUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class DBContext {
     @Value("${dynamo.throughput.write.units}")
     private long writeThroughput;
     @Value("${dynamo.creation.mode}")
-    private DynamoDbTableCreateMode mode;
+    private DynamoDBTableCreateMode mode;
     @Value("${dynamo.creation.timeout}")
     private long tableTimeout;
     @Value("${dynamo.userpreference.table}")
@@ -47,13 +47,13 @@ public class DBContext {
 
         LOG.info("Init DynamoDB table");
 
-        if (DynamoDbTableCreateMode.DROP == mode) {
+        if (DynamoDBTableCreateMode.DROP == mode) {
             LOG.info("Drop DynamoDB Table {} if exists", tableName);
-            DynamoDbTableUtils.deleteTableIfExists(amazonDynamoDBClient, tableName);
+            DynamoDBTableUtils.deleteTableIfExists(amazonDynamoDBClient, tableName);
         }
 
         LOG.info("Create DynamoDB Table {} if NOT exists", tableName);
-        DynamoDbTableUtils.createTableIfNotExists(amazonDynamoDBClient, tableName, UserPreferenceTable.class, readThroughput, writeThroughput);
+        DynamoDBTableUtils.createTableIfNotExists(amazonDynamoDBClient, tableName, UserPreferenceTable.class, readThroughput, writeThroughput);
     }
 
 }
