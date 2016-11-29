@@ -1,6 +1,6 @@
 ## Global application config
 application:
-  id: Paradise
+  id: paradise
   name: userpreference
 
 
