@@ -64,7 +64,9 @@ public class UserPreferenceController {
 
         userPreferenceService.createUserPreferences(userPreferences);
 
-        return null;
+        UserPreferences userPreferencesCreated = userPreferenceService.getUserPreferences(apcn, PreferenceType.EBAY.toString());
+
+        return ResponseEntity.ok(userPreferencesCreated);
     }
 
 }
