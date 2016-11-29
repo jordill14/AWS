@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Created by terrence on 28/11/2016.
@@ -44,9 +45,20 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     @Override
     public void createUserPreferences(UserPreferences userPreferences) {
 
-        UserPreferenceTable userPreferenceTable = UserPreferenceTableConverter.toUserPreferenceTable(userPreferences);
+        // Check existing User Preferences
+        UserPreferenceTable userPreferenceTable = dynamoDBService.load(userPreferences.getcNumber(),
+                userPreferences.getPreferenceType().toString());
 
-        userPreferenceTable.setDateTimeCreated(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        if (Objects.isNull(userPreferenceTable)) {
+            userPreferenceTable = UserPreferenceTableConverter.toUserPreferenceTable(userPreferences);
+            userPreferenceTable.setDateTimeCreated(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        } else {
+            String dateTimeCreated = userPreferenceTable.getDateTimeCreated();
+
+            userPreferenceTable = UserPreferenceTableConverter.toUserPreferenceTable(userPreferences);
+            userPreferenceTable.setDateTimeCreated(dateTimeCreated);
+            userPreferenceTable.setDateTimeUpdated(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        }
 
         LOG.info("Save User Preferences with cNumber {} with Preference Type {}",
                 userPreferences.getcNumber(), userPreferences.getPreferenceType().toString());
