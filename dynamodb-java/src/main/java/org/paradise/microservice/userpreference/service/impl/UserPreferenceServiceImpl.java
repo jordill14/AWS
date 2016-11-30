@@ -34,7 +34,7 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     @Override
     public UserPreferences getUserPreferences(String apcn, String preferenceType) {
 
-        LOG.info("Get User Preferences with APCN {} with Preference Type {}",
+        LOG.debug("Get User Preferences with APCN {} with Preference Type {}",
                 apcn, preferenceType);
 
         UserPreferenceTable userPreferenceTable = dynamoDBService.load(apcn, preferenceType);
@@ -60,7 +60,7 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
             userPreferenceTable.setDateTimeUpdated(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         }
 
-        LOG.info("Save User Preferences with cNumber {} with Preference Type {}",
+        LOG.debug("Save User Preferences with cNumber {} with Preference Type {}",
                 userPreferences.getcNumber(), userPreferences.getPreferenceType().toString());
 
         dynamoDBService.save(userPreferenceTable);

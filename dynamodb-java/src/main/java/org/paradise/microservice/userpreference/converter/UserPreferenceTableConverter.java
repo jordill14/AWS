@@ -23,7 +23,7 @@ public class UserPreferenceTableConverter {
             userPreferenceTable.setDateTimeUpdated(userPreferences.getDateTimeUpdated());
             userPreferenceTable.setPreferences(userPreferences.getPreferences());
         }
-        
+
         return userPreferenceTable;
     }
 

@@ -32,7 +32,7 @@ public class DynamoDBServiceImpl implements DynamoDBService {
     @Override
     public UserPreferenceTable load(String apcn, String preferenceType) {
 
-        LOG.info("Load User Preferences with HashKey / APCN {} with Preference Type {} from DynamoDB table {}",
+        LOG.debug("Load User Preferences with HashKey / APCN {} with Preference Type {} from DynamoDB table {}",
                 apcn, preferenceType, tableName);
 
         return dynamoDBMapper.load(UserPreferenceTable.class, apcn, preferenceType, getDynamoDBMapperConfig());
@@ -41,7 +41,7 @@ public class DynamoDBServiceImpl implements DynamoDBService {
     @Override
     public void save(UserPreferenceTable userPreferenceTable) {
 
-        LOG.info("Save User Preferences with cNumber {} with Preference Type {} into DynamoDB table {}",
+        LOG.debug("Save User Preferences with cNumber {} with Preference Type {} into DynamoDB table {}",
                 userPreferenceTable.getcNumber(), userPreferenceTable.getPreferenceType().toString(), tableName);
 
         dynamoDBMapper.save(userPreferenceTable, getDynamoDBMapperConfig());
