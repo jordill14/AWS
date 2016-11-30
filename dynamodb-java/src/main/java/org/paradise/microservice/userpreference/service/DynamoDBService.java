@@ -1,18 +1,19 @@
 package org.paradise.microservice.userpreference.service;
 
 
-import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceIndexTable;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
+
+import java.util.List;
 
 /**
  * Created by terrence on 29/11/2016.
  */
 public interface DynamoDBService {
 
-    ScanResultPage<UserPreferenceTable> allUserPreferenceTable();
+    List<UserPreferenceTable> allUserPreferenceTable();
 
-    ScanResultPage<UserPreferenceIndexTable> allUserPreferenceIndexTable();
+    List<UserPreferenceIndexTable> allUserPreferenceIndexTable();
 
     UserPreferenceTable load(String cNumber, String preferenceType);
 

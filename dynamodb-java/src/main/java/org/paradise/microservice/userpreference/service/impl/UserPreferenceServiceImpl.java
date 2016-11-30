@@ -1,7 +1,6 @@
 package org.paradise.microservice.userpreference.service.impl;
 
 
-import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import org.paradise.microservice.userpreference.converter.UserPreferenceTableConverter;
 import org.paradise.microservice.userpreference.converter.UserPreferencesConverter;
 import org.paradise.microservice.userpreference.domain.UserPreferences;
@@ -48,21 +47,21 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     @Override
     public List<UserPreferences> getAllUserPreferences() {
 
-        ScanResultPage<UserPreferenceTable> scanResultPage = dynamoDBService.allUserPreferenceTable();
+        List<UserPreferenceTable> userPreferenceTableList = dynamoDBService.allUserPreferenceTable();
 
-        LOG.info("Get total {} User Preferences from DynamoDB table", scanResultPage.getCount());
+        LOG.info("Get total {} User Preferences from DynamoDB table", userPreferenceTableList.size());
 
-        return UserPreferencesConverter.toUserPreferencesList(scanResultPage);
+        return UserPreferencesConverter.toUserPreferencesList(userPreferenceTableList);
     }
 
     @Override
     public List<UserPreferences> getAllUserPreferencesIndex() {
 
-        ScanResultPage<UserPreferenceIndexTable> scanResultPage = dynamoDBService.allUserPreferenceIndexTable();
+        List<UserPreferenceIndexTable> userPreferenceIndexTableList = dynamoDBService.allUserPreferenceIndexTable();
 
-        LOG.info("Get total {} User Preferences from DynamoDB index table", scanResultPage.getCount());
+        LOG.info("Get total {} User Preferences from DynamoDB index table", userPreferenceIndexTableList.size());
 
-        return UserPreferencesConverter.toUserPreferencesIndexList(scanResultPage);
+        return UserPreferencesConverter.toUserPreferencesIndexList(userPreferenceIndexTableList);
     }
 
     @Override

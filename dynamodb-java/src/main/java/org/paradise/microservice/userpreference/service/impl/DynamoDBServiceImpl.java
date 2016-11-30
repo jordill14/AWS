@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by terrence on 29/11/2016.
  */
@@ -35,41 +38,49 @@ public class DynamoDBServiceImpl implements DynamoDBService {
     }
 
     @Override
-    public ScanResultPage<UserPreferenceTable> allUserPreferenceTable() {
+    public List<UserPreferenceTable> allUserPreferenceTable() {
 
         LOG.debug("Load ALL User Preferences from DynamoDB table {}", tableName);
 
-        ScanResultPage<UserPreferenceTable> scanResultPage;
+        List<UserPreferenceTable> userPreferenceTableList = new ArrayList<>();
 
         DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
 
         do {
-            scanResultPage = dynamoDBMapper.scanPage(UserPreferenceTable.class,
+            ScanResultPage<UserPreferenceTable> scanResultPage = dynamoDBMapper.scanPage(UserPreferenceTable.class,
                     dynamoDBScanExpression, getDynamoDBMapperConfigForTable());
+
+            userPreferenceTableList.addAll(scanResultPage.getResults());
 
             dynamoDBScanExpression.setExclusiveStartKey(scanResultPage.getLastEvaluatedKey());
         } while (dynamoDBScanExpression.getExclusiveStartKey() != null);
 
-        return scanResultPage;
+        LOG.debug("Total record(s) of table {} scanned: {}", tableName, userPreferenceTableList.size());
+
+        return userPreferenceTableList;
     }
 
     @Override
-    public ScanResultPage<UserPreferenceIndexTable> allUserPreferenceIndexTable() {
+    public List<UserPreferenceIndexTable> allUserPreferenceIndexTable() {
 
         LOG.debug("Load ALL User Preferences Index from DynamoDB index table {}", indexTableName);
 
-        ScanResultPage<UserPreferenceIndexTable> scanResultPage;
+        List<UserPreferenceIndexTable> userPreferenceIndexTableList = new ArrayList<>();
 
         DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
 
         do {
-            scanResultPage = dynamoDBMapper.scanPage(UserPreferenceIndexTable.class,
+            ScanResultPage<UserPreferenceIndexTable> scanResultPage = dynamoDBMapper.scanPage(UserPreferenceIndexTable.class,
                     dynamoDBScanExpression, getDynamoDBMapperConfigForIndexTable());
+
+            userPreferenceIndexTableList.addAll(scanResultPage.getResults());
 
             dynamoDBScanExpression.setExclusiveStartKey(scanResultPage.getLastEvaluatedKey());
         } while (dynamoDBScanExpression.getExclusiveStartKey() != null);
 
-        return scanResultPage;
+        LOG.debug("Total record(s) of index table {} scanned: {}", indexTableName, userPreferenceIndexTableList.size());
+
+        return userPreferenceIndexTableList;
     }
 
     @Override

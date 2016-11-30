@@ -67,8 +67,10 @@ public class LoadController {
             userPreferencesList = new ArrayList<>();
 
             IntStream.range(offset, offset + numberPerPage).forEach(i -> {
+                UserPreferences userPreferencesIndex = userPreferencesIndexList.get(i);
+
                 UserPreferences userPreferences = userPreferenceService.getUserPreferences(
-                        userPreferencesIndexList.get(i).getcNumber(), userPreferencesIndexList.get(i).getPreferenceType().toString());
+                        userPreferencesIndex.getcNumber(), userPreferencesIndex.getPreferenceType().toString());
 
                 userPreferencesList.add(userPreferences);
             });

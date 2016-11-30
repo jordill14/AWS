@@ -1,15 +1,14 @@
 package org.paradise.microservice.userpreference.converter;
 
 
-import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import org.paradise.microservice.userpreference.domain.PreferenceType;
 import org.paradise.microservice.userpreference.domain.UserPreferences;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceIndexTable;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by terrence on 29/11/2016.
@@ -47,22 +46,20 @@ public final class UserPreferencesConverter {
         return userPreferences;
     }
 
-    public static List<UserPreferences> toUserPreferencesList(ScanResultPage<UserPreferenceTable> scanResultPage) {
+    public static List<UserPreferences> toUserPreferencesList(List<UserPreferenceTable> userPreferenceTableList) {
 
-        List<UserPreferences> userPreferencesList = new ArrayList<>();
-
-        scanResultPage.getResults().forEach(userPreferenceTable -> userPreferencesList.add(toUserPreferences(userPreferenceTable)));
-
-        return userPreferencesList;
+        return userPreferenceTableList.stream()
+                .parallel()
+                .map(UserPreferencesConverter::toUserPreferences)
+                .collect(Collectors.toList());
     }
 
-    public static List<UserPreferences> toUserPreferencesIndexList(ScanResultPage<UserPreferenceIndexTable> scanResultPage) {
+    public static List<UserPreferences> toUserPreferencesIndexList(List<UserPreferenceIndexTable> userPreferenceIndexTableList) {
 
-        List<UserPreferences> userPreferencesList = new ArrayList<>();
-
-        scanResultPage.getResults().forEach(userPreferenceIndexTable -> userPreferencesList.add(toUserPreferences(userPreferenceIndexTable)));
-
-        return userPreferencesList;
+        return userPreferenceIndexTableList.stream()
+                .parallel()
+                .map(UserPreferencesConverter::toUserPreferences)
+                .collect(Collectors.toList());
     }
 
 }
