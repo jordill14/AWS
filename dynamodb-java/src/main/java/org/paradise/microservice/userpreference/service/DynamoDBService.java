@@ -1,6 +1,7 @@
 package org.paradise.microservice.userpreference.service;
 
 
+import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceIndexTable;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
 
 /**
@@ -8,8 +9,8 @@ import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceT
  */
 public interface DynamoDBService {
 
-    UserPreferenceTable load(String apcn, String preferenceType);
+    UserPreferenceTable load(String cNumber, String preferenceType);
 
-    void save(UserPreferenceTable userPreferenceTable);
+    void save(UserPreferenceTable userPreferenceTable, UserPreferenceIndexTable userPreferenceIndexTable);
 
 }

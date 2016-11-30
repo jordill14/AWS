@@ -3,6 +3,7 @@ package org.paradise.microservice.userpreference.service.impl;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import org.paradise.microservice.userpreference.service.DynamoDBService;
+import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceIndexTable;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ public class DynamoDBServiceImpl implements DynamoDBService {
 
     @Value("${dynamo.userpreference.table}")
     private String tableName;
+    @Value("${dynamo.userpreference.index.table}")
+    private String indexTableName;
 
     private final DynamoDBMapper dynamoDBMapper;
 
@@ -30,27 +33,36 @@ public class DynamoDBServiceImpl implements DynamoDBService {
     }
 
     @Override
-    public UserPreferenceTable load(String apcn, String preferenceType) {
+    public UserPreferenceTable load(String cNumber, String preferenceType) {
 
-        LOG.debug("Load User Preferences with HashKey / APCN {} with Preference Type {} from DynamoDB table {}",
-                apcn, preferenceType, tableName);
+        LOG.debug("Load User Preferences with cNUmber {} with Preference Type {} from DynamoDB table {}",
+                cNumber, preferenceType, tableName);
 
-        return dynamoDBMapper.load(UserPreferenceTable.class, apcn, preferenceType, getDynamoDBMapperConfig());
+        return dynamoDBMapper.load(UserPreferenceTable.class, cNumber, preferenceType, getDynamoDBMapperConfigForTable());
     }
 
     @Override
-    public void save(UserPreferenceTable userPreferenceTable) {
+    public void save(UserPreferenceTable userPreferenceTable, UserPreferenceIndexTable userPreferenceIndexTable) {
 
-        LOG.debug("Save User Preferences with cNumber {} with Preference Type {} into DynamoDB table {}",
-                userPreferenceTable.getcNumber(), userPreferenceTable.getPreferenceType().toString(), tableName);
+        LOG.debug("Save User Preferences with cNumber {} with Preference Type {} into DynamoDB table {} and index table {}",
+                userPreferenceTable.getcNumber(), userPreferenceTable.getPreferenceType().toString(), tableName, indexTableName);
 
-        dynamoDBMapper.save(userPreferenceTable, getDynamoDBMapperConfig());
+        dynamoDBMapper.save(userPreferenceTable, getDynamoDBMapperConfigForTable());
+        dynamoDBMapper.save(userPreferenceIndexTable, getDynamoDBMapperConfigForIndexTable());
     }
 
-    private  DynamoDBMapperConfig getDynamoDBMapperConfig() {
+    private  DynamoDBMapperConfig getDynamoDBMapperConfigForTable() {
 
         return DynamoDBMapperConfig.builder()
                 .withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
                 .build();
     }
+
+    private  DynamoDBMapperConfig getDynamoDBMapperConfigForIndexTable() {
+
+        return DynamoDBMapperConfig.builder()
+                .withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(indexTableName))
+                .build();
+    }
+
 }

@@ -16,7 +16,7 @@ public class UserPreferencesConverter {
 
         UserPreferences userPreferences = new UserPreferences();
 
-        if (!Objects.nonNull(userPreferenceTable)) {
+        if (Objects.nonNull(userPreferenceTable)) {
             userPreferences.setcNumber(userPreferenceTable.getcNumber());
             userPreferences.setPreferenceType(PreferenceType.valueOf(userPreferenceTable.getPreferenceType()));
             userPreferences.setApbcn(userPreferenceTable.getApbcn());

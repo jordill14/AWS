@@ -6,6 +6,7 @@ import org.paradise.microservice.userpreference.converter.UserPreferencesConvert
 import org.paradise.microservice.userpreference.domain.UserPreferences;
 import org.paradise.microservice.userpreference.service.DynamoDBService;
 import org.paradise.microservice.userpreference.service.UserPreferenceService;
+import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceIndexTable;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,10 +61,15 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
             userPreferenceTable.setDateTimeUpdated(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         }
 
+        UserPreferenceIndexTable userPreferenceIndexTable = new UserPreferenceIndexTable();
+
+        userPreferenceIndexTable.setcNumber(userPreferenceTable.getcNumber());
+        userPreferenceIndexTable.setPreferenceType(userPreferenceTable.getPreferenceType());
+
         LOG.debug("Save User Preferences with cNumber {} with Preference Type {}",
                 userPreferences.getcNumber(), userPreferences.getPreferenceType().toString());
 
-        dynamoDBService.save(userPreferenceTable);
+        dynamoDBService.save(userPreferenceTable, userPreferenceIndexTable);
     }
 
 }

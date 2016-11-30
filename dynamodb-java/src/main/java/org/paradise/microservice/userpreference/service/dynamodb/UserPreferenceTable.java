@@ -14,11 +14,11 @@ public class UserPreferenceTable {
     @DynamoDBHashKey
     private String cNumber;
 
-    @DynamoDBRangeKey
-    private String preferenceType;
-
     @DynamoDBAttribute
     private String apbcn;
+
+    @DynamoDBRangeKey
+    private String preferenceType;
 
     @DynamoDBAttribute
     private String dateTimeCreated;

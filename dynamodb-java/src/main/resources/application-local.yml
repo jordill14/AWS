@@ -6,3 +6,4 @@ dynamo:
   creation.mode: DROP
   creation.timeout: 120000
   userpreference.table: USER_PREFERENCE
+  userpreference.index.table: USER_PREFERENCE_INDEX

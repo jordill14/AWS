@@ -45,43 +45,42 @@ public class LoadController {
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUserPreferences() {
 
-        IntStream.rangeClosed(1, 334).forEach(i -> {
-            IntStream.rangeClosed(1, 3).forEach(j -> {
-                UserPreferences userPreferences = new UserPreferences();
+        IntStream.rangeClosed(1, 100).forEach(i ->
+                IntStream.rangeClosed(1, 3).forEach(j -> {
+            UserPreferences userPreferences = new UserPreferences();
 
-                userPreferences.setcNumber(String.valueOf((i -1) * 3 + j));
-                userPreferences.setApbcn(String.valueOf(100000 + (i - 1) * 3 + j));
+            userPreferences.setcNumber(String.valueOf(i));
+            userPreferences.setApbcn(String.valueOf(1000000 + j));
 
-                switch (j) {
-                    case 1:
-                        userPreferences.setPreferenceType(PreferenceType.ACCOUNT);
-                        break;
-                    case 2:
-                        userPreferences.setPreferenceType(PreferenceType.EBAY);
-                        break;
-                    case 3:
-                        userPreferences.setPreferenceType(PreferenceType.SENDING);
-                        break;
-                    default:
-                        break;
-                }
+            switch (j % 3) {
+                case 0:
+                    userPreferences.setPreferenceType(PreferenceType.ACCOUNT);
+                    break;
+                case 1:
+                    userPreferences.setPreferenceType(PreferenceType.EBAY);
+                    break;
+                case 2:
+                    userPreferences.setPreferenceType(PreferenceType.SENDING);
+                    break;
+                default:
+                    break;
+            }
 
-                userPreferences.setDateTimeCreated(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+            userPreferences.setDateTimeCreated(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
 
-                Map<String, String> tokenMetadata = new HashMap<>();
-                tokenMetadata.put("token_date_time_created", generateRandomDateTime());
-                tokenMetadata.put("token_date_time_updated", ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
-                tokenMetadata.put("token_date_time_since_last_sync", generateRandomDateTime());
+            Map<String, String> tokenMetadata = new HashMap<>();
+            tokenMetadata.put("token_date_time_created", generateRandomDateTime());
+            tokenMetadata.put("token_date_time_updated", ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+            tokenMetadata.put("token_date_time_since_last_sync", generateRandomDateTime());
 
-                Map<String, Object> preferences = new LinkedHashMap<>();
-                preferences.put("token", UUID.randomUUID());
-                preferences.put("token_metadata", tokenMetadata);
+            Map<String, Object> preferences = new LinkedHashMap<>();
+            preferences.put("token", UUID.randomUUID());
+            preferences.put("token_metadata", tokenMetadata);
 
-                userPreferences.setPreferences(preferences);
+            userPreferences.setPreferences(preferences);
 
-                userPreferenceService.createUserPreferences(userPreferences);
-            });
-        });
+            userPreferenceService.createUserPreferences(userPreferences);
+        }));
 
         LOG.info("ALL random data have been loaded into DynamoDB");
 
