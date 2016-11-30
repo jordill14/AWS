@@ -35,12 +35,12 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     }
 
     @Override
-    public UserPreferences getUserPreferences(String apcn, String preferenceType) {
+    public UserPreferences getUserPreferences(String cNumber, String preferenceType) {
 
         LOG.debug("Get User Preferences with APCN {} with Preference Type {}",
-                apcn, preferenceType);
+                cNumber, preferenceType);
 
-        UserPreferenceTable userPreferenceTable = dynamoDBService.load(apcn, preferenceType);
+        UserPreferenceTable userPreferenceTable = dynamoDBService.load(cNumber, preferenceType);
 
         return UserPreferencesConverter.toUserPreferences(userPreferenceTable);
     }
@@ -50,6 +50,8 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
 
         ScanResultPage<UserPreferenceTable> scanResultPage = dynamoDBService.allUserPreferenceTable();
 
+        LOG.info("Get total {} User Preferences from DynamoDB table", scanResultPage.getCount());
+
         return UserPreferencesConverter.toUserPreferencesList(scanResultPage);
     }
 
@@ -57,6 +59,8 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     public List<UserPreferences> getAllUserPreferencesIndex() {
 
         ScanResultPage<UserPreferenceIndexTable> scanResultPage = dynamoDBService.allUserPreferenceIndexTable();
+
+        LOG.info("Get total {} User Preferences from DynamoDB index table", scanResultPage.getCount());
 
         return UserPreferencesConverter.toUserPreferencesIndexList(scanResultPage);
     }

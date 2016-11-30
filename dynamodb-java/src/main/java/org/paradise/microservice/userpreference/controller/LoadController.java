@@ -10,12 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,7 +39,7 @@ public class LoadController {
     private static final int MIN_YEAR = 1970;
     private static final int MAX_YEAR = 2016;
 
-    private static final int MAX_CNUMBER = 100;
+    private static final int MAX_CNUMBER = 4000;
     private static final int APBCN_BASE = 1000000;
 
     private static final int MOD = 3;
@@ -52,9 +54,25 @@ public class LoadController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/all", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllUserPreferences() {
+    public ResponseEntity<?> getAllUserPreferences(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                   @RequestParam(value = "number_per_page", defaultValue = "0") int numberPerPage) {
 
-        List<UserPreferences> userPreferencesList = userPreferenceService.getAllUserPreferences();
+        final List<UserPreferences> userPreferencesList;
+
+        if (numberPerPage == 0) {
+            userPreferencesList = userPreferenceService.getAllUserPreferences();
+        } else {
+            List<UserPreferences> userPreferencesIndexList = userPreferenceService.getAllUserPreferencesIndex();
+
+            userPreferencesList = new ArrayList<>();
+
+            IntStream.range(offset, offset + numberPerPage).forEach(i -> {
+                UserPreferences userPreferences = userPreferenceService.getUserPreferences(
+                        userPreferencesIndexList.get(i).getcNumber(), userPreferencesIndexList.get(i).getPreferenceType().toString());
+
+                userPreferencesList.add(userPreferences);
+            });
+        }
 
         return ResponseEntity.ok(userPreferencesList);
     }
