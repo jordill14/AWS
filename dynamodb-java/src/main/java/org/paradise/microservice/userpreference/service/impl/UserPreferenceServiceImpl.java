@@ -1,6 +1,7 @@
 package org.paradise.microservice.userpreference.service.impl;
 
 
+import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import org.paradise.microservice.userpreference.converter.UserPreferenceTableConverter;
 import org.paradise.microservice.userpreference.converter.UserPreferencesConverter;
 import org.paradise.microservice.userpreference.domain.UserPreferences;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -41,6 +43,22 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
         UserPreferenceTable userPreferenceTable = dynamoDBService.load(apcn, preferenceType);
 
         return UserPreferencesConverter.toUserPreferences(userPreferenceTable);
+    }
+
+    @Override
+    public List<UserPreferences> getAllUserPreferences() {
+
+        ScanResultPage<UserPreferenceTable> scanResultPage = dynamoDBService.allUserPreferenceTable();
+
+        return UserPreferencesConverter.toUserPreferencesList(scanResultPage);
+    }
+
+    @Override
+    public List<UserPreferences> getAllUserPreferencesIndex() {
+
+        ScanResultPage<UserPreferenceIndexTable> scanResultPage = dynamoDBService.allUserPreferenceIndexTable();
+
+        return UserPreferencesConverter.toUserPreferencesIndexList(scanResultPage);
     }
 
     @Override

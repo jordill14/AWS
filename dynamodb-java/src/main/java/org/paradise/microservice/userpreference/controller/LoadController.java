@@ -18,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -48,6 +49,22 @@ public class LoadController {
     @Autowired
     public LoadController(UserPreferenceService userPreferenceService) {
         this.userPreferenceService = userPreferenceService;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/all", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllUserPreferences() {
+
+        List<UserPreferences> userPreferencesList = userPreferenceService.getAllUserPreferences();
+
+        return ResponseEntity.ok(userPreferencesList);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/index", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllUserPreferencesIndex() {
+
+        List<UserPreferences> userPreferencesList = userPreferenceService.getAllUserPreferencesIndex();
+
+        return ResponseEntity.ok(userPreferencesList);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
