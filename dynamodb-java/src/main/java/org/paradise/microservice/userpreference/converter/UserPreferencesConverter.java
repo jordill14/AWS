@@ -10,7 +10,10 @@ import java.util.Objects;
 /**
  * Created by terrence on 29/11/2016.
  */
-public class UserPreferencesConverter {
+public final class UserPreferencesConverter {
+
+    private UserPreferencesConverter() {
+    }
 
     public static UserPreferences toUserPreferences(UserPreferenceTable userPreferenceTable) {
 

@@ -33,6 +33,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = REQUEST_PATH_USER_PREFERENCE_LOAD)
 public class LoadController {
 
+    private static final int MIN_YEAR = 1970;
+    private static final int MAX_YEAR = 2016;
+
+    private static final int MAX_CNUMBER = 100;
+    private static final int APBCN_BASE = 1000000;
+
+    private static final int MOD = 3;
+
     private static final Logger LOG = LoggerFactory.getLogger(LoadController.class);
 
     private UserPreferenceService userPreferenceService;
@@ -45,14 +53,14 @@ public class LoadController {
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUserPreferences() {
 
-        IntStream.rangeClosed(1, 100).forEach(i ->
-                IntStream.rangeClosed(1, 3).forEach(j -> {
+        IntStream.rangeClosed(1, MAX_CNUMBER).forEach(i ->
+                IntStream.rangeClosed(1, MOD).forEach(j -> {
             UserPreferences userPreferences = new UserPreferences();
 
             userPreferences.setcNumber(String.valueOf(i));
-            userPreferences.setApbcn(String.valueOf(1000000 + j));
+            userPreferences.setApbcn(String.valueOf(APBCN_BASE + j));
 
-            switch (j % 3) {
+            switch (j % MOD) {
                 case 0:
                     userPreferences.setPreferenceType(PreferenceType.ACCOUNT);
                     break;
@@ -91,8 +99,8 @@ public class LoadController {
 
         Random random = new Random();
 
-        long minSecond = (int) LocalDateTime.of(1970, 1, 1, 0, 0, 0).toEpochSecond(ZoneOffset.UTC);
-        long maxSecond = (int) LocalDateTime.of(2016, 1, 1, 0, 0, 0).toEpochSecond(ZoneOffset.UTC);
+        long minSecond = (int) LocalDateTime.of(MIN_YEAR, 1, 1, 0, 0, 0).toEpochSecond(ZoneOffset.UTC);
+        long maxSecond = (int) LocalDateTime.of(MAX_YEAR, 1, 1, 0, 0, 0).toEpochSecond(ZoneOffset.UTC);
 
         LOG.debug("minSecond: [{}]", minSecond);
         LOG.debug("maxSecond: [{}]", maxSecond);

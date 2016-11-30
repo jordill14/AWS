@@ -56,8 +56,10 @@ public class DBContext {
         }
 
         LOG.info("Create DynamoDB Table {} and Index Table {} if NOT exists", tableName, indexTableName);
-        DynamoDBTableUtils.createTableIfNotExists(amazonDynamoDBClient, tableName, UserPreferenceTable.class, readThroughput, writeThroughput);
-        DynamoDBTableUtils.createTableIfNotExists(amazonDynamoDBClient, indexTableName, UserPreferenceIndexTable.class, readThroughput, writeThroughput);
+        DynamoDBTableUtils.createTableIfNotExists(
+                amazonDynamoDBClient, tableName, UserPreferenceTable.class, readThroughput, writeThroughput);
+        DynamoDBTableUtils.createTableIfNotExists(
+                amazonDynamoDBClient, indexTableName, UserPreferenceIndexTable.class, readThroughput, writeThroughput);
     }
 
 }
