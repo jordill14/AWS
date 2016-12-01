@@ -7,3 +7,9 @@ dynamo:
   creation.timeout: 120000
   userpreference.table: USER_PREFERENCE
   userpreference.index.table: USER_PREFERENCE_INDEX
+
+logging.level:
+  root: INFO
+  org.springframework.web: WARN
+  org.hibernate: ERROR
+  org.paradise.microservice.userpreference: DEBUG
