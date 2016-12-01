@@ -13,24 +13,18 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserPreferences {
 
-    @Valid
-    @NotNull
     @JsonProperty("c_number")
     private String cNumber;
 
     @JsonProperty("apbcn")
     private String apbcn;
 
-    @Valid
-    @NotNull
     @JsonProperty("preference_type")
     private PreferenceType preferenceType;
 
-    @Valid
     @JsonProperty("date_time_created")
     private String dateTimeCreated;
 
-    @Valid
     @JsonProperty("date_time_updated")
     private String dateTimeUpdated;
 

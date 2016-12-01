@@ -2,20 +2,21 @@ package org.paradise.microservice.userpreference.controller;
 
 import org.paradise.microservice.userpreference.domain.PreferenceType;
 import org.paradise.microservice.userpreference.domain.UserPreferences;
+import org.paradise.microservice.userpreference.exception.UserPreferenceException;
 import org.paradise.microservice.userpreference.service.UserPreferenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 import static org.paradise.microservice.userpreference.Constants.HTTP_HEADERS_APCN;
 import static org.paradise.microservice.userpreference.Constants.REQUEST_PATH_USER_PREFERENCE;
@@ -37,36 +38,41 @@ public class UserPreferenceController {
         this.userPreferenceService = userPreferenceService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserPreferences(@RequestHeader(value = HTTP_HEADERS_APCN, required = true) String apcn) {
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.GET,  value = "/{type}", produces = APPLICATION_JSON_VALUE)
+    public UserPreferences getUserPreferences(
+            @RequestHeader(value = HTTP_HEADERS_APCN, required = true) String apcn,
+            @PathVariable String type) {
 
-        if (StringUtils.isEmpty(apcn)) {
-            LOG.error("Missing APCN in HTTP Headers");
-        }
-
-        UserPreferences userPreferences = userPreferenceService.getUserPreferences(apcn, PreferenceType.EBAY.toString());
-
-        return ResponseEntity.ok(userPreferences);
+        return userPreferenceService.getUserPreferences(apcn, getPreferenceType(type).toString());
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createUserPreferences(
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(method = RequestMethod.POST, value = "/{type}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public UserPreferences createUserPreferences(
             @RequestHeader(value = HTTP_HEADERS_APCN, required = true) String apcn,
+            @PathVariable String type,
             @RequestBody @Valid UserPreferences userPreferences) {
 
-        if (StringUtils.isEmpty(apcn)) {
-            LOG.error("Missing APCN in HTTP Headers");
-        }
+        // force to set APCN
+        userPreferences.setcNumber(apcn);
+        // force to set Preference Type
+        userPreferences.setPreferenceType(getPreferenceType(type));
 
-        if (Objects.isNull(userPreferences)) {
-            LOG.error("UserPreferences is NULL");
-        }
-
+        LOG.debug("save User Preferences for APCN {}", apcn);
         userPreferenceService.createUserPreferences(userPreferences);
 
-        UserPreferences userPreferencesCreated = userPreferenceService.getUserPreferences(apcn, PreferenceType.EBAY.toString());
+        // retrieve the new or updated User Preferences
+        return userPreferenceService.getUserPreferences(apcn, getPreferenceType(type).toString());
+    }
 
-        return ResponseEntity.ok(userPreferencesCreated);
+    private PreferenceType getPreferenceType(String type) {
+
+        try {
+            return PreferenceType.valueOf(type);
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            throw new UserPreferenceException(ex.getMessage(), ex);
+        }
     }
 
 }
