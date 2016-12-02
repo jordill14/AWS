@@ -140,13 +140,31 @@ sourceSets.test.runtimeClasspath += [configurations.provided]
 eclipse.classpath.plusConfigurations += [configurations.provided]
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter', version :dependencyVersionSpringBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version :dependencyVersionSpringBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: dependencyVersionSpringBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version :dependencyVersionSpringBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version :dependencyVersionSpringBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: dependencyVersionSpringBoot
 
-  // AWS SDK DynamoDB
-  compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: dependencyVersionAWSSDKDynamoDB
+    // AWS SDK DynamoDB
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: dependencyVersionAWSSDKDynamoDB
 
-  // test dependencies
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: dependencyVersionSpringBoot
+    // test dependencies
+    testCompile("org.springframework.boot:spring-boot:${dependencyVersionSpringBoot}")
+    testCompile("org.springframework.boot:spring-boot-autoconfigure:${dependencyVersionSpringBoot}")
+    testCompile("org.springframework.boot:spring-boot-starter-web:${dependencyVersionSpringBoot}")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:${dependencyVersionSpringBoot}")
+
+    testCompile("com.jayway.jsonpath:json-path:${dependencyVersionJaywayJsonpath}")
+    testCompile("com.jayway.jsonpath:json-path-assert:${dependencyVersionJaywayJsonpath}")
+    testCompile("com.jayway.restassured:rest-assured:${dependencyVersionJaywayRestassured}")
+    testCompile("com.jayway.restassured:json-path:${dependencyVersionJaywayRestassured}")
+    testCompile("com.jayway.restassured:spring-mock-mvc:${dependencyVersionJaywayRestassured}")
+
+    testCompile("javax.servlet:javax.servlet-api:${dependencyVersionServletApi}")
+
+    testCompile("org.apache.httpcomponents:httpclient:${dependencyVersionHttpClient}")
+
+    testCompile("org.hamcrest:hamcrest-library:${dependencyVersionHamcrestLibrary}")
+
+    testCompile("com.jcabi:jcabi-matchers:${dependencyVersionJcabiMarchers}")
 }
