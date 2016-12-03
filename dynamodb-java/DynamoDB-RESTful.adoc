@@ -224,3 +224,132 @@ Server: Jetty(8.1.12.v20130726)
   }
 }
 ----
+
+Item in DynamoDB Table
+----------------------
+
+- Get Item
+----
+POST / HTTP/1.1
+Host: 127.0.0.1:18000
+Authorization: AWS4-HMAC-SHA256 Credential=AKIAJRLM7Q5JYLJBAPVQ/20161201/us-east-1/dynamodb/aws4_request, SignedHeaders=amz-sdk-invocation-id;amz-sdk-retry;content-length;content-type;host;user-agent;x-amz-date;x-amz-target, Signature=c012f0bbdacbab197ba13352888193405424b6d4a901a69ff642bb9bd0630e39
+X-Amz-Date: 20161201T215603Z
+User-Agent: aws-sdk-java/1.11.60 Mac_OS_X/10.11.6 Java_HotSpot(TM)_64-Bit_Server_VM/25.74-b02/1.8.0_74 com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper/1.11.60
+amz-sdk-invocation-id: f4d000d8-12c7-9dc6-4141-b5d58768cc65
+amz-sdk-retry: 0/0/500
+X-Amz-Target: DynamoDB_20120810.GetItem
+Content-Type: application/x-amz-json-1.0
+Content-Length: 119
+Connection: Keep-Alive
+
+{
+  "TableName": "USER_PREFERENCE",
+  "Key": {
+    "cNumber": {
+      "S": "88888888"
+    },
+    "preferenceType": {
+      "S": "EBAY"
+    }
+  },
+  "ConsistentRead": false
+}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/x-amz-json-1.0
+x-amz-crc32: 2997554706
+x-amzn-RequestId: 89662c1b-8916-456f-a7a1-071cd2c7506d
+Content-Length: 357
+Server: Jetty(8.1.12.v20130726)
+
+{
+  "Item": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "88888888"
+    },
+    "dateTimeCreated": {
+      "S": "2016-12-01T21:56:03.733Z"
+    },
+    "preferences": {
+      "S": "{\"token_metadata\":{\"date_time_created\":\"2015-03-11T12:27:06.000Z\",\"date_time_expired\":\"2018-03-11T12:27:06.000Z\",\"date_time_last_sync\":\"2016-03-11T12:27:06.000Z\"},\"token\":\"u20K1UI.d5wAAAFYnhkTVpjW\"}"
+    }
+  }
+}
+----
+
+- Update Item
+----
+POST / HTTP/1.1
+Host: localhost:18000
+Authorization: AWS4-HMAC-SHA256 Credential=AKIAJRLM7Q5JYLJBAPVQ/20161201/us-east-1/dynamodb/aws4_request, SignedHeaders=amz-sdk-invocation-id;amz-sdk-retry;content-length;content-type;host;user-agent;x-amz-date;x-amz-target, Signature=9754f62c2a5b87a9e107f8fe4c5fbe3a4aa8b75da30aa867027df35583d71e2b
+X-Amz-Date: 20161201T215603Z
+User-Agent: aws-sdk-java/1.11.60 Mac_OS_X/10.11.6 Java_HotSpot(TM)_64-Bit_Server_VM/25.74-b02/1.8.0_74 com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper/1.11.60
+amz-sdk-invocation-id: f1647f55-e224-5afd-ece5-d2bf050792a7
+amz-sdk-retry: 0/0/500
+X-Amz-Target: DynamoDB_20120810.UpdateItem
+Content-Type: application/x-amz-json-1.0
+Content-Length: 548
+Connection: Keep-Alive
+
+{
+  "TableName": "USER_PREFERENCE",
+  "Key": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "88888888"
+    }
+  },
+  "AttributeUpdates": {
+    "dateTimeCreated": {
+      "Value": {
+        "S": "2016-12-01T21:56:03.733Z"
+      },
+      "Action": "PUT"
+    },
+    "preferences": {
+      "Value": {
+        "S": "{\"token_metadata\":{\"date_time_created\":\"2015-03-11T12:27:06.000Z\",\"date_time_expired\":\"2018-03-11T12:27:06.000Z\",\"date_time_last_sync\":\"2016-03-11T12:27:06.000Z\"},\"token\":\"u20K1UI.d5wAAAFYnhkTVpjW\"}"
+      },
+      "Action": "PUT"
+    },
+    "apbcn": {
+      "Action": "DELETE"
+    },
+    "dateTimeUpdated": {
+      "Action": "DELETE"
+    }
+  },
+  "ReturnValues": "ALL_NEW"
+}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/x-amz-json-1.0
+x-amz-crc32: 2680278677
+x-amzn-RequestId: c0dff17f-02de-4871-9da7-da8e108b8307
+Content-Length: 363
+Server: Jetty(8.1.12.v20130726)
+
+{
+  "Attributes": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "88888888"
+    },
+    "dateTimeCreated": {
+      "S": "2016-12-01T21:56:03.733Z"
+    },
+    "preferences": {
+      "S": "{\"token_metadata\":{\"date_time_created\":\"2015-03-11T12:27:06.000Z\",\"date_time_expired\":\"2018-03-11T12:27:06.000Z\",\"date_time_last_sync\":\"2016-03-11T12:27:06.000Z\"},\"token\":\"u20K1UI.d5wAAAFYnhkTVpjW\"}"
+    }
+  }
+}
+----
