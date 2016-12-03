@@ -193,8 +193,7 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .body("errors[0].bindingFailure", equalTo(Boolean.FALSE))
                 .body("errors[0].code", equalTo("NotNull"))
                 .body("message", equalTo("Validation failed for object='userPreferences'. Error count: 1"))
-                .body("path", equalTo("/user/preferences/EBAY"))
-        ;
+                .body("path", equalTo("/user/preferences/EBAY"));
     }
 
 }
