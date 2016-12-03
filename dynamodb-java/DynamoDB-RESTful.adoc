@@ -1,0 +1,226 @@
+DynamoDB RESTFul Interface
+==========================
+
+Request / Response when access AWS DynamoDB runs on localhost
+
+DynamoDB Table
+--------------
+
+- Create Table request / response
+----
+POST / HTTP/1.1
+Host: localhost:18000
+Authorization: AWS4-HMAC-SHA256 Credential=AKIAJRLM7Q5JYLJBAPVQ/20161201/us-east-1/dynamodb/aws4_request, SignedHeaders=amz-sdk-invocation-id;amz-sdk-retry;content-length;content-type;host;user-agent;x-amz-date;x-amz-target, Signature=12626efd6e358b1c8e23e340704ccf88d42a9fc2b9aca64bc73c6b0407db5d5a
+X-Amz-Date: 20161201T215028Z
+User-Agent: aws-sdk-java/1.11.60 Mac_OS_X/10.11.6 Java_HotSpot(TM)_64-Bit_Server_VM/25.74-b02/1.8.0_74
+amz-sdk-invocation-id: 5894f8c3-6e3b-38c7-5ccb-ff785f3ad1ff
+amz-sdk-retry: 0/0/500
+X-Amz-Target: DynamoDB_20120810.CreateTable
+Content-Type: application/x-amz-json-1.0
+Content-Length: 346
+Connection: Keep-Alive
+
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "preferenceType",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "cNumber",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "USER_PREFERENCE",
+  "KeySchema": [
+    {
+      "AttributeName": "cNumber",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "preferenceType",
+      "KeyType": "RANGE"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 100,
+    "WriteCapacityUnits": 100
+  }
+}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/x-amz-json-1.0
+x-amz-crc32: 2828096071
+x-amzn-RequestId: 82713e9e-5179-4e4a-a97c-307c463e3fcb
+Content-Length: 616
+Server: Jetty(8.1.12.v20130726)
+
+{
+  "TableDescription": {
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "preferenceType",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "cNumber",
+        "AttributeType": "S"
+      }
+    ],
+    "TableName": "USER_PREFERENCE",
+    "KeySchema": [
+      {
+        "AttributeName": "cNumber",
+        "KeyType": "HASH"
+      },
+      {
+        "AttributeName": "preferenceType",
+        "KeyType": "RANGE"
+      }
+    ],
+    "TableStatus": "ACTIVE",
+    "CreationDateTime": 1480629028.297,
+    "ProvisionedThroughput": {
+      "LastIncreaseDateTime": 0,
+      "LastDecreaseDateTime": 0,
+      "NumberOfDecreasesToday": 0,
+      "ReadCapacityUnits": 100,
+      "WriteCapacityUnits": 100
+    },
+    "TableSizeBytes": 0,
+    "ItemCount": 0,
+    "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/USER_PREFERENCE"
+  }
+}
+----
+
+- Delete Table request / response
+----
+POST / HTTP/1.1
+Host: 127.0.0.1:18000
+Authorization: AWS4-HMAC-SHA256 Credential=AKIAJRLM7Q5JYLJBAPVQ/20161201/us-east-1/dynamodb/aws4_request, SignedHeaders=amz-sdk-invocation-id;amz-sdk-retry;content-length;content-type;host;user-agent;x-amz-date;x-amz-target, Signature=a3a5baf7caba486d80a38a75de6b54c52b0556ef5df453d829f0fd721d48689f
+X-Amz-Date: 20161201T215027Z
+User-Agent: aws-sdk-java/1.11.60 Mac_OS_X/10.11.6 Java_HotSpot(TM)_64-Bit_Server_VM/25.74-b02/1.8.0_74
+amz-sdk-invocation-id: c694a18b-5cac-f63f-e519-c4a6ee8ba0df
+amz-sdk-retry: 0/0/500
+X-Amz-Target: DynamoDB_20120810.DeleteTable
+Content-Type: application/x-amz-json-1.0
+Content-Length: 31
+Connection: Keep-Alive
+
+{
+  "TableName": "USER_PREFERENCE"
+}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/x-amz-json-1.0
+x-amz-crc32: 3732555617
+x-amzn-RequestId: bfa8e17e-4495-4a52-b920-46a1ca17872e
+Content-Length: 618
+Server: Jetty(8.1.12.v20130726)
+
+{
+  "TableDescription": {
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "preferenceType",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "cNumber",
+        "AttributeType": "S"
+      }
+    ],
+    "TableName": "USER_PREFERENCE",
+    "KeySchema": [
+      {
+        "AttributeName": "cNumber",
+        "KeyType": "HASH"
+      },
+      {
+        "AttributeName": "preferenceType",
+        "KeyType": "RANGE"
+      }
+    ],
+    "TableStatus": "ACTIVE",
+    "CreationDateTime": 1480628440.846,
+    "ProvisionedThroughput": {
+      "LastIncreaseDateTime": 0,
+      "LastDecreaseDateTime": 0,
+      "NumberOfDecreasesToday": 0,
+      "ReadCapacityUnits": 100,
+      "WriteCapacityUnits": 100
+    },
+    "TableSizeBytes": 281,
+    "ItemCount": 1,
+    "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/USER_PREFERENCE"
+  }
+}
+----
+
+- Describe Table request / response
+----
+POST / HTTP/1.1
+Host: localhost:18000
+Authorization: AWS4-HMAC-SHA256 Credential=AKIAJRLM7Q5JYLJBAPVQ/20161201/us-east-1/dynamodb/aws4_request, SignedHeaders=amz-sdk-invocation-id;amz-sdk-retry;content-length;content-type;host;user-agent;x-amz-date;x-amz-target, Signature=dc5c430d6d32fb1483b4e35b183ec25bc90974344af7777c4a57acc10f6bad1a
+X-Amz-Date: 20161201T215028Z
+User-Agent: aws-sdk-java/1.11.60 Mac_OS_X/10.11.6 Java_HotSpot(TM)_64-Bit_Server_VM/25.74-b02/1.8.0_74
+amz-sdk-invocation-id: e764bcaf-5746-b9ca-67ff-b66188bb6b68
+amz-sdk-retry: 0/0/500
+X-Amz-Target: DynamoDB_20120810.DescribeTable
+Content-Type: application/x-amz-json-1.0
+Content-Length: 31
+Connection: Keep-Alive
+
+{
+  "TableName": "USER_PREFERENCE"
+}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/x-amz-json-1.0
+x-amz-crc32: 1386368499
+x-amzn-RequestId: 64916ae8-0f0b-47ef-b074-b5869cda78f8
+Content-Length: 605
+Server: Jetty(8.1.12.v20130726)
+
+{
+  "Table": {
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "preferenceType",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "cNumber",
+        "AttributeType": "S"
+      }
+    ],
+    "TableName": "USER_PREFERENCE",
+    "KeySchema": [
+      {
+        "AttributeName": "cNumber",
+        "KeyType": "HASH"
+      },
+      {
+        "AttributeName": "preferenceType",
+        "KeyType": "RANGE"
+      }
+    ],
+    "TableStatus": "ACTIVE",
+    "CreationDateTime": 1480629028.297,
+    "ProvisionedThroughput": {
+      "LastIncreaseDateTime": 0,
+      "LastDecreaseDateTime": 0,
+      "NumberOfDecreasesToday": 0,
+      "ReadCapacityUnits": 100,
+      "WriteCapacityUnits": 100
+    },
+    "TableSizeBytes": 0,
+    "ItemCount": 0,
+    "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/USER_PREFERENCE"
+  }
+}
+----
