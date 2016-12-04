@@ -1,0 +1,27 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "cNumber",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "preferenceType",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "USER_PREFERENCE_INDEX",
+  "KeySchema": [
+    {
+      "AttributeName": "cNumber",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "preferenceType",
+      "KeyType": "RANGE"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 100,
+    "WriteCapacityUnits": 100
+  }
+}

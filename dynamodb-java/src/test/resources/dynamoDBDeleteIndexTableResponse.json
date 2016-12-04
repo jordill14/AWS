@@ -1,0 +1,37 @@
+{
+  "TableDescription": {
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "cNumber",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "preferenceType",
+        "AttributeType": "S"
+      }
+    ],
+    "TableName": "USER_PREFERENCE_INDEX",
+    "KeySchema": [
+      {
+        "AttributeName": "cNumber",
+        "KeyType": "HASH"
+      },
+      {
+        "AttributeName": "preferenceType",
+        "KeyType": "RANGE"
+      }
+    ],
+    "TableStatus": "ACTIVE",
+    "CreationDateTime": 1480821550.939,
+    "ProvisionedThroughput": {
+      "LastIncreaseDateTime": 0.000,
+      "LastDecreaseDateTime": 0.000,
+      "NumberOfDecreasesToday": 0,
+      "ReadCapacityUnits": 100,
+      "WriteCapacityUnits": 100
+    },
+    "TableSizeBytes": 0,
+    "ItemCount": 0,
+    "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/USER_PREFERENCE_INDEX"
+  }
+}

@@ -15,6 +15,7 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
     public static final String USER_PREFERENCE_URL = "/user/preferences";
     public static final String AP_CUSTOMER_NUMBER = "ap-customer-number";
+
     public static final String APCN = "88886666";
     public static final String APCN_SECOND = "99997777";
 

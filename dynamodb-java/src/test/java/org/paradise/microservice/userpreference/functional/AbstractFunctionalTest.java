@@ -1,14 +1,31 @@
 package org.paradise.microservice.userpreference.functional;
 
 import com.jayway.restassured.RestAssured;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockserver.client.server.MockServerClient;
+import org.mockserver.integration.ClientAndServer;
+import org.mockserver.model.Body;
+import org.mockserver.model.Header;
+import org.mockserver.model.HttpRequest;
+import org.mockserver.model.HttpResponse;
+import org.mockserver.model.JsonBody;
+import org.mockserver.model.OutboundHttpRequest;
 import org.paradise.microservice.userpreference.App;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.io.IOException;
+
+import static org.mockserver.model.HttpRequest.request;
+import static org.mockserver.model.HttpResponse.response;
 
 /**
  * Base class for running Component tests using rest assured
@@ -24,10 +41,135 @@ public abstract class AbstractFunctionalTest {
     @Value("${app.test.functional.baseurl}")
     protected String apiBaseUrl;
 
+    protected static MockServerClient mockServerClient;
+
+
+    static {
+        ClientAndServer mockServer = new ClientAndServer();
+        mockServer.startClientAndServer(8000);
+
+        mockServerClient = new OurMockServerClient("localhost", 8000, "");
+
+        initMockDynamoDB();
+    }
+
     @Before
-    public void setUpBeforeTest() {
+    public void setUp() {
 
         RestAssured.reset();
+
+        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
+
+        // This is a work around to stop the mocksever trust store getting in the way
+        // This value will placed in the properties on the first request, however it is not used.
+        System.getProperties().remove("javax.net.ssl.trustStore");
+    }
+
+    public static Body toBody(Resource resource) {
+
+        try {
+            return new JsonBody(IOUtils.toString(resource.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static class OurMockServerClient extends MockServerClient {
+
+        public OurMockServerClient(String host, int port, String contextPath) {
+            super(host, port, contextPath);
+        }
+
+        protected HttpResponse sendRequest(HttpRequest httpRequest) {
+
+            OutboundHttpRequest outboundHttpRequest = OutboundHttpRequest
+                    .outboundRequest(this.host, this.port, this.contextPath, httpRequest);
+
+            if (this.port == 443) {
+                outboundHttpRequest.withSecure(true);
+            }
+
+            return this.nettyHttpClient.sendRequest(outboundHttpRequest);
+        }
+    }
+
+    private static void initMockDynamoDB() {
+
+        HttpRequest httpRequest;
+
+        // mock User Preference table
+        httpRequest = request()
+                .withMethod("POST")
+                .withPath("/")
+                .withHeader("X-Amz-Target", "DynamoDB_20120810.DeleteTable")
+                .withBody(toBody(new ClassPathResource("dynamoDBDeleteTableRequest.json")));
+
+        mockServerClient.when(httpRequest)
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_OK)
+                        .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
+                        .withBody(toBody(new ClassPathResource("dynamoDBDeleteTableResponse.json"))));
+
+        httpRequest = request()
+                .withMethod("POST")
+                .withPath("/")
+                .withHeader("X-Amz-Target", "DynamoDB_20120810.CreateTable")
+                .withBody(toBody(new ClassPathResource("dynamoDBCreateTableRequest.json")));
+
+        mockServerClient.when(httpRequest)
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_OK)
+                        .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
+                        .withBody(toBody(new ClassPathResource("dynamoDBCreateTableResponse.json"))));
+
+        httpRequest = request()
+                .withMethod("POST")
+                .withPath("/")
+                .withHeader("X-Amz-Target", "DynamoDB_20120810.DescribeTable")
+                .withBody(toBody(new ClassPathResource("dynamoDBDescribeTableRequest.json")));
+
+        mockServerClient.when(httpRequest)
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_OK)
+                        .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
+                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeTableResponse.json"))));
+
+        // mock User Preference index table
+        httpRequest = request()
+                .withMethod("POST")
+                .withPath("/")
+                .withHeader("X-Amz-Target", "DynamoDB_20120810.DeleteTable")
+                .withBody(toBody(new ClassPathResource("dynamoDBDeleteIndexTableRequest.json")));
+
+        mockServerClient.when(httpRequest)
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_OK)
+                        .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
+                        .withBody(toBody(new ClassPathResource("dynamoDBDeleteIndexTableResponse.json"))));
+
+        httpRequest = request()
+                .withMethod("POST")
+                .withPath("/")
+                .withHeader("X-Amz-Target", "DynamoDB_20120810.CreateTable")
+                .withBody(toBody(new ClassPathResource("dynamoDBCreateIndexTableRequest.json")));
+
+        mockServerClient.when(httpRequest)
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_OK)
+                        .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
+                        .withBody(toBody(new ClassPathResource("dynamoDBCreateIndexTableResponse.json"))));
+
+        httpRequest = request()
+                .withMethod("POST")
+                .withPath("/")
+                .withHeader("X-Amz-Target", "DynamoDB_20120810.DescribeTable")
+                .withBody(toBody(new ClassPathResource("dynamoDBDescribeIndexTableRequest.json")));
+
+        mockServerClient.when(httpRequest)
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_OK)
+                        .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
+                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeIndexTableResponse.json"))));
     }
 
 }

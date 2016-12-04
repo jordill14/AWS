@@ -167,4 +167,6 @@ dependencies {
     testCompile("org.hamcrest:hamcrest-library:${dependencyVersionHamcrestLibrary}")
 
     testCompile("com.jcabi:jcabi-matchers:${dependencyVersionJcabiMarchers}")
+
+    testCompile("org.mock-server:mockserver-netty:${dependencyVersionMockServerNetty}")
 }
