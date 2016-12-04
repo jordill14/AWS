@@ -1,0 +1,12 @@
+{
+  "TableName": "USER_PREFERENCE",
+  "Key": {
+    "cNumber": {
+      "S": "88886666"
+    },
+    "preferenceType": {
+      "S": "EBAY"
+    }
+  },
+  "ConsistentRead": false
+}

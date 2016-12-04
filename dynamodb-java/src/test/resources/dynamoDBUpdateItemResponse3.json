@@ -1,0 +1,16 @@
+{
+  "Attributes": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "99997777"
+    },
+    "dateTimeCreated": {
+      "S": "2016-12-04T04:53:54.673Z"
+    },
+    "preferences": {
+      "S": "{\"token_metadata\":{\"date_time_created\":\"9915-03-11T12:27:06.000Z\",\"date_time_expired\":\"9918-03-11T12:27:06.000Z\",\"date_time_last_sync\":\"9916-03-11T12:27:06.000Z\"},\"token\":\"ReallyGoodSecurityToken\"}"
+    }
+  }
+}

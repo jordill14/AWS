@@ -1,0 +1,35 @@
+{
+  "TableName": "USER_PREFERENCE",
+  "Key": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "88886666"
+    }
+  },
+  "AttributeUpdates": {
+    "preferences": {
+      "Value": {
+        "S": "{\"token_metadata\":{\"date_time_created\":\"2015-03-11T12:27:06.000Z\",\"date_time_expired\":\"2018-03-11T12:27:06.000Z\",\"date_time_last_sync\":\"2016-03-11T12:27:06.000Z\"},\"token\":\"u20K1UI.d5wAAAFYnhkTVpjW\"}"
+      },
+      "Action": "PUT"
+    },
+    "dateTimeCreated": {
+      "Value": {
+        "S": "2016-12-04T04:53:54.673Z"
+      },
+      "Action": "PUT"
+    },
+    "apbcn": {
+      "Action": "DELETE"
+    },
+    "dateTimeUpdated": {
+      "Value": {
+        "S": "2016-12-04T05:56:29.907Z"
+      },
+      "Action": "PUT"
+    }
+  },
+  "ReturnValues": "ALL_NEW"
+}

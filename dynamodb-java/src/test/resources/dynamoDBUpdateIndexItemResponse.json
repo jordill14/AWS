@@ -1,0 +1,10 @@
+{
+  "Attributes": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "88888888"
+    }
+  }
+}

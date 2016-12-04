@@ -1,0 +1,19 @@
+{
+  "Attributes": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "88886666"
+    },
+    "dateTimeCreated": {
+      "S": "2016-12-04T04:53:54.673Z"
+    },
+    "dateTimeUpdated": {
+      "S": "2016-12-05T04:53:54.673Z"
+    },
+    "preferences": {
+      "S": "{\"token_metadata\":{\"date_time_created\":\"1985-12-01T12:27:06.000Z\",\"date_time_expired\":\"2020-12-31T12:27:06.000Z\",\"date_time_last_sync\":\"2000-01-11T12:27:06.000Z\"},\"token\":\"AustraliaPostSecurityToken\"}"
+    }
+  }
+}

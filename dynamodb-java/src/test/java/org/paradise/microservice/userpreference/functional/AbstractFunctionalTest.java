@@ -13,6 +13,7 @@ import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.JsonBody;
 import org.mockserver.model.OutboundHttpRequest;
+import org.mockserver.model.RegexBody;
 import org.paradise.microservice.userpreference.App;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -45,8 +46,7 @@ public abstract class AbstractFunctionalTest {
 
 
     static {
-        ClientAndServer mockServer = new ClientAndServer();
-        mockServer.startClientAndServer(8000);
+        new ClientAndServer().startClientAndServer(8000);
 
         mockServerClient = new OurMockServerClient("localhost", 8000, "");
 
@@ -72,6 +72,11 @@ public abstract class AbstractFunctionalTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Body toRegexBody(String regexBody) {
+
+       return new RegexBody(regexBody);
     }
 
     public static class OurMockServerClient extends MockServerClient {

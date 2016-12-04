@@ -1,0 +1,13 @@
+{
+  "TableName": "USER_PREFERENCE_INDEX",
+  "Key": {
+    "preferenceType": {
+      "S": "EBAY"
+    },
+    "cNumber": {
+      "S": "88888888"
+    }
+  },
+  "AttributeUpdates": {},
+  "ReturnValues": "ALL_NEW"
+}
