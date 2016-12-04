@@ -39,10 +39,10 @@ import static org.mockserver.model.HttpResponse.response;
 @ActiveProfiles("local")
 public abstract class AbstractFunctionalTest {
 
+    protected static MockServerClient mockServerClient;
+
     @Value("${app.test.functional.baseurl}")
     protected String apiBaseUrl;
-
-    protected static MockServerClient mockServerClient;
 
 
     static {
