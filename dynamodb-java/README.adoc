@@ -1,6 +1,14 @@
 User Preference Microservice in Java
 ====================================
 
-This is an example how DynamoDB works in Java 8.
+This is an example showing a complete solution that how DynamoDB works in Java 8.
 
 Highlights like Hash Key, Range Key, DynamoDBMapper, Pagination solution in DynamoDB, and using Mock Server to mock DynamoDB table and item operations.
+
+
+References
+----------
+- Query, Scan and Pagination Operations in DynamoDB, _http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/QueryAndScan.html_
+- Limits in DynamoDB, _http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html_
+- Local Secondary Indexes in DynamoDB, _http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html_
+- Global Secondary Indexes in DynamoDB, _http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html_
