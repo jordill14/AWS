@@ -4,6 +4,7 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.DeleteTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
@@ -60,6 +61,12 @@ public final class DynamoDBTableUtils {
                 .withTableName(tableName);
 
         TableUtils.deleteTableIfExists(amazonDynamoDBClient, deleteTableRequest);
+
+        try {
+            new DynamoDB(amazonDynamoDBClient).getTable(tableName).waitForDelete();
+        } catch (InterruptedException e) {
+            LOG.warn("Interruption raised while table is deleting");
+        }
     }
 
     private static DynamoDBMapper getDynamoDBMapper(AmazonDynamoDBClient amazonDynamoDBClient) {
