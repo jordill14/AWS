@@ -57,8 +57,7 @@ public final class DynamoDBTableUtils {
 
     public static void deleteTableIfExists(AmazonDynamoDBClient amazonDynamoDBClient, String tableName) {
 
-        DeleteTableRequest deleteTableRequest = new DeleteTableRequest()
-                .withTableName(tableName);
+        DeleteTableRequest deleteTableRequest = new DeleteTableRequest().withTableName(tableName);
 
         TableUtils.deleteTableIfExists(amazonDynamoDBClient, deleteTableRequest);
 

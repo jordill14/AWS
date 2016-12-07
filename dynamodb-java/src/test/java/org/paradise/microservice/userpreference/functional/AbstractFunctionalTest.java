@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockserver.client.server.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
+import org.mockserver.matchers.Times;
 import org.mockserver.model.Body;
 import org.mockserver.model.Header;
 import org.mockserver.model.HttpRequest;
@@ -133,7 +134,12 @@ public abstract class AbstractFunctionalTest {
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.DescribeTable")
                 .withBody(toBody(new ClassPathResource("dynamoDBDescribeTableRequest.json")));
 
-        mockServerClient.when(httpRequest)
+        mockServerClient.when(httpRequest, Times.exactly(1))
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_BAD_REQUEST)
+                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeTableBeenDeletedResponse.json"))));
+
+        mockServerClient.when(httpRequest, Times.exactly(2))
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
@@ -170,7 +176,12 @@ public abstract class AbstractFunctionalTest {
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.DescribeTable")
                 .withBody(toBody(new ClassPathResource("dynamoDBDescribeIndexTableRequest.json")));
 
-        mockServerClient.when(httpRequest)
+        mockServerClient.when(httpRequest, Times.exactly(1))
+                .respond(response()
+                        .withStatusCode(HttpStatus.SC_BAD_REQUEST)
+                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeIndexTableBeenDeletedResponse.json"))));
+
+        mockServerClient.when(httpRequest, Times.exactly(2))
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
