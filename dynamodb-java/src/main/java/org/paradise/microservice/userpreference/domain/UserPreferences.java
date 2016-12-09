@@ -2,6 +2,7 @@ package org.paradise.microservice.userpreference.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import java.util.Map;
 /**
  * Created by terrence on 28/11/2016.
  */
+@JsonRootName(value = "data")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserPreferences {
 

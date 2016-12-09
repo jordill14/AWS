@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.Header;
 import org.mockserver.model.HttpRequest;
+import org.paradise.microservice.userpreference.Constants;
 import org.paradise.microservice.userpreference.domain.PreferenceType;
 import org.springframework.core.io.ClassPathResource;
 
@@ -19,9 +20,6 @@ import static org.mockserver.model.HttpResponse.response;
  * Created by terrence on 2/12/2016.
  */
 public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
-
-    public static final String USER_PREFERENCE_URL = "/user/preferences";
-    public static final String AP_CUSTOMER_NUMBER = "ap-customer-number";
 
     public static final String APCN = "88886666";
     public static final String APCN_NEXT = "99997777";
@@ -50,13 +48,15 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
         // Create User Preferences
         String requestBodyForCreate = "{\n"
-                + "    \"preferences\" : {\n"
-                + "        \"token_metadata\" : {\n"
-                + "             \"date_time_created\":\"2015-03-11T12:27:06.000Z\",\n"
-                + "             \"date_time_expired\":\"2018-03-11T12:27:06.000Z\",\n"
-                + "             \"date_time_last_sync\":\"2016-03-11T12:27:06.000Z\"\n"
-                + "        },\n"
-                + "        \"token\": \"u20K1UI.d5wAAAFYnhkTVpjW\"\n"
+                + "    \"data\": {\n"
+                + "        \"preferences\" : {\n"
+                + "            \"token_metadata\" : {\n"
+                + "                 \"date_time_created\":\"2015-03-11T12:27:06.000Z\",\n"
+                + "                 \"date_time_expired\":\"2018-03-11T12:27:06.000Z\",\n"
+                + "                 \"date_time_last_sync\":\"2016-03-11T12:27:06.000Z\"\n"
+                + "            },\n"
+                + "            \"token\": \"u20K1UI.d5wAAAFYnhkTVpjW\"\n"
+                + "        }\n"
                 + "    }\n"
                 + "}";
 
@@ -88,9 +88,9 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
         given()
         .when()
                 .header("Content-Type", "application/json")
-                .header(AP_CUSTOMER_NUMBER, APCN)
+                .header(Constants.HTTP_HEADERS_APCN, APCN)
                 .body(requestBodyForCreate)
-                .post(apiBaseUrl + USER_PREFERENCE_URL + "/" + PreferenceType.EBAY)
+                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
                 .assertThat()
@@ -105,13 +105,15 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
         // Update User Preferences
         String requestBodyForUpdate = "{\n"
-                + "    \"preferences\" : {\n"
-                + "        \"token_metadata\" : {\n"
-                + "             \"date_time_created\":\"1985-12-01T12:27:06.000Z\",\n"
-                + "             \"date_time_expired\":\"2020-12-31T12:27:06.000Z\",\n"
-                + "             \"date_time_last_sync\":\"2000-01-11T12:27:06.000Z\"\n"
-                + "        },\n"
-                + "        \"token\": \"AustraliaPostSecurityToken\"\n"
+                + "    \"data\": {\n"
+                + "        \"preferences\" : {\n"
+                + "            \"token_metadata\" : {\n"
+                + "                 \"date_time_created\":\"1985-12-01T12:27:06.000Z\",\n"
+                + "                 \"date_time_expired\":\"2020-12-31T12:27:06.000Z\",\n"
+                + "                 \"date_time_last_sync\":\"2000-01-11T12:27:06.000Z\"\n"
+                + "            },\n"
+                + "            \"token\": \"AustraliaPostSecurityToken\"\n"
+                + "        }\n"
                 + "    }\n"
                 + "}";
 
@@ -145,9 +147,9 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
         given()
         .when()
                 .header("Content-Type", "application/json")
-                .header(AP_CUSTOMER_NUMBER, APCN)
+                .header(Constants.HTTP_HEADERS_APCN, APCN)
                 .body(requestBodyForUpdate)
-                .post(apiBaseUrl + USER_PREFERENCE_URL + "/" + PreferenceType.EBAY)
+                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
@@ -167,13 +169,15 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
         // Create User Preferences
         String requestBodyForCreate = "{\n"
-                + "    \"preferences\" : {\n"
-                + "        \"token_metadata\" : {\n"
-                + "             \"date_time_created\":\"9915-03-11T12:27:06.000Z\",\n"
-                + "             \"date_time_expired\":\"9918-03-11T12:27:06.000Z\",\n"
-                + "             \"date_time_last_sync\":\"9916-03-11T12:27:06.000Z\"\n"
-                + "        },\n"
-                + "        \"token\": \"ReallyGoodSecurityToken\"\n"
+                + "    \"data\": {"
+                + "        \"preferences\" : {\n"
+                + "            \"token_metadata\" : {\n"
+                + "                 \"date_time_created\":\"9915-03-11T12:27:06.000Z\",\n"
+                + "                 \"date_time_expired\":\"9918-03-11T12:27:06.000Z\",\n"
+                + "                 \"date_time_last_sync\":\"9916-03-11T12:27:06.000Z\"\n"
+                + "            },\n"
+                + "            \"token\": \"ReallyGoodSecurityToken\"\n"
+                + "        }\n"
                 + "    }\n"
                 + "}";
 
@@ -205,9 +209,9 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
         given()
         .when()
                 .header("Content-Type", "application/json")
-                .header(AP_CUSTOMER_NUMBER, APCN_NEXT)
+                .header(Constants.HTTP_HEADERS_APCN, APCN_NEXT)
                 .body(requestBodyForCreate)
-                .post(apiBaseUrl + USER_PREFERENCE_URL + "/" + PreferenceType.EBAY)
+                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
@@ -224,9 +228,9 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
         given()
         .when()
                 .header("Content-Type", "application/json")
-                .header(AP_CUSTOMER_NUMBER, APCN_NEXT)
+                .header(Constants.HTTP_HEADERS_APCN, APCN_NEXT)
                 .body(requestBodyForCreate)
-                .get(apiBaseUrl + USER_PREFERENCE_URL + "/" + PreferenceType.EBAY)
+                .get(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
@@ -246,9 +250,9 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
         given()
         .when()
                 .header("Content-Type", "application/json")
-                .header(AP_CUSTOMER_NUMBER, APCN)
-                .body("{\"preferences\" : {}}")
-                .post(apiBaseUrl + USER_PREFERENCE_URL + "/" + "Invalid_Preference_Type")
+                .header(Constants.HTTP_HEADERS_APCN, APCN)
+                .body("{\"data\": {\"preferences\" : {}}}")
+                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + "Invalid_Preference_Type")
         .then()
                 .log().all()
         .assertThat()
@@ -256,7 +260,7 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .body("exception", equalTo("org.paradise.microservice.userpreference.exception.UserPreferenceException"))
                 .body("message",
                         equalTo("No enum constant org.paradise.microservice.userpreference.domain.PreferenceType.Invalid_Preference_Type"))
-                .body("path", equalTo("/user/preferences/Invalid_Preference_Type"));
+                .body("path", equalTo(Constants.REQUEST_PATH_USER_PREFERENCE + "/Invalid_Preference_Type"));
     }
 
     @Test
@@ -265,15 +269,15 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
         given()
         .when()
                 .header("Content-Type", "application/json")
-                .body("{\"preferences\" : {}}")
-                .post(apiBaseUrl + USER_PREFERENCE_URL + "/" + PreferenceType.EBAY)
+                .body("{\"data\": {\"preferences\" : {}}}")
+                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("exception", equalTo("org.springframework.web.bind.ServletRequestBindingException"))
-                .body("message", equalTo("Missing request header 'ap-customer-number' for method parameter of type String"))
-                .body("path", equalTo("/user/preferences/EBAY"));
+                .body("message", equalTo("Missing request header '" + Constants.HTTP_HEADERS_APCN + "' for method parameter of type String"))
+                .body("path", equalTo(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY));
     }
 
     @Test
@@ -282,9 +286,9 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
         given()
         .when()
                 .header("Content-Type", "application/json")
-                .header(AP_CUSTOMER_NUMBER, APCN)
-                .body("{}")
-                .post(apiBaseUrl + USER_PREFERENCE_URL + "/" + PreferenceType.EBAY)
+                .header(Constants.HTTP_HEADERS_APCN, APCN)
+                .body("{\"data\": {}}")
+                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
@@ -297,7 +301,7 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .body("errors[0].bindingFailure", equalTo(Boolean.FALSE))
                 .body("errors[0].code", equalTo("NotNull"))
                 .body("message", equalTo("Validation failed for object='userPreferences'. Error count: 1"))
-                .body("path", equalTo("/user/preferences/EBAY"));
+                .body("path", equalTo(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY));
     }
 
 }

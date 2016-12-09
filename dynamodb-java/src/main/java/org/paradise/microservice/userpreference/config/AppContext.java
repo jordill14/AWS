@@ -6,6 +6,8 @@ import com.amazonaws.internal.StaticCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,19 @@ public class AppContext {
         configuration.setSocketTimeout(awsSocketTimeout);
 
         return configuration;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // serialise Java object into JSON
+//        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+        // deserialise JSON into Java Object
+        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+
+        return objectMapper;
     }
 
     @Bean
