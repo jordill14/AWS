@@ -7,27 +7,30 @@ import java.util.function.Function;
 /**
  * Created by terrence on 12/12/2016.
  */
-public class FunctionCalculator {
+public final class FunctionCalculator {
 
-    private static Map<Integer, Long> fibonacciMap = new HashMap<>();
+    public static final Map<Integer, Long> FIBONACCI_MAP = new HashMap<>();
+
+    public static final Function<Integer, Long> FIBONACCI = (x) ->
+            FIBONACCI_MAP.computeIfAbsent(x,
+                    n -> FunctionCalculator.FIBONACCI.apply(n - 2) + FunctionCalculator.FIBONACCI.apply(n - 1));
+
+    public static final Map<Integer, Long> FACTORIAL_MAP = new HashMap<>();
+
+    public static final Function<Integer, Long> FACTORIAL = (x) ->
+            FACTORIAL_MAP.computeIfAbsent(x,
+                    n -> n * FunctionCalculator.FACTORIAL.apply(n - 1));
 
     static {
-        fibonacciMap.put(0, 0L); // fibonacci(0)
-        fibonacciMap.put(1, 1L); // fibonacci(1)
+        FIBONACCI_MAP.put(0, 0L); // FIBONACCI(0)
+        FIBONACCI_MAP.put(1, 1L); // FIBONACCI(1)
     }
-
-    public static Function<Integer, Long> fibonacci = (x) ->
-            fibonacciMap.computeIfAbsent(x,
-                    n -> FunctionCalculator.fibonacci.apply(n - 2) + FunctionCalculator.fibonacci.apply(n - 1));
-
-    private static Map<Integer, Long> factorialMap = new HashMap<>();
 
     static {
-        factorialMap.put(1, 1L); // factorial(1)
+        FACTORIAL_MAP.put(1, 1L); // FACTORIAL(1)
     }
 
-    public static Function<Integer, Long> factorial = (x) ->
-            factorialMap.computeIfAbsent(x,
-                    n -> n * FunctionCalculator.factorial.apply(n - 1));
+    private FunctionCalculator() {
+    }
 
 }
