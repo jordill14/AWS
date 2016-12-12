@@ -22,6 +22,8 @@ public class FunctionCalculatorTest {
         assertEquals("Incorrect result", Long.valueOf(13), functionCalculator.fibonacci.apply(7));
         assertEquals("Incorrect result", Long.valueOf(21), functionCalculator.fibonacci.apply(8));
         assertEquals("Incorrect result", Long.valueOf(34), functionCalculator.fibonacci.apply(9));
+
+        assertEquals("Incorrect result", Long.valueOf(12586269025L), functionCalculator.fibonacci.apply(50));
     }
 
 }
