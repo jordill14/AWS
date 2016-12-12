@@ -1,4 +1,4 @@
-package org.paradise.microservice.userpreference.utils;
+package org.paradise.microservice.userpreference.util;
 
 import org.junit.Test;
 

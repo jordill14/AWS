@@ -1,4 +1,4 @@
-package org.paradise.microservice.userpreference.utils;
+package org.paradise.microservice.userpreference.util;
 
 import java.util.HashMap;
 import java.util.Map;
