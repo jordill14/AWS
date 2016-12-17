@@ -22,8 +22,8 @@ public class DateAndTimeFormatterTest {
     private String newTimestampStr = getIsoFormatDateTime(newYear, newMonth, newDay, newHour, newMinute, newSecond, newNanoSecond);
     private String oldTimestampStr = getIsoFormatDateTime(oldYear, oldMonth, oldDay, oldHour, oldMinute, oldSecond, oldNanoSecond);
 
-    LocalDateTime newLocalDateTime = LocalDateTime.of(newYear, newMonth, newDay, newHour, newMinute, newSecond, newNanoSecond * 1000000);
-    LocalDateTime oldLocalDateTime = LocalDateTime.of(oldYear, oldMonth, oldDay, oldHour, oldMinute, oldSecond, oldNanoSecond * 1000000);
+    private LocalDateTime newLocalDateTime = LocalDateTime.of(newYear, newMonth, newDay, newHour, newMinute, newSecond, newNanoSecond * 1000000);
+    private LocalDateTime oldLocalDateTime = LocalDateTime.of(oldYear, oldMonth, oldDay, oldHour, oldMinute, oldSecond, oldNanoSecond * 1000000);
 
     @Test
     public void testParsing() throws Exception {
