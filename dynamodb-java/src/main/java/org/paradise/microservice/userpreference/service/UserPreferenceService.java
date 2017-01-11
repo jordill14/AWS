@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface UserPreferenceService {
 
+    List<UserPreferences> getUserPreferencesByCNumber(String cNumber);
+
     UserPreferences getUserPreferences(String cNumber, String preferenceType);
 
     List<UserPreferences> getAllUserPreferences();

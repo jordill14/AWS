@@ -2,6 +2,7 @@ package org.paradise.microservice.userpreference.service.impl;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import org.paradise.microservice.userpreference.service.DynamoDBService;
@@ -81,6 +82,23 @@ public class DynamoDBServiceImpl implements DynamoDBService {
         LOG.debug("Total record(s) of index table {} scanned: {}", indexTableName, userPreferenceIndexTableList.size());
 
         return userPreferenceIndexTableList;
+    }
+
+    @Override
+    public List<UserPreferenceTable> query(String cNumber) {
+
+        LOG.debug("Load User Preferences list with cNUmber {} from DynamoDB table {}", cNumber, tableName);
+
+        UserPreferenceTable userPreferenceTable = new UserPreferenceTable();
+        userPreferenceTable.setcNumber(cNumber);
+
+        DynamoDBQueryExpression<UserPreferenceTable> dynamoDBQueryExpression =
+                new DynamoDBQueryExpression<UserPreferenceTable>().withHashKeyValues(userPreferenceTable);
+
+        List<UserPreferenceTable> userPreferenceTableList =
+                dynamoDBMapper.query(UserPreferenceTable.class, dynamoDBQueryExpression, getDynamoDBMapperConfigForTable());
+
+        return userPreferenceTableList;
     }
 
     @Override

@@ -34,6 +34,16 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     }
 
     @Override
+    public List<UserPreferences> getUserPreferencesByCNumber(String cNumber) {
+
+        LOG.debug("Get User Preferences list with APCN {}", cNumber);
+
+        List<UserPreferenceTable> userPreferenceTableList = dynamoDBService.query(cNumber);
+
+        return UserPreferencesConverter.toUserPreferencesList(userPreferenceTableList);
+    }
+
+    @Override
     public UserPreferences getUserPreferences(String cNumber, String preferenceType) {
 
         LOG.debug("Get User Preferences with APCN {} with Preference Type {}",

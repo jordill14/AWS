@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 import static org.paradise.microservice.userpreference.Constants.HTTP_HEADERS_APCN;
 import static org.paradise.microservice.userpreference.Constants.REQUEST_PATH_USER_PREFERENCE;
@@ -36,6 +37,14 @@ public class UserPreferenceController {
     @Autowired
     public UserPreferenceController(UserPreferenceService userPreferenceService) {
         this.userPreferenceService = userPreferenceService;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.GET,  value = {"", "/"}, produces = APPLICATION_JSON_VALUE)
+    public List<UserPreferences> getUserPreferencesList(
+            @RequestHeader(value = HTTP_HEADERS_APCN, required = true) String apcn) {
+
+        return userPreferenceService.getUserPreferencesByCNumber(apcn);
     }
 
     @ResponseStatus(HttpStatus.OK)

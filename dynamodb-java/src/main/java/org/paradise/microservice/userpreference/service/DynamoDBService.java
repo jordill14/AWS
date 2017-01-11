@@ -15,6 +15,8 @@ public interface DynamoDBService {
 
     List<UserPreferenceIndexTable> allUserPreferenceIndexTable();
 
+    List<UserPreferenceTable> query(String cNumber);
+
     UserPreferenceTable load(String cNumber, String preferenceType);
 
     void save(UserPreferenceTable userPreferenceTable, UserPreferenceIndexTable userPreferenceIndexTable);
