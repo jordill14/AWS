@@ -12,3 +12,4 @@ References
 - Limits in DynamoDB, _http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html_
 - Local Secondary Indexes in DynamoDB, _http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html_
 - Global Secondary Indexes in DynamoDB, _http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html_
+- Spring RequestMapping, _http://www.baeldung.com/spring-requestmapping_
