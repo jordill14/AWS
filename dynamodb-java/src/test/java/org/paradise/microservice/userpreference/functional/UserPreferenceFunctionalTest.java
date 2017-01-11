@@ -1,5 +1,6 @@
 package org.paradise.microservice.userpreference.functional;
 
+import com.jayway.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +9,8 @@ import org.mockserver.model.Header;
 import org.mockserver.model.HttpRequest;
 import org.paradise.microservice.userpreference.Constants;
 import org.paradise.microservice.userpreference.domain.PreferenceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -20,6 +23,8 @@ import static org.mockserver.model.HttpResponse.response;
  * Created by terrence on 2/12/2016.
  */
 public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserPreferenceFunctionalTest.class);
 
     public static final String APCN = "88886666";
     public static final String APCN_NEXT = "99997777";
@@ -85,23 +90,27 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
                         .withBody(toBody(new ClassPathResource("dynamoDBGetItemResponse1.json"))));
 
-        given()
-        .when()
-                .header("Content-Type", "application/json")
-                .header(Constants.HTTP_HEADERS_APCN, APCN)
-                .body(requestBodyForCreate)
-                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
-        .then()
-                .log().all()
-                .assertThat()
-        .statusCode(HttpStatus.SC_CREATED)
-                .body("c_number", equalTo(APCN))
-                .body("date_time_created", notNullValue())
-                .body("preference_type", equalTo(PreferenceType.EBAY.toString()))
-                .body("preferences.token_metadata.date_time_created", equalTo("2015-03-11T12:27:06.000Z"))
-                .body("preferences.token_metadata.date_time_expired", equalTo("2018-03-11T12:27:06.000Z"))
-                .body("preferences.token_metadata.date_time_last_sync", equalTo("2016-03-11T12:27:06.000Z"))
-                .body("preferences.token", equalTo("u20K1UI.d5wAAAFYnhkTVpjW"));
+        Response response =
+            given()
+            .when()
+                    .header("Content-Type", "application/json")
+                    .header(Constants.HTTP_HEADERS_APCN, APCN)
+                    .body(requestBodyForCreate)
+                    .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+            .then()
+                    .log().all()
+                    .assertThat()
+            .statusCode(HttpStatus.SC_CREATED)
+                    .body("c_number", equalTo(APCN))
+                    .body("date_time_created", notNullValue())
+                    .body("preference_type", equalTo(PreferenceType.EBAY.toString()))
+                    .body("preferences.token_metadata.date_time_created", equalTo("2015-03-11T12:27:06.000Z"))
+                    .body("preferences.token_metadata.date_time_expired", equalTo("2018-03-11T12:27:06.000Z"))
+                    .body("preferences.token_metadata.date_time_last_sync", equalTo("2016-03-11T12:27:06.000Z"))
+                    .body("preferences.token", equalTo("u20K1UI.d5wAAAFYnhkTVpjW"))
+                    .extract().response();
+
+        LOG.info("shouldCreateAndUpdateUserPreferences step 1 HTTP Response: [{}]", response.asString());
 
         // Update User Preferences
         String requestBodyForUpdate = "{\n"
@@ -144,24 +153,28 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
                         .withBody(toBody(new ClassPathResource("dynamoDBUpdateItemResponse2.json"))));
 
-        given()
-        .when()
-                .header("Content-Type", "application/json")
-                .header(Constants.HTTP_HEADERS_APCN, APCN)
-                .body(requestBodyForUpdate)
-                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
-        .then()
-                .log().all()
-        .assertThat()
-                .statusCode(HttpStatus.SC_CREATED)
-                .body("c_number", equalTo(APCN))
-                .body("date_time_created", notNullValue())
-                .body("date_time_updated", notNullValue())
-                .body("preference_type", equalTo(PreferenceType.EBAY.toString()))
-                .body("preferences.token_metadata.date_time_created", equalTo("1985-12-01T12:27:06.000Z"))
-                .body("preferences.token_metadata.date_time_expired", equalTo("2020-12-31T12:27:06.000Z"))
-                .body("preferences.token_metadata.date_time_last_sync", equalTo("2000-01-11T12:27:06.000Z"))
-                .body("preferences.token", equalTo("AustraliaPostSecurityToken"));
+        response =
+            given()
+            .when()
+                    .header("Content-Type", "application/json")
+                    .header(Constants.HTTP_HEADERS_APCN, APCN)
+                    .body(requestBodyForUpdate)
+                    .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+            .then()
+                    .log().all()
+            .assertThat()
+                    .statusCode(HttpStatus.SC_CREATED)
+                    .body("c_number", equalTo(APCN))
+                    .body("date_time_created", notNullValue())
+                    .body("date_time_updated", notNullValue())
+                    .body("preference_type", equalTo(PreferenceType.EBAY.toString()))
+                    .body("preferences.token_metadata.date_time_created", equalTo("1985-12-01T12:27:06.000Z"))
+                    .body("preferences.token_metadata.date_time_expired", equalTo("2020-12-31T12:27:06.000Z"))
+                    .body("preferences.token_metadata.date_time_last_sync", equalTo("2000-01-11T12:27:06.000Z"))
+                    .body("preferences.token", equalTo("AustraliaPostSecurityToken"))
+                    .extract().response();
+
+        LOG.info("shouldCreateAndUpdateUserPreferences step 2 HTTP Response: [{}]", response.asString());
     }
 
     @Test
