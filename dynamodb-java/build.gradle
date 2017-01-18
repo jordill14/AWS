@@ -150,6 +150,9 @@ dependencies {
     // Google Guava
     compile group: 'com.google.guava', name: 'guava', version: dependencyVersionGuava
 
+    // Apache Commons libraries
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: dependencyVersionApacheCommonsLang3
+
     // test dependencies
     testCompile("org.springframework.boot:spring-boot:${dependencyVersionSpringBoot}")
     testCompile("org.springframework.boot:spring-boot-autoconfigure:${dependencyVersionSpringBoot}")
