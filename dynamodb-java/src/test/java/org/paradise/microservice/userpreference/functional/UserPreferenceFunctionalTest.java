@@ -24,7 +24,7 @@ import static org.mockserver.model.HttpResponse.response;
  */
 public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserPreferenceFunctionalTest.class);
+    public static final Logger LOG = LoggerFactory.getLogger(UserPreferenceFunctionalTest.class);
 
     public static final String APCN = "88886666";
     public static final String APCN_NEXT = "99997777";
