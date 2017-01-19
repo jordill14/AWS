@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Joel Wan on 14/11/2016.
+ * RESTful service client, based on Spring RestTemplate and Apache HTTP Client.
  */
 @Component
 public class RestServiceClient {

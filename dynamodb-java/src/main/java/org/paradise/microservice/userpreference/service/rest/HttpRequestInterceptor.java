@@ -22,8 +22,6 @@ import java.util.Properties;
 /**
  * HttpRequestInterceptor for populating additional information to the request as required. Populates proxy settings if
  * present.
- *
- * Created by Joel Wan on 14/11/2016.
  */
 @Component
 @Qualifier("httpRequestInterceptor")
@@ -41,14 +39,24 @@ public class HttpRequestInterceptor extends HttpComponentsClientHttpRequestFacto
     @Override
     public ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) throws IOException {
 
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
+        /**
+         * Consider using HttpClientBuilder.useSystemProperties() call in Apache HttpClient which use system properties
+         * when creating and configuring default implementations, including http.proxyHost and http.proxyPort.
+         *
+         * In Apache HTTP Client 5, http.proxyUser and http.proxyPassword also defined in:
+         *
+         * @see org.apache.hc.client5.http.impl.auth.SystemDefaultCredentialsProvider
+         */
         Properties systemProperties = System.getProperties();
+
         String proxyHost = systemProperties.getProperty(PROXY_HOST_PROPERTY);
         Integer proxyPort = NumberUtils.toInt(systemProperties.getProperty(PROXY_PORT_PROPERTY), -1);
         String proxyUser = systemProperties.getProperty(PROXY_USER_PROPERTY);
         String proxyPassword = systemProperties.getProperty(PROXY_PASSWORD_PROPERTY);
-        
+
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+
         if (proxyHost != null && proxyPort != -1) {
             httpClientBuilder.setProxy(new HttpHost(proxyHost, proxyPort));
 
