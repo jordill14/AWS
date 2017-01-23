@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static org.paradise.microservice.userpreference.Constants.HTTP_HEADERS_APCN;
 import static org.paradise.microservice.userpreference.Constants.REQUEST_PATH_USER_PREFERENCE;
+import static org.paradise.microservice.userpreference.Constants.HTTP_HEADERS_OBSSOCOOKIE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -51,6 +53,7 @@ public class UserPreferenceController {
     @RequestMapping(method = RequestMethod.GET,  value = "/{type}", produces = APPLICATION_JSON_VALUE)
     public UserPreferences getUserPreferences(
             @RequestHeader(value = HTTP_HEADERS_APCN, required = true) String apcn,
+            @CookieValue(name = HTTP_HEADERS_OBSSOCOOKIE, required = false) String obSSOCookie,
             @PathVariable String type) {
 
         return userPreferenceService.getUserPreferences(apcn, getPreferenceType(type).toString());
@@ -60,6 +63,7 @@ public class UserPreferenceController {
     @RequestMapping(method = RequestMethod.POST, value = "/{type}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public UserPreferences createUserPreferences(
             @RequestHeader(value = HTTP_HEADERS_APCN, required = true) String apcn,
+            @CookieValue(name = HTTP_HEADERS_OBSSOCOOKIE, required = false) String obSSOCookie,
             @PathVariable String type,
             @RequestBody @Valid UserPreferences userPreferences) {
 

@@ -7,6 +7,8 @@ public final class Constants {
 
     public static final String HTTP_HEADERS_APCN = "ap-cnumber";
 
+    public static final String HTTP_HEADERS_OBSSOCOOKIE = "ObSSOCookie";
+
     public static final String REQUEST_PATH_ROOT = "/";
 
     public static final String REQUEST_PATH_USER_PREFERENCE = "/userpreferences/v1";
