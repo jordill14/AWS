@@ -5,9 +5,12 @@ package org.paradise.microservice.userpreference;
  */
 public final class Constants {
 
-    public static final String HTTP_HEADERS_APCN = "ap-cnumber";
+    public static final String HTTP_HEADERS_APCN = "paradise-apcn";
+    public static final String HTTP_HEADERS_CNUMBER = "customer-number";
 
     public static final String HTTP_HEADERS_OBSSOCOOKIE = "ObSSOCookie";
+    public static final String HTTP_HEADERS_CSSO_WIDGET_COOKIE_APCN = "PARADISE_CSSO_WIDGET_COOKIE_APCN";
+
 
     public static final String REQUEST_PATH_ROOT = "/";
 
