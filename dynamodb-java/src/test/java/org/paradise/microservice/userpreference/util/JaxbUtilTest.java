@@ -19,6 +19,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class JaxbUtilTest {
 
+    private String filename = "getSellerTransactionsResponse.xml";
+
     private JaxbUtil jaxbUtil;
 
     private String xmlContent;
@@ -32,12 +34,13 @@ public class JaxbUtilTest {
 
         jaxbUtil = new JaxbUtil(Constants.CONTEXT_PATH);
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/getSellerTransactionsResponse.xml")));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + filename)));
 
         String line;
+
         StringBuilder stringBuilder = new StringBuilder();
 
-        while((line = bufferedReader.readLine())!= null){
+        while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line.trim());
         }
 
