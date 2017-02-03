@@ -30,15 +30,12 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 /**
- * Base class for running Component tests using rest assured
- * https://github.com/jayway/rest-assured
- *
+ * Base class for running Component tests using rest assured https://github.com/jayway/rest-assured
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
 @WebIntegrationTest(randomPort = false)
 @ActiveProfiles("local")
-@SuppressWarnings("deprecation")
 public abstract class AbstractFunctionalTest {
 
     protected static MockServerClient mockServerClient;
