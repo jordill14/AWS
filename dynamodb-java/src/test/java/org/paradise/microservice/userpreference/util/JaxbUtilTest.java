@@ -1,13 +1,16 @@
 package org.paradise.microservice.userpreference.util;
 
 import com.ebay.model.GetSellerTransactionsResponseType;
+import com.ebay.model.ObjectFactory;
+import org.junit.Before;
 import org.junit.Test;
+import org.paradise.microservice.userpreference.Constants;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,30 +19,53 @@ import static org.junit.Assert.assertEquals;
  */
 public class JaxbUtilTest {
 
-    private String testXmlFilename = "GetSellerTransactionsResponse.xml";
+    private JaxbUtil jaxbUtil;
 
-    @Test
-    public void testMarshall() throws Exception {
+    private String xmlContent;
 
+    private GetSellerTransactionsResponseType getSellerTransactionsResponseType;
+
+    private String version = "989";
+
+    @Before
+    public void init() throws IOException, JAXBException {
+
+        jaxbUtil = new JaxbUtil(Constants.CONTEXT_PATH);
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/getSellerTransactionsResponse.xml")));
+
+        String line;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        while((line = bufferedReader.readLine())!= null){
+            stringBuilder.append(line.trim());
+        }
+
+        xmlContent = stringBuilder.toString();
+
+        getSellerTransactionsResponseType = createGetSellerTransactionsResponse();
     }
 
     @Test
-    public void testUnmarshall() throws Exception {
+    public void testMarshal() throws Exception {
 
-        GetSellerTransactionsResponseType getSellerTransactionsResponseType = createGetSellerTransactionsFixture();
+        JAXBElement<GetSellerTransactionsResponseType> getSellerTransactionsResponseTypeJAXBElement =
+                new ObjectFactory().createGetSellerTransactionsResponse(getSellerTransactionsResponseType);
 
-        assertEquals("Incorrect User Id", "1", getSellerTransactionsResponseType.getSeller().getUserID());
+        String result = jaxbUtil.marshal(getSellerTransactionsResponseTypeJAXBElement);
+
+        assertEquals("Incorrect User Id", xmlContent, result);
     }
 
-    private GetSellerTransactionsResponseType createGetSellerTransactionsFixture() throws IOException, JAXBException {
+    @Test
+    public void testUnmarshal() throws Exception {
 
-        ClassLoader classLoader = getClass().getClassLoader();
+        assertEquals("Incorrect User Id", version, getSellerTransactionsResponseType.getVersion());
+    }
 
-        File file = new File(classLoader.getResource(testXmlFilename).getFile());
+    private GetSellerTransactionsResponseType createGetSellerTransactionsResponse() throws IOException, JAXBException {
 
-        String xmlContent = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
-
-        return JaxbUtil.unmarshal(xmlContent, GetSellerTransactionsResponseType.class);
+        return jaxbUtil.unmarshal(xmlContent);
     }
 
 }

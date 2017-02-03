@@ -17,7 +17,10 @@ public final class Constants {
     public static final String REQUEST_PATH_USER_PREFERENCE = "/userpreferences/v1";
     public static final String REQUEST_PATH_USER_PREFERENCE_LOAD = "/load/testing";
 
+    public static final String CONTEXT_PATH = "com.ebay.model";
+
     private Constants() {
+
     }
 
 }

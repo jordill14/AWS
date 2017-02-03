@@ -6,29 +6,34 @@ import javax.xml.bind.JAXBException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import static javax.xml.bind.JAXBContext.newInstance;
+
 /**
  * Created by terrence on 3/2/17.
  */
-public final class JaxbUtil {
+public class JaxbUtil {
 
-    private JaxbUtil() {
+    private JAXBContext jaxbContext;
 
+    public JaxbUtil(String contextPath) throws JAXBException {
+
+        jaxbContext = newInstance(contextPath);
     }
 
-    public static <T> String marshal(JAXBElement<?> jaxbElement, Class<T> clazz) throws JAXBException {
+    public <T> String marshal(JAXBElement<T> jaxbElement) throws JAXBException {
 
         StringWriter stringWriter = new StringWriter();
 
-        JAXBContext.newInstance(clazz).createMarshaller().marshal(jaxbElement, stringWriter);
+        jaxbContext.createMarshaller().marshal(jaxbElement, stringWriter);
 
         return stringWriter.toString();
     }
 
-    public static <T> T unmarshal(String body, Class<T> clazz) throws JAXBException {
+    public <T> T unmarshal(String body) throws JAXBException {
 
         StringReader stringReader = new StringReader(body);
 
-        JAXBElement<T> jaxbElement = (JAXBElement<T>) JAXBContext.newInstance(clazz).createUnmarshaller().unmarshal(stringReader);
+        JAXBElement<T> jaxbElement = (JAXBElement<T>) jaxbContext.createUnmarshaller().unmarshal(stringReader);
 
         return jaxbElement.getValue();
     }
