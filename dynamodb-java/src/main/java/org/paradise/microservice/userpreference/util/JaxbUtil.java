@@ -29,6 +29,7 @@ public class JaxbUtil {
         return stringWriter.toString();
     }
 
+    @SuppressWarnings(value = "unchecked")
     public <T> T unmarshal(String body) throws JAXBException {
 
         StringReader stringReader = new StringReader(body);

@@ -38,6 +38,7 @@ import static org.mockserver.model.HttpResponse.response;
 @SpringApplicationConfiguration(classes = App.class)
 @WebIntegrationTest(randomPort = false)
 @ActiveProfiles("local")
+@SuppressWarnings("deprecation")
 public abstract class AbstractFunctionalTest {
 
     protected static MockServerClient mockServerClient;
