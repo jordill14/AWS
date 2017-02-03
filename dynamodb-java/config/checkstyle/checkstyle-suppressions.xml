@@ -12,11 +12,10 @@
     <suppress files=".*(?:Test|TestBase)\.java$" checks="VisibilityModifier" />
     
     <!-- Generated files -->
-    <suppress files=".*/src/main/java/generated/.*\.java" checks=".*" />
-    <suppress files=".*/src/main/java/.*/generated/.*\.java" checks=".*" />
-    <suppress files=".*\\src\\main\\java\\generated\\.*\.java" checks=".*" />
-    <suppress files=".*\\src\\main\\java\\.*\\generated\\.*\.java" checks=".*" />
-    
+    <suppress files=".*/src/main/java/com/ebay/model/.*\.java" checks=".*" />
+    <suppress files=".*/src/main/java/.*/com/ebay/model/.*\.java" checks=".*" />
+    <suppress files=".*\\src\\main\\java\\com\\ebay\\model\\.*\.java" checks=".*" />
+    <suppress files=".*\\src\\main\\java\\.*\\com\\ebay\\model\\.*\.java" checks=".*" />
     
     <!-- Test suppression -->
     <suppress files=".*/src/test/java/.*\.java" checks="VisibilityModifier" />

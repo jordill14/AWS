@@ -15,3 +15,5 @@ out/
 */**/*.class
 .metadata/
 classes/
+src/main/java/com/ebay/
+src/main/resources/ebay/schema/generated/

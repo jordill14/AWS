@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetSellerTransactionsResponse xmlns="urn:ebay:apis:eBLBaseComponents">
+    <Timestamp>2016-12-12T23:30:06.260Z</Timestamp>
+    <Ack>Success</Ack>
+    <Version>989</Version>
+    <Build>E989_INTL_API_18131002_R1</Build>
+    <TransactionArray>
+        <Transaction>
+            <Buyer>
+                <AboutMePage>false</AboutMePage>
+                <EIASToken>nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wFk4GjAJiEqA+dj6x9nY+seQ==</EIASToken>
+                <Email>Invalid Request</Email>
+                <FeedbackScore>500</FeedbackScore>
+                <PositiveFeedbackPercent>0.0</PositiveFeedbackPercent>
+                <FeedbackPrivate>false</FeedbackPrivate>
+                <FeedbackRatingStar>Purple</FeedbackRatingStar>
+                <IDVerified>true</IDVerified>
+                <eBayGoodStanding>true</eBayGoodStanding>
+                <NewUser>false</NewUser>
+                <RegistrationDate>2006-01-01T00:00:00.000Z</RegistrationDate>
+                <Site>US</Site>
+                <Status>Confirmed</Status>
+                <UserID>testuser_fetchorder2</UserID>
+                <UserIDChanged>false</UserIDChanged>
+                <UserIDLastChanged>2016-11-11T05:17:11.000Z</UserIDLastChanged>
+                <VATStatus>NoVATTax</VATStatus>
+                <BuyerInfo>
+                    <ShippingAddress>
+                        <Name>fd fasfdsa</Name>
+                        <Street1>address</Street1>
+                        <CityName>city</CityName>
+                        <StateOrProvince>WA</StateOrProvince>
+                        <Country>US</Country>
+                        <CountryName>United States</CountryName>
+                        <Phone>(100) 002-0014</Phone>
+                        <PostalCode>98102</PostalCode>
+                        <AddressID>8593721</AddressID>
+                        <AddressOwner>eBay</AddressOwner>
+                        <AddressUsage>DefaultShipping</AddressUsage>
+                    </ShippingAddress>
+                </BuyerInfo>
+                <UserAnonymized>false</UserAnonymized>
+                <UserFirstName>fd</UserFirstName>
+                <UserLastName>fasfdsa</UserLastName>
+            </Buyer>
+            <CreatedDate>2016-11-11T05:18:44.000Z</CreatedDate>
+            <Item>
+                <AutoPay>false</AutoPay>
+                <BuyItNowPrice currencyID="AUD">0.0</BuyItNowPrice>
+                <Currency>USD</Currency>
+                <ItemID>110185933289</ItemID>
+                <ListingDetails>
+                    <StartTime>2016-11-11T05:13:07.000Z</StartTime>
+                    <EndTime>2016-11-18T05:13:07.000Z</EndTime>
+                </ListingDetails>
+                <ListingType>FixedPriceItem</ListingType>
+                <PaymentMethods>PayPal</PaymentMethods>
+                <PrimaryCategory>
+                    <CategoryID>55805</CategoryID>
+                </PrimaryCategory>
+                <PrivateListing>false</PrivateListing>
+                <Quantity>1</Quantity>
+                <SecondaryCategory>
+                    <CategoryID>0</CategoryID>
+                </SecondaryCategory>
+                <SellingStatus>
+                    <CurrentPrice currencyID="USD">4.0</CurrentPrice>
+                    <QuantitySold>1</QuantitySold>
+                    <ListingStatus>Ended</ListingStatus>
+                </SellingStatus>
+                <Site>US</Site>
+                <StartPrice currencyID="USD">4.0</StartPrice>
+                <Title>This is the carbon fold</Title>
+                <IntegratedMerchantCreditCardEnabled>false</IntegratedMerchantCreditCardEnabled>
+                <ConditionID>1000</ConditionID>
+                <ConditionDisplayName>New</ConditionDisplayName>
+            </Item>
+            <QuantityPurchased>1</QuantityPurchased>
+            <Status>
+                <eBayPaymentStatus>PayPalPaymentInProcess</eBayPaymentStatus>
+                <CheckoutStatus>CheckoutComplete</CheckoutStatus>
+                <LastTimeModified>2016-11-17T02:40:28.000Z</LastTimeModified>
+                <PaymentMethodUsed>PayPal</PaymentMethodUsed>
+                <CompleteStatus>Complete</CompleteStatus>
+                <BuyerSelectedShipping>true</BuyerSelectedShipping>
+                <PaymentHoldStatus>None</PaymentHoldStatus>
+                <IntegratedMerchantCreditCardEnabled>false</IntegratedMerchantCreditCardEnabled>
+                <InquiryStatus>NotApplicable</InquiryStatus>
+                <ReturnStatus>NotApplicable</ReturnStatus>
+            </Status>
+            <OrderLineItemID>110185933289-28241531001</OrderLineItemID>
+        </Transaction>
+    </TransactionArray>
+</GetSellerTransactionsResponse>
