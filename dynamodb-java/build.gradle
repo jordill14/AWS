@@ -47,9 +47,10 @@ apply plugin: 'sonar-runner'
 // release plugins
 apply plugin: 'net.researchgate.release'
 
-//dependency check plugin
+// dependency check plugin
 apply plugin: 'org.owasp.dependencycheck'
 
+// Jaxb generator tool. Only available on https://jcenter.bintray.com
 apply plugin: 'com.github.jacobono.jaxb'
 
 dependencyCheck {
