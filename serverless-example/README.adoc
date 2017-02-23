@@ -61,10 +61,16 @@ endpoints:
 functions:
   serverless-example-dev-hello
 
+- Lambda "hello" function
+
 image::Lambda{sp}Hello{sp}function.png[Lambda "hello" function]
+
+- Events generated during Lambda function deployment
 
 image::Lambda{sp}CloudFormation.png[Events generated during Lambda function deployment]
 
+- Lambda API Gateway
+ 
 image::Lambda{sp}API{sp}Gateway.png[Lambda API Gateway]
 
 Say "hello"
