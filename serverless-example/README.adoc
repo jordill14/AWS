@@ -30,6 +30,8 @@ Serverless: NOTE: Please update the "service" property in serverless.yml with yo
 
 image::Lambda{sp}Roles.png[Roles for Lambda function]
 
+----
+
 image::Lambda{sp}Policies.png[Polices set up for Lambda function]
 
 Deployment
