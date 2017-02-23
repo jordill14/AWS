@@ -28,6 +28,10 @@ Serverless: Successfully generated boilerplate for template: "aws-nodejs"
 Serverless: NOTE: Please update the "service" property in serverless.yml with your service name
 ----
 
+image::Lambda{sp}Roles.png[Roles for Lambda function]
+
+image::Lambda{sp}Policies.png[Polices set up for Lambda function]
+
 Deployment
 ----------
 Make sure AWS environment has been set up, including access key, user, group, policies ...
@@ -53,7 +57,13 @@ endpoints:
 functions:
   serverless-example-dev-hello
 
-Say 'hello'
+image::Lambda{sp}Hello{sp}function.png[Lambda "hello" function]
+
+image::Lambda{sp}CloudFormation.png[Events generated during Lambda function deployment]
+
+image::Lambda{sp}API{sp}Gateway.png[Lambda API Gateway]
+
+Say "hello"
 -----------
 Set up AWS API Gateway trigger for Lambda "hello" function. Go to url, e.g.:
 
