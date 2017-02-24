@@ -83,7 +83,7 @@ Manually create a Lambda Trigger. This time we use AWS API Gateway to trigger / 
 
 image::Lambda{sp}Trigger{sp}on{sp}API{sp}Gateway.png[Lambda Trigger created on AWS API Gateway]
 
-- Lambda API Gateway
+- *Exposed Lambda API Gateway*
 
 After Lambda Trigger created, an exposed RESTful interface for Lambda "hello" function.
 
