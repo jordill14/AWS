@@ -69,8 +69,12 @@ image::Lambda{sp}Hello{sp}function.png[Lambda "hello" function]
 
 image::Lambda{sp}CloudFormation.png[Events generated during Lambda function deployment]
 
+- Add Lambda Trigger on AWS API Gateway
+
+image::Lambda{sp}Trigger{sp}on{sp}API{sp}Gateway.png[Lambda Trigger created on AWS API Gateway]
+
 - Lambda API Gateway
- 
+
 image::Lambda{sp}API{sp}Gateway.png[Lambda API Gateway]
 
 Say "hello"
