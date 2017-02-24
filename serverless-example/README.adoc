@@ -28,13 +28,15 @@ Serverless: Successfully generated boilerplate for template: "aws-nodejs"
 Serverless: NOTE: Please update the "service" property in serverless.yml with your service name
 ----
 
-- Roles for Lambda function
-
-image::Lambda{sp}Roles.png[Roles for Lambda function]
-
 - Policies set up for Lambda function
+For AWS user "ec2-user", now need to have some policies with permissions to let "serverless" create role, Lambda function and deployment it ...
 
 image::Lambda{sp}Policies.png[Polices set up for Lambda function]
+
+- Roles for Lambda function
+Lambda function role created after Lambda function added and deployed into AWS.
+
+image::Lambda{sp}Roles.png[Roles for Lambda function]
 
 Deployment
 ----------
@@ -62,18 +64,22 @@ functions:
   serverless-example-dev-hello
 
 - Lambda "hello" function
+A "hello" Lambda function has been created in Lambda after it's deployed into AWS by "serverless".
 
 image::Lambda{sp}Hello{sp}function.png[Lambda "hello" function]
 
 - Events generated during Lambda function deployment
+Deployment events generated during Lambda "hello" function deployed into AWS.
 
 image::Lambda{sp}CloudFormation.png[Events generated during Lambda function deployment]
 
 - Add Lambda Trigger on AWS API Gateway
+Manually create a Lambda Trigger. This time we use AWS API Gateway to trigger / invoke Lambda "hello" function.
 
 image::Lambda{sp}Trigger{sp}on{sp}API{sp}Gateway.png[Lambda Trigger created on AWS API Gateway]
 
 - Lambda API Gateway
+After Lambda Trigger created, an exposed RESTful interface for Lambda "hello" function.
 
 image::Lambda{sp}API{sp}Gateway.png[Lambda API Gateway]
 
