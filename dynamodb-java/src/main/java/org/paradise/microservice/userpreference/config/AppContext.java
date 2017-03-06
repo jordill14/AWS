@@ -1,8 +1,8 @@
 package org.paradise.microservice.userpreference.config;
 
 import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.internal.StaticCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -79,7 +79,7 @@ public class AppContext {
         LOG.info("AmazonDynamoDBClient in local profile");
 
         AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(
-                new StaticCredentialsProvider(new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey)));
+                new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey)));
 
         dynamoDBClient.setRegion(Region.getRegion(Regions.fromName(amazonRegion)));
         dynamoDBClient.setEndpoint(endpoint);

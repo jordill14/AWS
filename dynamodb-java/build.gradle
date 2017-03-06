@@ -171,12 +171,28 @@ eclipse.classpath.plusConfigurations += [configurations.provided]
 
 dependencies {
 
+    // Spring
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version :dependencyVersionSpringBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version :dependencyVersionSpringBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: dependencyVersionSpringBoot
 
-    // AWS SDK DynamoDB
-    compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: dependencyVersionAWSSDKDynamoDB
+    compile(group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: dependencyVersionSpringCloudAws) {
+        exclude group: 'com.amazonaws'
+    }
+
+    compile(group: 'org.springframework.cloud', name: 'spring-cloud-aws-messaging', version: dependencyVersionSpringCloudAws) {
+        exclude group: 'com.amazonaws'
+    }
+
+    // AWS
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: dependencyVersionAwsJavaSdk
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: dependencyVersionAwsJavaSdk
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: dependencyVersionAwsJavaSdk
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: dependencyVersionAwsJavaSdk
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-cloudwatch', version: dependencyVersionAwsJavaSdk
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-kinesis', version: dependencyVersionAwsJavaSdk
+
+    compile group: 'com.amazonaws', name: 'amazon-kinesis-client', version: dependencyVersionAmazonKinesisClient
 
     // Google Guava
     compile group: 'com.google.guava', name: 'guava', version: dependencyVersionGuava
