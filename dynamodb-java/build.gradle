@@ -135,6 +135,8 @@ jaxb {
 
 compileJava {
     dependsOn xjc
+
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 clean.doFirst {
