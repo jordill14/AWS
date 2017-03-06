@@ -15,14 +15,12 @@ import org.mockserver.model.HttpResponse;
 import org.mockserver.model.JsonBody;
 import org.mockserver.model.OutboundHttpRequest;
 import org.mockserver.model.RegexBody;
-import org.paradise.microservice.userpreference.App;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 
@@ -32,9 +30,8 @@ import static org.mockserver.model.HttpResponse.response;
 /**
  * Base class for running Component tests using rest assured https://github.com/jayway/rest-assured
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
-@WebIntegrationTest(randomPort = false)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("local")
 public abstract class AbstractFunctionalTest {
 

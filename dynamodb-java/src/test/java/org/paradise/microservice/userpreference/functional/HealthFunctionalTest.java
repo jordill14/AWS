@@ -23,8 +23,7 @@ public class HealthFunctionalTest extends AbstractFunctionalTest {
                 .log().all()
         .assertThat()
                 .statusCode(HttpStatus.SC_OK)
-                .body("status", is("UP"))
-                .body("diskSpace.status", is("UP"));
+                .body("status", is("UP"));
     }
 
 }
