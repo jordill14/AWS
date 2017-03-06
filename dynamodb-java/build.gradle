@@ -203,6 +203,8 @@ dependencies {
 
     compile group: 'com.amazonaws', name: 'amazon-kinesis-client', version: dependencyVersionAmazonKinesisClient
 
+    compile group: 'com.amazonaws', name: 'amazon-sqs-java-extended-client-lib', version: dependencyVersionAmazonSqsJavaExtendedClientLib
+
     // Google Guava
     compile group: 'com.google.guava', name: 'guava', version: dependencyVersionGuava
 
