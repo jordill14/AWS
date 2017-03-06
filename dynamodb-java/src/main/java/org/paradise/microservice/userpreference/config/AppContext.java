@@ -3,9 +3,9 @@ package org.paradise.microservice.userpreference.config;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -78,11 +78,11 @@ public class AppContext {
 
         LOG.info("AmazonDynamoDBClient in local profile");
 
-        AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(
-                new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey)));
-
-        dynamoDBClient.setRegion(Region.getRegion(Regions.fromName(amazonRegion)));
-        dynamoDBClient.setEndpoint(endpoint);
+        AmazonDynamoDBClient dynamoDBClient = (AmazonDynamoDBClient) AmazonDynamoDBClientBuilder
+                        .standard()
+                        .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey)))
+                        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint, amazonRegion))
+                        .build();
 
         return dynamoDBClient;
     }
@@ -93,9 +93,11 @@ public class AppContext {
 
         LOG.info("AmazonDynamoDBClient in non-local profile");
 
-        AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(clientConfiguration);
-
-        dynamoDBClient.setRegion(Region.getRegion(Regions.fromName(amazonRegion)));
+        AmazonDynamoDBClient dynamoDBClient = (AmazonDynamoDBClient) AmazonDynamoDBClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey)))
+                .withRegion(amazonRegion)
+                .build();
 
         return dynamoDBClient;
     }
