@@ -103,6 +103,13 @@ test {
         destinationFile = file("$buildDir/jacoco/jacoco.exec")
         classDumpFile = file("$buildDir/jacoco/classpathdumps")
     }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    // functional test failed if "maxParallelForks" greater than 1
+    maxParallelForks = 1
 }
 
 jacocoTestReport {
