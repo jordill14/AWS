@@ -184,6 +184,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version :dependencyVersionSpringBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version :dependencyVersionSpringBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: dependencyVersionSpringBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: dependencyVersionSpringBoot
 
     compile(group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: dependencyVersionSpringCloudAws) {
         exclude group: 'com.amazonaws'
@@ -192,6 +193,7 @@ dependencies {
     compile(group: 'org.springframework.cloud', name: 'spring-cloud-aws-messaging', version: dependencyVersionSpringCloudAws) {
         exclude group: 'com.amazonaws'
     }
+
 
     // AWS
     compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: dependencyVersionAwsJavaSdk
@@ -208,7 +210,8 @@ dependencies {
     // Google Guava
     compile group: 'com.google.guava', name: 'guava', version: dependencyVersionGuava
 
-    // Apache Commons libraries
+    // Apache
+    compile group: 'org.apache.activemq', name: 'activemq-broker'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: dependencyVersionApacheCommonsLang3
 
     // javaslang

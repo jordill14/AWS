@@ -19,6 +19,8 @@ public final class Constants {
 
     public static final String CONTEXT_PATH = "com.ebay.model";
 
+    public static final String JMS_TOPIC = "mailbox";
+
     private Constants() {
 
     }
