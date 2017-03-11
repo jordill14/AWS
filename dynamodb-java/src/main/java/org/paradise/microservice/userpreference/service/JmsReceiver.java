@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class JmsReceiver {
 
-    private static final Logger logger = LoggerFactory.getLogger(JmsReceiver.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JmsReceiver.class);
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @JmsListener(destination = Constants.JMS_TOPIC, containerFactory = "mailboxJmsListenerFactory")
     public void receiveMessage(UserPreferences userPreferences) throws JsonProcessingException {
 
-        logger.info("Message received: [{}]", objectMapper.writeValueAsString(userPreferences));
+        LOG.info("Message received: [{}]", objectMapper.writeValueAsString(userPreferences));
     }
 
 }

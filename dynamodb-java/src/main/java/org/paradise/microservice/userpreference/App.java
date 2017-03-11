@@ -22,7 +22,7 @@ import javax.jms.ConnectionFactory;
 @EnableJms
 public class App {
 
-    private static final Logger logger = LoggerFactory.getLogger(App.class);
+    private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
 
@@ -31,7 +31,7 @@ public class App {
         JmsTemplate jmsTemplate = configurableApplicationContext.getBean(JmsTemplate.class);
 
         // Send a message with a POJO - the template reuse the message converter
-        logger.info("Sending an email message.");
+        LOG.info("Sending an email message.");
 
         UserPreferences userPreferences = new UserPreferences();
         userPreferences.setApbcn("This is Apbcn");
@@ -43,19 +43,19 @@ public class App {
     /**
      * Create default JMS listener container factory.
      *
-     * @param connectionFactory
-     * @param configurer
+     * @param connectionFactory connectionFactory
+     * @param defaultJmsListenerContainerFactoryConfigurer defaultJmsListenerContainerFactoryConfigurer
      *
-     * @return
+     * @return jmsListenerContainerFactory
      */
     @Bean
-    public JmsListenerContainerFactory<?> mailboxJmsListenerFactory(ConnectionFactory connectionFactory,
-                                                                    DefaultJmsListenerContainerFactoryConfigurer configurer) {
+    public JmsListenerContainerFactory<?> mailboxJmsListenerFactory(
+            ConnectionFactory connectionFactory, DefaultJmsListenerContainerFactoryConfigurer defaultJmsListenerContainerFactoryConfigurer) {
 
         DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
 
         // This provides all Spring Boot's default to this factory, including the message converter
-        configurer.configure(defaultJmsListenerContainerFactory, connectionFactory);
+        defaultJmsListenerContainerFactoryConfigurer.configure(defaultJmsListenerContainerFactory, connectionFactory);
 
         // You could still override some of Spring Boot's default if necessary.
         return defaultJmsListenerContainerFactory;
