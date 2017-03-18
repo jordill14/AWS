@@ -15,6 +15,7 @@ cloud.aws:
   credentials.accessKey: Replace_it_with_AWS_accessKey
   credentials.secretKey: Replace_it_with_AWS_secretKey
   region.static: ap-southeast-2
+  sqs.queue.name: foreverAndEver
 
 ## AWS DynamoDB
 dynamo:

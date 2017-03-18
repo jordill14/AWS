@@ -24,7 +24,7 @@ public class JmsReceiver {
     @JmsListener(destination = Constants.JMS_TOPIC, containerFactory = "mailboxJmsListenerFactory")
     public void receiveMessage(UserPreferences userPreferences) throws JsonProcessingException {
 
-        LOG.info("Message received: [{}]", objectMapper.writeValueAsString(userPreferences));
+        LOG.info("Message received from ActiveMQ: [{}]", objectMapper.writeValueAsString(userPreferences));
     }
 
 }

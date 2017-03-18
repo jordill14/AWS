@@ -1,11 +1,13 @@
 package org.paradise.microservice.userpreference;
 
+import com.amazonaws.services.sqs.AmazonSQSAsync;
 import org.paradise.microservice.userpreference.domain.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.cloud.aws.messaging.config.SimpleMessageListenerContainerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
@@ -49,8 +51,9 @@ public class App {
      * @return jmsListenerContainerFactory
      */
     @Bean
-    public JmsListenerContainerFactory<?> mailboxJmsListenerFactory(
-            ConnectionFactory connectionFactory, DefaultJmsListenerContainerFactoryConfigurer defaultJmsListenerContainerFactoryConfigurer) {
+    public JmsListenerContainerFactory<?> mailboxJmsListenerFactory(ConnectionFactory connectionFactory,
+                                                                    DefaultJmsListenerContainerFactoryConfigurer
+                                                                            defaultJmsListenerContainerFactoryConfigurer) {
 
         DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
 
@@ -59,6 +62,25 @@ public class App {
 
         // You could still override some of Spring Boot's default if necessary.
         return defaultJmsListenerContainerFactory;
+    }
+
+    /**
+     * Create AWS SQS / SNS message listener factory.
+     *
+     * @param amazonSQSAsync amazonSQSAsync
+     *
+     * @return simpleMessageListenerContainerFactory
+     */
+    @Bean
+    public SimpleMessageListenerContainerFactory simpleMessageListenerContainerFactory(AmazonSQSAsync amazonSQSAsync) {
+
+        SimpleMessageListenerContainerFactory simpleMessageListenerContainerFactory = new SimpleMessageListenerContainerFactory();
+
+        simpleMessageListenerContainerFactory.setAmazonSqs(amazonSQSAsync);
+        simpleMessageListenerContainerFactory.setAutoStartup(Boolean.FALSE);
+        simpleMessageListenerContainerFactory.setMaxNumberOfMessages(Constants.MAX_NUMBER_OF_MESSAGES);
+
+        return simpleMessageListenerContainerFactory;
     }
 
     /**
