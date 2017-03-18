@@ -25,10 +25,13 @@ public class SqsQueueReceiver {
     private ObjectMapper objectMapper;
 
     @SqsListener(value = "${cloud.aws.sqs.queue.name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-    public void receiveSQSMessage(@Headers Map<String, String> headers,  UserPreferences userPreferences)
+    public void receiveSQSMessage(@Headers Map<String, Object> headers,  UserPreferences userPreferences)
             throws JsonProcessingException {
 
-        LOG.info("Message received from AWS SQS: " + objectMapper.writeValueAsString(userPreferences));
+        LOG.info("Message received from AWS SQS Header:");
+        headers.forEach((key, value) -> LOG.info("{} : {}", key, value));
+
+        LOG.info("Message received from AWS SQS Body: " + objectMapper.writeValueAsString(userPreferences));
     }
 
 }
