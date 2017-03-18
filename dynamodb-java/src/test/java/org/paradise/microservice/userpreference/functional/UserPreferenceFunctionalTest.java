@@ -45,7 +45,7 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBUpdateIndexItemResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBUpdateIndexItemResponse.json"))));
     }
 
     @Test
@@ -76,19 +76,19 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBUpdateItemResponse1.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBUpdateItemResponse1.json"))));
 
         httpRequest = request()
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.GetItem")
-                .withBody(toBody(new ClassPathResource("dynamoDBGetItemRequest1.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBGetItemRequest1.json")));
 
         mockServerClient.when(httpRequest)
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBGetItemResponse1.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBGetItemResponse1.json"))));
 
         Response response =
             given()
@@ -133,13 +133,13 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBGetItemResponse2.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBGetItemResponse2.json"))));
 
         mockServerClient.when(httpRequest, Times.exactly(2))
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBGetItemResponse2.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBGetItemResponse2.json"))));
 
         httpRequest = request()
                 .withMethod("POST")
@@ -151,7 +151,7 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBUpdateItemResponse2.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBUpdateItemResponse2.json"))));
 
         response =
             given()
@@ -205,19 +205,19 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBUpdateItemResponse3.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBUpdateItemResponse3.json"))));
 
         httpRequest = request()
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.GetItem")
-                .withBody(toBody(new ClassPathResource("dynamoDBGetItemRequest3.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBGetItemRequest3.json")));
 
         mockServerClient.when(httpRequest)
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBGetItemResponse3.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBGetItemResponse3.json"))));
 
         given()
         .when()

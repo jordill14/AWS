@@ -15,6 +15,7 @@ import org.mockserver.model.HttpResponse;
 import org.mockserver.model.JsonBody;
 import org.mockserver.model.OutboundHttpRequest;
 import org.mockserver.model.RegexBody;
+import org.mockserver.model.StringBody;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
@@ -61,10 +62,19 @@ public abstract class AbstractFunctionalTest {
         System.getProperties().remove("javax.net.ssl.trustStore");
     }
 
-    public static Body toBody(Resource resource) {
+    public static Body toJsonBody(Resource resource) {
 
         try {
             return new JsonBody(IOUtils.toString(resource.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Body toStringBody(Resource resource) {
+
+        try {
+            return new StringBody(IOUtils.toString(resource.getInputStream()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -103,84 +113,84 @@ public abstract class AbstractFunctionalTest {
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.DeleteTable")
-                .withBody(toBody(new ClassPathResource("dynamoDBDeleteTableRequest.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBDeleteTableRequest.json")));
 
         mockServerClient.when(httpRequest)
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBDeleteTableResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBDeleteTableResponse.json"))));
 
         httpRequest = request()
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.CreateTable")
-                .withBody(toBody(new ClassPathResource("dynamoDBCreateTableRequest.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBCreateTableRequest.json")));
 
         mockServerClient.when(httpRequest)
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBCreateTableResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBCreateTableResponse.json"))));
 
         httpRequest = request()
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.DescribeTable")
-                .withBody(toBody(new ClassPathResource("dynamoDBDescribeTableRequest.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBDescribeTableRequest.json")));
 
         mockServerClient.when(httpRequest, Times.exactly(1))
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_BAD_REQUEST)
-                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeTableBeenDeletedResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBDescribeTableBeenDeletedResponse.json"))));
 
         mockServerClient.when(httpRequest, Times.exactly(2))
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeTableResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBDescribeTableResponse.json"))));
 
         // mock User Preference index table
         httpRequest = request()
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.DeleteTable")
-                .withBody(toBody(new ClassPathResource("dynamoDBDeleteIndexTableRequest.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBDeleteIndexTableRequest.json")));
 
         mockServerClient.when(httpRequest)
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBDeleteIndexTableResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBDeleteIndexTableResponse.json"))));
 
         httpRequest = request()
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.CreateTable")
-                .withBody(toBody(new ClassPathResource("dynamoDBCreateIndexTableRequest.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBCreateIndexTableRequest.json")));
 
         mockServerClient.when(httpRequest)
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBCreateIndexTableResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBCreateIndexTableResponse.json"))));
 
         httpRequest = request()
                 .withMethod("POST")
                 .withPath("/")
                 .withHeader("X-Amz-Target", "DynamoDB_20120810.DescribeTable")
-                .withBody(toBody(new ClassPathResource("dynamoDBDescribeIndexTableRequest.json")));
+                .withBody(toJsonBody(new ClassPathResource("dynamoDBDescribeIndexTableRequest.json")));
 
         mockServerClient.when(httpRequest, Times.exactly(1))
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_BAD_REQUEST)
-                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeIndexTableBeenDeletedResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBDescribeIndexTableBeenDeletedResponse.json"))));
 
         mockServerClient.when(httpRequest, Times.exactly(2))
                 .respond(response()
                         .withStatusCode(HttpStatus.SC_OK)
                         .withHeader(new Header("Content-Type", "application/x-amz-json-1.0"))
-                        .withBody(toBody(new ClassPathResource("dynamoDBDescribeIndexTableResponse.json"))));
+                        .withBody(toJsonBody(new ClassPathResource("dynamoDBDescribeIndexTableResponse.json"))));
     }
 
 }
