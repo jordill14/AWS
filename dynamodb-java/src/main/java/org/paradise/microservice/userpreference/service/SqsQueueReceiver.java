@@ -1,8 +1,11 @@
 package org.paradise.microservice.userpreference.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.paradise.microservice.userpreference.domain.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.aws.messaging.config.annotation.NotificationMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.messaging.handler.annotation.Headers;
@@ -18,10 +21,14 @@ public class SqsQueueReceiver {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqsQueueReceiver.class);
 
-    @SqsListener(value = "${cloud.aws.sqs.queue.name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-    public void receiveSQSMessage(@Headers Map<String, String> headers, @NotificationMessage String message) {
+    @Autowired
+    private ObjectMapper objectMapper;
 
-        LOG.info("Message received from queue in AWS SQS: " + message);
+    @SqsListener(value = "${cloud.aws.sqs.queue.name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
+    public void receiveSQSMessage(@Headers Map<String, String> headers,  UserPreferences userPreferences)
+            throws JsonProcessingException {
+
+        LOG.info("Message received from AWS SQS: " + objectMapper.writeValueAsString(userPreferences));
     }
 
 }

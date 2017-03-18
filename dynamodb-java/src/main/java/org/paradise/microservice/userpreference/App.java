@@ -2,6 +2,7 @@ package org.paradise.microservice.userpreference;
 
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import org.paradise.microservice.userpreference.domain.UserPreferences;
+import org.paradise.microservice.userpreference.service.SqsQueueSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -30,9 +31,9 @@ public class App {
 
         ConfigurableApplicationContext configurableApplicationContext = SpringApplication.run(App.class, args);
 
+        // Send a message with a POJO via ActiveMQ - the template reuse the message converter
         JmsTemplate jmsTemplate = configurableApplicationContext.getBean(JmsTemplate.class);
 
-        // Send a message with a POJO - the template reuse the message converter
         LOG.info("Sending an email message.");
 
         UserPreferences userPreferences = new UserPreferences();
@@ -40,6 +41,11 @@ public class App {
         userPreferences.setcNumber("This is cNumber");
 
         jmsTemplate.convertAndSend(Constants.JMS_TOPIC, userPreferences);
+
+        // Send a message to AWS SQS
+        SqsQueueSender sqsQueueSender = configurableApplicationContext.getBean(SqsQueueSender.class);
+
+        sqsQueueSender.convertAndSend(userPreferences);
     }
 
     /**
@@ -77,7 +83,7 @@ public class App {
         SimpleMessageListenerContainerFactory simpleMessageListenerContainerFactory = new SimpleMessageListenerContainerFactory();
 
         simpleMessageListenerContainerFactory.setAmazonSqs(amazonSQSAsync);
-        simpleMessageListenerContainerFactory.setAutoStartup(Boolean.FALSE);
+        simpleMessageListenerContainerFactory.setAutoStartup(Boolean.TRUE);
         simpleMessageListenerContainerFactory.setMaxNumberOfMessages(Constants.MAX_NUMBER_OF_MESSAGES);
 
         return simpleMessageListenerContainerFactory;
