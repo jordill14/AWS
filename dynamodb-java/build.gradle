@@ -20,6 +20,7 @@ buildscript {
         classpath("net.researchgate:gradle-release:${dependencyVersionGradleReleasePlugin}")
         classpath("org.owasp:dependency-check-gradle:${dependencyVersionGradleDependencyCheckPlugin}")
         classpath("com.github.jacobono:gradle-jaxb-plugin:${dependencyVersionJaxbPlugin}")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${dependencyVersionSonarqubePlugin}")
     }
 }
 
@@ -37,12 +38,12 @@ apply plugin: 'war'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'jdepend'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'maven'
 
 // code quality plugins
 apply plugin: 'checkstyle'
-apply plugin: 'sonar-runner'
+apply plugin: 'org.sonarqube'
 
 // release plugins
 apply plugin: 'net.researchgate.release'
@@ -64,8 +65,8 @@ archivesBaseName = artifactId
 
 // configure plugins
 
-sonarRunner {
-    sonarProperties {
+sonarqube {
+    properties {
         property 'sonar.projectKey', "${group}:${archivesBaseName}"
         property 'sonar.projectName', "Microservice - ${archivesBaseName}"
         property 'sonar.projectVersion', version
