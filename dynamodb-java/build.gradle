@@ -194,6 +194,7 @@ dependencies {
         exclude group: 'com.amazonaws'
     }
 
+    compile group: 'org.springframework.batch', name:'spring-batch-core', version: dependencyVersionSpringBatch
 
     // AWS
     compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: dependencyVersionAwsJavaSdk
