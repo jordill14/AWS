@@ -219,6 +219,9 @@ dependencies {
     // javaslang
     compile group: 'io.javaslang', name: 'javaslang', version: dependencyVersionJavaSlang
 
+    // Findbugs
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: dependencyVersionFindbugs
+
     // Jaxb
     jaxb 'com.sun.xml.bind:jaxb-core:2.2.11'
     jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.11'
