@@ -17,6 +17,7 @@ buildscript {
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${dependencyVersionSpringBootGradlePlugin}")
+        classpath("org.springframework:springloaded:${dependencyVersionSpringLoaded}")
         classpath("net.researchgate:gradle-release:${dependencyVersionGradleReleasePlugin}")
         classpath("org.owasp:dependency-check-gradle:${dependencyVersionGradleDependencyCheckPlugin}")
         classpath("com.github.jacobono:gradle-jaxb-plugin:${dependencyVersionJaxbPlugin}")
@@ -32,6 +33,13 @@ repositories {
 // IDE plugins
 apply plugin: 'eclipse-wtp'
 apply plugin: 'idea'
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
 
 // Java dev plugins
 apply plugin: 'war'
