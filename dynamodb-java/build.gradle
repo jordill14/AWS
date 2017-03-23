@@ -150,7 +150,7 @@ jaxb {
 }
 
 compileJava {
-//    dependsOn xjc
+    dependsOn xjc
 
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
