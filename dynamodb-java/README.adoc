@@ -5,6 +5,61 @@ This is an example showing a complete solution that how DynamoDB works in Java 8
 
 Highlights like Hash Key, Range Key, DynamoDBMapper, Pagination solution in DynamoDB, and using Mock Server to mock DynamoDB table and item operations.
 
+Hot Reload Java classes without restarting the container
+========================================================
+
+Configure IntelliJ IDEA then start running command in one terminal window at first:
+
+[source.console]
+----
+𝜆 eval $GRADLE_HOME/bin/gradle -t classes
+Continuous build is an incubating feature.
+The plus(Iterable<FileCollection>) method and using the '+' operator in conjunction with an Iterable<FileCollection> object have been deprecated and are scheduled to be removed in 3.0.  Please use the plus(FileCollection) method or the '+' operator with a FileCollection object instead.
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+
+BUILD SUCCESSFUL
+
+Total time: 5.533 secs
+
+Waiting for changes to input files of tasks... (ctrl-d to exit)
+modified: /Users/terrence/Projects/AWS/dynamodb-java/src/main/java/org/paradise/microservice/userpreference/controller/UserPreferenceController.java
+Change detected, executing build...
+
+:compileJava
+:processResources UP-TO-DATE
+:classes
+
+BUILD SUCCESSFUL
+
+Total time: 5.918 secs
+
+Waiting for changes to input files of tasks... (ctrl-d to exit)
+----
+
+Run application in another terminal window secondly:
+
+[source.console]
+----
+𝜆 env SPRING_PROFILES_ACTIVE=local $GRADLE_HOME/bin/gradle bootRun
+The plus(Iterable<FileCollection>) method and using the '+' operator in conjunction with an Iterable<FileCollection> object have been deprecated and are scheduled to be removed in 3.0.  Please use the plus(FileCollection) method or the '+' operator with a FileCollection object instead.
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:findMainClass
+:bootRun
+objc[34888]: Class JavaLaunchHelper is implemented in both /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/bin/java (0x1065334c0) and /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/libinstrument.dylib (0x1085bb4e0). One of the two will be used. Which one is undefined.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.5.2.RELEASE)
+
+----
 
 References
 ----------
