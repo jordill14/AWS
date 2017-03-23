@@ -75,3 +75,4 @@ References
 - Spring Batch- Read From MySQL database & write to CSV file, _http://websystique.com/springbatch/spring-batch-read-from-mysql-database-and-write-to-a-csv-file/_
 - Spring Hot swapping, _http://docs.spring.io/spring-boot/docs/current/reference/html/howto-hotswapping.html_
 - Gradle: Introducing Continuous Build Execution, _https://blog.gradle.org/introducing-continuous-build_
+- Spring Sweets: Reload Classes Spring Boot With Spring Loaded And Gradle Continuous Build, _http://mrhaki.blogspot.com.au/2015/09/spring-sweets-reload-classes-spring.html_
