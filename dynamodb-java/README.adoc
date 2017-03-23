@@ -73,3 +73,5 @@ References
 - Spring Batch ItemReaders and ItemWriters, _http://docs.spring.io/spring-batch/reference/html/readersAndWriters.html_
 - Spring Batch Tutorial: Writing Information to a File, _https://www.petrikainulainen.net/programming/spring-framework/spring-batch-tutorial-writing-information-to-a-file/_
 - Spring Batch- Read From MySQL database & write to CSV file, _http://websystique.com/springbatch/spring-batch-read-from-mysql-database-and-write-to-a-csv-file/_
+- Spring Hot swapping, _http://docs.spring.io/spring-boot/docs/current/reference/html/howto-hotswapping.html_
+- Gradle: Introducing Continuous Build Execution, _https://blog.gradle.org/introducing-continuous-build_
