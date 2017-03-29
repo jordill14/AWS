@@ -27,12 +27,13 @@ import java.io.IOException;
 
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 /**
  * Base class for running Component tests using rest assured https://github.com/jayway/rest-assured
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = DEFINED_PORT)
 @ActiveProfiles("local")
 public abstract class AbstractFunctionalTest {
 

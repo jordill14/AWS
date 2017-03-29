@@ -1,5 +1,9 @@
 package org.paradise.microservice.userpreference.service.writer;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.paradise.microservice.userpreference.domain.UserPreferences;
 import org.paradise.microservice.userpreference.service.metadata.HeaderMetadata;
 import org.slf4j.Logger;
@@ -7,9 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.WritableResource;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +28,9 @@ public class CSVFileWriter<T extends UserPreferences> implements FileWriter<T> {
 
     private final Logger logger = LoggerFactory.getLogger(CSVFileWriter.class);
 
-    @Override
+    @Autowired
+    private AmazonS3 amazonS3;
+
     public void write(WritableResource writableResource, List<T> contents, Class<T> targetClass) {
 
         final FlatFileItemWriter<T> itemWriter = createItemWriter(writableResource, targetClass);
@@ -34,6 +43,23 @@ public class CSVFileWriter<T extends UserPreferences> implements FileWriter<T> {
         }
 
         itemWriter.close();
+    }
+
+    public void write(WritableResource writableResource, List<T> contents) throws IOException {
+
+        // Example for AWS S3 object: s3://my-bucket/userPreferences/upload/import.csv
+        // getFileName() get: /userPreferences/upload/import.csv
+        String fileName = writableResource.getFilename();
+        // getURL.getPath() get: /my-bucket/userPreferences/upload/import.csv
+        String bucketName = writableResource.getURL().getPath().replace(fileName, StringUtils.EMPTY).replace("/", StringUtils.EMPTY);
+
+        File errorCsvTempFile = File.createTempFile("user-preferences-import", "csv");
+
+        FileUtils.writeLines(errorCsvTempFile, contents);
+
+        logger.debug("Writing import CSV to bucket [{}] with file [{}]", bucketName, fileName);
+
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, errorCsvTempFile));
     }
 
     private FlatFileItemWriter<T> createItemWriter(WritableResource writableResource, Class<T> targetClass) {

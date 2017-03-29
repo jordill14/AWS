@@ -6,6 +6,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -100,6 +102,12 @@ public class AppContext {
                 .build();
 
         return dynamoDBClient;
+    }
+
+    @Bean
+    public AmazonS3 amazonS3Client() {
+
+        return AmazonS3ClientBuilder.defaultClient();
     }
 
 }

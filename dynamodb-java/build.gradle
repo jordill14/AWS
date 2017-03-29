@@ -226,6 +226,7 @@ dependencies {
     // Apache Commons
     compile group: 'org.apache.commons', name: 'commons-lang3', version: dependencyVersionApacheCommonsLang3
     compile group: 'org.apache.commons', name: 'commons-collections4', version: dependencyVersionApacheCommonsCollection4
+    compile group: 'commons-io', name: 'commons-io', version: dependencyVersionCommonsIO
 
     // javaslang
     compile group: 'io.javaslang', name: 'javaslang', version: dependencyVersionJavaSlang
