@@ -75,7 +75,7 @@ public class TimeUtilTest {
     }
 
     @Test
-    public void test2() {
+    public void testTimeConversion() {
 
         LocalDateTime nowLocalDateTime = LocalDateTime.now();
         ZonedDateTime nowZonedDateTime = ZonedDateTime.now();

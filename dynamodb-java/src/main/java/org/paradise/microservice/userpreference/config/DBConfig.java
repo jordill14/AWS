@@ -18,9 +18,9 @@ import javax.annotation.PostConstruct;
 
 @Configuration
 @ComponentScan("org.paradise.microservice.userpreference.config")
-public class DBContext {
+public class DBConfig {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DBContext.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DBConfig.class);
 
     @Value("${dynamo.throughput.read.units}")
     private long readThroughput;

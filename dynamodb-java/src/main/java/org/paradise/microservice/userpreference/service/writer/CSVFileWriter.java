@@ -26,7 +26,7 @@ import java.util.Map;
 @Component
 public class CSVFileWriter<T extends UserPreferences> implements FileWriter<T> {
 
-    private final Logger logger = LoggerFactory.getLogger(CSVFileWriter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CSVFileWriter.class);
 
     @Autowired
     private AmazonS3 amazonS3;
@@ -38,7 +38,7 @@ public class CSVFileWriter<T extends UserPreferences> implements FileWriter<T> {
         try {
             itemWriter.write(contents);
         } catch (Exception e) {
-            logger.error("Unable to write Error CSV file");
+            LOG.error("Unable to write Error CSV file");
             throw new RuntimeException("Error writing resource file: " + writableResource.getFilename(), e);
         }
 
@@ -57,7 +57,7 @@ public class CSVFileWriter<T extends UserPreferences> implements FileWriter<T> {
 
         FileUtils.writeLines(errorCsvTempFile, contents);
 
-        logger.debug("Writing import CSV to bucket [{}] with file [{}]", bucketName, fileName);
+        LOG.debug("Writing import CSV to bucket [{}] with file [{}]", bucketName, fileName);
 
         amazonS3.putObject(new PutObjectRequest(bucketName, fileName, errorCsvTempFile));
     }

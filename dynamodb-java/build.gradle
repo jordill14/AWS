@@ -194,6 +194,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version :dependencyVersionSpringBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: dependencyVersionSpringBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: dependencyVersionSpringBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: dependencyVersionSpringBoot
 
     compile(group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: dependencyVersionSpringCloudAws) {
         exclude group: 'com.amazonaws'
@@ -204,6 +205,10 @@ dependencies {
     }
 
     compile group: 'org.springframework.batch', name:'spring-batch-core', version: dependencyVersionSpringBatch
+
+    compile group: 'org.springframework.session', name:'spring-session', version: dependencyVersionSpringSession
+
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '1.8.1.RELEASE'
 
     // AWS
     compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: dependencyVersionAwsJavaSdk
@@ -230,6 +235,9 @@ dependencies {
 
     // javaslang
     compile group: 'io.javaslang', name: 'javaslang', version: dependencyVersionJavaSlang
+
+    // Redis client
+    compile group: 'biz.paluch.redis', name: 'lettuce', version: dependencyVersionRedisLettuce
 
     // Findbugs
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: dependencyVersionFindbugs

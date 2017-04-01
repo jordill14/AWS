@@ -24,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -66,7 +67,7 @@ public abstract class AbstractFunctionalTest {
     public static Body toJsonBody(Resource resource) {
 
         try {
-            return new JsonBody(IOUtils.toString(resource.getInputStream()));
+            return new JsonBody(IOUtils.toString(resource.getInputStream(), Charset.defaultCharset()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +76,7 @@ public abstract class AbstractFunctionalTest {
     public static Body toStringBody(Resource resource) {
 
         try {
-            return new StringBody(IOUtils.toString(resource.getInputStream()));
+            return new StringBody(IOUtils.toString(resource.getInputStream(), Charset.defaultCharset()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
