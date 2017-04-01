@@ -22,7 +22,7 @@ public class HealthFunctionalTest extends AbstractFunctionalTest {
         .then()
                 .log().all()
         .assertThat()
-                .statusCode(HttpStatus.SC_OK)
+                .statusCode(HttpStatus.SC_SERVICE_UNAVAILABLE)
                 .body("status", is("DOWN"));
     }
 
