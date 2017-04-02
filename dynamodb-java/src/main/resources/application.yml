@@ -29,3 +29,6 @@ spring.jms.pub-sub-domain: true
 #spring.activemq.password: admin
 
 #spring.session.store-type: none
+
+feature.foo: false
+feature.bar: true
