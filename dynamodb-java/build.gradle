@@ -208,8 +208,6 @@ dependencies {
 
     compile group: 'org.springframework.session', name:'spring-session', version: dependencyVersionSpringSession
 
-//    compile group: 'org.springframework.session', name:'spring-session-data-redis', version: dependencyVersionSpringSessionDataRedis
-
     // AWS
     compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: dependencyVersionAwsJavaSdk
     compile group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: dependencyVersionAwsJavaSdk
