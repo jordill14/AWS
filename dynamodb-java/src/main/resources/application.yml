@@ -32,3 +32,5 @@ spring.jms.pub-sub-domain: true
 
 feature.foo: false
 feature.bar: true
+
+feature.redis.session.store: false
