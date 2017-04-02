@@ -6,7 +6,6 @@ import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockserver.client.server.MockServerClient;
-import org.mockserver.integration.ClientAndServer;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.Body;
 import org.mockserver.model.Header;
@@ -26,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
@@ -45,9 +45,7 @@ public abstract class AbstractFunctionalTest {
 
 
     static {
-        new ClientAndServer().startClientAndServer(8000);
-
-        mockServerClient = new OurMockServerClient("localhost", 8000, "");
+        mockServerClient = startClientAndServer(8000);
 
         initMockDynamoDB();
     }
@@ -57,11 +55,11 @@ public abstract class AbstractFunctionalTest {
 
         RestAssured.reset();
 
-        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
+//        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
 
         // This is a work around to stop the mocksever trust store getting in the way
         // This value will placed in the properties on the first request, however it is not used.
-        System.getProperties().remove("javax.net.ssl.trustStore");
+//        System.getProperties().remove("javax.net.ssl.trustStore");
     }
 
     public static Body toJsonBody(Resource resource) {
