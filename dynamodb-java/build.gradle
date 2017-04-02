@@ -208,7 +208,7 @@ dependencies {
 
     compile group: 'org.springframework.session', name:'spring-session', version: dependencyVersionSpringSession
 
-    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '1.8.1.RELEASE'
+//    compile group: 'org.springframework.session', name:'spring-session-data-redis', version: dependencyVersionSpringSessionDataRedis
 
     // AWS
     compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: dependencyVersionAwsJavaSdk
@@ -237,7 +237,7 @@ dependencies {
     compile group: 'io.javaslang', name: 'javaslang', version: dependencyVersionJavaSlang
 
     // Redis client
-    compile group: 'biz.paluch.redis', name: 'lettuce', version: dependencyVersionRedisLettuce
+//    compile group: 'biz.paluch.redis', name: 'lettuce', version: dependencyVersionRedisLettuce
 
     // Findbugs
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: dependencyVersionFindbugs

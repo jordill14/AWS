@@ -15,3 +15,5 @@ cloud.aws:
   credentials.secretKey: Replace_it_with_AWS_secretKey
   region.static: ap-southeast-2
   sqs.queue.name: foreverAndEver
+
+#spring.session.store-type: none
