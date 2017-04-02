@@ -234,9 +234,6 @@ dependencies {
     // javaslang
     compile group: 'io.javaslang', name: 'javaslang', version: dependencyVersionJavaSlang
 
-    // Redis client
-//    compile group: 'biz.paluch.redis', name: 'lettuce', version: dependencyVersionRedisLettuce
-
     // Findbugs
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: dependencyVersionFindbugs
 
