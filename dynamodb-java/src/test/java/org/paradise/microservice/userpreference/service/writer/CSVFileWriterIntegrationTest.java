@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.stubbing.Answer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.WritableResource;
@@ -19,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +31,8 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(SpringRunner.class)
 public class CSVFileWriterIntegrationTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CSVFileWriterIntegrationTest.class);
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -48,9 +54,13 @@ public class CSVFileWriterIntegrationTest {
         Answer<PutObjectResult> answer = invocation -> {
             PutObjectRequest putObjectRequest = invocation.getArgumentAt(0, PutObjectRequest.class);
 
-            putObjectRequest.getBucketName();
-            putObjectRequest.getKey();
-            putObjectRequest.getFile();
+            String bucketName = putObjectRequest.getBucketName();
+            String key = putObjectRequest.getKey();
+            File file = putObjectRequest.getFile();
+
+            LOG.info("Bucket [{}], Key [{}], File [{}]", bucketName, key, file.getName());
+
+            assertThat("", key, is("error.csv"));
 
             return new PutObjectResult();
         };
