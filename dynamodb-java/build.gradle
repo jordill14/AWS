@@ -53,6 +53,9 @@ apply plugin: 'maven'
 apply plugin: 'checkstyle'
 apply plugin: 'org.sonarqube'
 
+// False Gradle alarm on this plugin:
+//     The Task.leftShift(Closure) method has been deprecated and is scheduled to be removed in Gradle 5.0. Please use Task.doLast(Action) instead.
+//     https://github.com/gradle/gradle/issues/899
 // release plugins
 apply plugin: 'net.researchgate.release'
 
@@ -154,7 +157,7 @@ compileJava {
 
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
- 
+
 clean.doFirst {
     // delete generated files
     delete "${rootDir}/src/main/resources/ebay/schema/generated/"
