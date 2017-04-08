@@ -110,7 +110,7 @@ test {
     jacoco {
         append = false
         destinationFile = file("$buildDir/jacoco/jacoco.exec")
-        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
     }
 
     testLogging {
@@ -154,7 +154,7 @@ compileJava {
 
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
-
+ 
 clean.doFirst {
     // delete generated files
     delete "${rootDir}/src/main/resources/ebay/schema/generated/"
@@ -174,18 +174,18 @@ targetCompatibility = 1.8
 // but should not be bundled in the war/ear projects.
 //configurations { provided }
 configurations {
-    provided
+//    provided
 
     // Cause Jaxb throws: org.xml.sax.SAXNotRecognizedException: http://javax.xml.XMLConstants/feature/secure-processing
     all*.exclude group: 'xerces'
 }
 
-sourceSets.main.compileClasspath += [configurations.provided]
-sourceSets.test.compileClasspath += [configurations.provided]
-sourceSets.test.runtimeClasspath += [configurations.provided]
+//sourceSets.main.compileClasspath += [configurations.provided]
+//sourceSets.test.compileClasspath += [configurations.provided]
+//sourceSets.test.runtimeClasspath += [configurations.provided]
 
 // optional: if using 'eclipse' plugin
-eclipse.classpath.plusConfigurations += [configurations.provided]
+//eclipse.classpath.plusConfigurations += [configurations.provided]
 
 dependencies {
 

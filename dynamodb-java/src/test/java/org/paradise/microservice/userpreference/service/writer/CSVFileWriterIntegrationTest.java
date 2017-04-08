@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.stubbing.Answer;
+import org.paradise.microservice.userpreference.domain.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -40,15 +41,14 @@ public class CSVFileWriterIntegrationTest {
     @MockBean
     private AmazonS3 mockAmazonS3;
 
-    private File errorFile;
     private WritableResource errorResource;
 
-    private CSVFileWriter csvFileWriter = new CSVFileWriter();
+    private CSVFileWriter<UserPreferences> csvFileWriter = new CSVFileWriter<>();
 
     @Before
     public void setUp() throws IOException {
 
-        errorFile = temporaryFolder.newFile("error.csv");
+        File errorFile = temporaryFolder.newFile("error.csv");
         errorResource = new FileSystemResource(errorFile);
 
         Answer<PutObjectResult> answer = invocation -> {
@@ -73,7 +73,7 @@ public class CSVFileWriterIntegrationTest {
     @Test
     public void write() throws Exception {
 
-        csvFileWriter.write(errorResource, new ArrayList());
+        csvFileWriter.write(errorResource, new ArrayList<>());
     }
 
     @Test

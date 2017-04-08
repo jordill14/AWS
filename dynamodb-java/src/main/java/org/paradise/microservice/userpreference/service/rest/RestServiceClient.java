@@ -12,7 +12,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -38,8 +37,7 @@ public class RestServiceClient {
     }
 
     public <T> ResponseEntity<T> exchange(String url, HttpMethod method,
-                                          HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables)
-            throws RestClientException {
+                                          HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) {
 
         return restTemplate.exchange(url, method, requestEntity, responseType, uriVariables);
     }
