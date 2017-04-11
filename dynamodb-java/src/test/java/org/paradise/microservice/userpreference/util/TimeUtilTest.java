@@ -1,16 +1,21 @@
 package org.paradise.microservice.userpreference.util;
 
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
@@ -84,6 +89,18 @@ public class TimeUtilTest {
         String nowZonedDateTimeISO = nowZonedDateTime.format(DateTimeFormatter.ISO_INSTANT);
 
         assertNotEquals("Incorrect conversion", nowZonedDateTimeISO, nowLocalDateTimeISO);
+    }
+
+    @Test
+    public void testClockNow() {
+
+        Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+
+        TimeUtil timeUtil = new TimeUtil();
+
+        ReflectionTestUtils.setField(timeUtil, "clock", clock);
+
+        assertThat("", timeUtil.clockNow(), is(LocalDateTime.now(clock)));
     }
 
 }

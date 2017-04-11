@@ -1,5 +1,7 @@
 package org.paradise.microservice.userpreference.util;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -12,9 +14,7 @@ import static org.apache.commons.lang3.time.DateUtils.MILLIS_PER_SECOND;
  */
 public final class TimeUtil {
 
-    private TimeUtil() {
-
-    }
+    private Clock clock = Clock.systemDefaultZone();
 
     public static Long zoneDateTimeToUTCOffsetInMillisecond(ZoneId zoneId) {
 
@@ -24,6 +24,11 @@ public final class TimeUtil {
     public static Long betweenInMillisecond(Temporal start, Temporal end) {
 
         return ChronoUnit.MILLIS.between(start, end);
+    }
+
+    public LocalDateTime clockNow() {
+
+        return LocalDateTime.now(clock);
     }
 
 }
