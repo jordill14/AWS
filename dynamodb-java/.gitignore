@@ -7,7 +7,6 @@
 .classpath
 .settings/
 target/
-logs/
 bin/
 build/
 out/
@@ -17,3 +16,4 @@ out/
 classes/
 src/main/java/com/ebay/
 src/main/resources/ebay/schema/generated/
+app.log

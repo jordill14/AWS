@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOG_DIR" value=" ${catalina.base}/logs" />
+    <if condition='isDefined("catalina.base")'>
+        <then>
+            <property name="LOG_DIR" value="${catalina.base}/logs"/>
+        </then>
+        <else>
+            <property name="LOG_DIR" value="./"/>
+        </else>
+    </if>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/app.log</file>

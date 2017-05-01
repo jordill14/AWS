@@ -243,6 +243,9 @@ dependencies {
     //
     compile group: 'net.sf.dozer', name: 'dozer', version: dependencyVersionDozer
 
+    // Janino library supports conditional processing and JaninoEventEvaluator in Logback
+    compile group: 'org.codehaus.janino', name: 'janino', version: dependencyVersionJanino
+
     // Jaxb
     jaxb 'com.sun.xml.bind:jaxb-core:2.2.11'
     jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.11'
