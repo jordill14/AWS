@@ -1,7 +1,9 @@
 package org.paradise.microservice.userpreference.functional;
 
+import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockserver.client.server.MockServerClient;
 import org.mockserver.matchers.Times;
@@ -14,11 +16,15 @@ import org.mockserver.model.OutboundHttpRequest;
 import org.mockserver.model.RegexBody;
 import org.mockserver.model.StringBody;
 import org.paradise.microservice.userpreference.App;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -38,22 +44,33 @@ public abstract class AbstractFunctionalTest {
 
     protected static MockServerClient mockServerClient;
 
+    @Autowired
+    protected WebApplicationContext webApplicationContext;
+
+    protected MockMvc mockMvc;
+
     static {
         mockServerClient = startClientAndServer(8000);
 
         initMockDynamoDB();
     }
 
-    /*
+    /**
+     * Individual functional test will overwrite this @Before method
+     */
     @Before
     public void setUp() {
 
-        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
+//        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
 
         // This is a work around to stop the mocksever trust store getting in the way
         // This value will placed in the properties on the first request, however it is not used.
 //        System.getProperties().remove("javax.net.ssl.trustStore");
-    }*/
+
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+        RestAssuredMockMvc.mockMvc(mockMvc);
+    }
 
     public static Body toJsonBody(Resource resource) {
 
