@@ -1,5 +1,6 @@
 package org.paradise.microservice.userpreference.functional;
 
+import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.paradise.microservice.userpreference.Constants;
 import org.paradise.microservice.userpreference.domain.PreferenceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -29,10 +31,17 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
     public static final String APCN = "88886666";
     public static final String APCN_NEXT = "99997777";
 
+    @Value("${local.server.port}")
+    private int port;
+
     private HttpRequest httpRequest;
 
     @Before
     public void setUp() {
+
+        RestAssured.reset();
+
+        RestAssured.port = port;
 
         // mock User Preference index item
         httpRequest = request()
@@ -92,11 +101,11 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
         Response response =
             given()
-            .when()
                     .header("Content-Type", "application/json")
                     .header(Constants.HTTP_HEADERS_APCN, APCN)
                     .body(requestBodyForCreate)
-                    .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+            .when()
+                    .post(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
             .then()
                     .log().all()
                     .assertThat()
@@ -155,11 +164,11 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
         response =
             given()
-            .when()
                     .header("Content-Type", "application/json")
                     .header(Constants.HTTP_HEADERS_APCN, APCN)
                     .body(requestBodyForUpdate)
-                    .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+            .when()
+                    .post(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
             .then()
                     .log().all()
             .assertThat()
@@ -220,11 +229,11 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
                         .withBody(toJsonBody(new ClassPathResource("dynamoDBGetItemResponse3.json"))));
 
         given()
-        .when()
                 .header("Content-Type", "application/json")
                 .header(Constants.HTTP_HEADERS_APCN, APCN_NEXT)
                 .body(requestBodyForCreate)
-                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+        .when()
+                .post(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
@@ -239,11 +248,11 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
 
         // Get User Preferences
         given()
-        .when()
                 .header("Content-Type", "application/json")
                 .header(Constants.HTTP_HEADERS_APCN, APCN_NEXT)
                 .body(requestBodyForCreate)
-                .get(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+        .when()
+                .get(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
@@ -261,11 +270,11 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
     public void shouldThrowErrorWithInvalidPreferenceType() throws Exception {
 
         given()
-        .when()
                 .header("Content-Type", "application/json")
                 .header(Constants.HTTP_HEADERS_APCN, APCN)
                 .body("{\"data\": {\"preferences\" : {}}}")
-                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + "Invalid_Preference_Type")
+        .when()
+                .post(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + "Invalid_Preference_Type")
         .then()
                 .log().all()
         .assertThat()
@@ -280,10 +289,10 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
     public void shouldThrowErrorWithoutAPCNInHttpHeaders() throws Exception {
 
         given()
-        .when()
                 .header("Content-Type", "application/json")
                 .body("{\"data\": {\"preferences\" : {}}}")
-                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+        .when()
+                .post(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()
@@ -297,11 +306,11 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
     public void shouldThrowErrorWithoutPreferencesInBody() throws Exception {
 
         given()
-        .when()
                 .header("Content-Type", "application/json")
                 .header(Constants.HTTP_HEADERS_APCN, APCN)
                 .body("{\"data\": {}}")
-                .post(apiBaseUrl + Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
+        .when()
+                .post(Constants.REQUEST_PATH_USER_PREFERENCE + "/" + PreferenceType.EBAY)
         .then()
                 .log().all()
         .assertThat()

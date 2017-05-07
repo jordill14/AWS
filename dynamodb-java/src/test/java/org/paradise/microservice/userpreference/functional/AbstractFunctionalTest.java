@@ -1,9 +1,7 @@
 package org.paradise.microservice.userpreference.functional;
 
-import com.jayway.restassured.RestAssured;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockserver.client.server.MockServerClient;
 import org.mockserver.matchers.Times;
@@ -15,7 +13,7 @@ import org.mockserver.model.JsonBody;
 import org.mockserver.model.OutboundHttpRequest;
 import org.mockserver.model.RegexBody;
 import org.mockserver.model.StringBody;
-import org.springframework.beans.factory.annotation.Value;
+import org.paradise.microservice.userpreference.App;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -28,21 +26,17 @@ import java.nio.charset.Charset;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * Base class for running Component tests using rest assured https://github.com/jayway/rest-assured
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT, classes = App.class)
 @ActiveProfiles("local")
 public abstract class AbstractFunctionalTest {
 
     protected static MockServerClient mockServerClient;
-
-    @Value("${app.test.functional.baseurl}")
-    protected String apiBaseUrl;
-
 
     static {
         mockServerClient = startClientAndServer(8000);
@@ -50,17 +44,16 @@ public abstract class AbstractFunctionalTest {
         initMockDynamoDB();
     }
 
+    /*
     @Before
     public void setUp() {
 
-        RestAssured.reset();
-
-//        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
+        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
 
         // This is a work around to stop the mocksever trust store getting in the way
         // This value will placed in the properties on the first request, however it is not used.
 //        System.getProperties().remove("javax.net.ssl.trustStore");
-    }
+    }*/
 
     public static Body toJsonBody(Resource resource) {
 
