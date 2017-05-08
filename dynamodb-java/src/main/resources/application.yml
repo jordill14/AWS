@@ -30,6 +30,10 @@ spring.jms.pub-sub-domain: true
 
 #spring.session.store-type: none
 
+spring.jackson:
+  default-property-inclusion: non_null
+  property-naming-strategy: SNAKE_CASE
+
 feature.foo: false
 feature.bar: true
 

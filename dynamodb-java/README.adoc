@@ -78,3 +78,4 @@ References
 - Spring Sweets: Reload Classes Spring Boot With Spring Loaded And Gradle Continuous Build, _http://mrhaki.blogspot.com.au/2015/09/spring-sweets-reload-classes-spring.html_
 - Implementing feature toggles for a Spring Boot application, _https://sdqali.in/series/feature-toggles/_
 - Integration Testing a Spring Boot Application, _https://blog.jayway.com/2014/07/04/integration-testing-a-spring-boot-application/_
+- Customize the Jackson ObjectMapper in Spring Boot / Spring MVC globally, _http://docs.spring.io/spring-boot/docs/current/reference/html/howto-spring-mvc.html#howto-customize-the-jackson-objectmapper_
