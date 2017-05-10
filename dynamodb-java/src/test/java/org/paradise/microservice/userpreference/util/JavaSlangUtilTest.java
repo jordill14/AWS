@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 
 import static com.google.common.base.Predicates.instanceOf;
 import static javaslang.API.$;
@@ -51,12 +52,12 @@ public class JavaSlangUtilTest {
 
         Throwable throwable = new JsonGenerationException(jsonGenerationExceptionMessage, mockJsonGenerator);
 
-        String exception = Match(throwable).of(
-                Case(instanceOf(NumberFormatException.class), "NumberFormatException exception"),
-                Case(instanceOf(JsonProcessingException.class), "JsonProcessingException exception"),
-                Case($(), "Unknown exception"));
+        HttpStatus httpStatus = Match(throwable).of(
+                Case(instanceOf(NumberFormatException.class), HttpStatus.OK),
+                Case(instanceOf(JsonProcessingException.class), HttpStatus.BAD_REQUEST),
+                Case($(), HttpStatus.INTERNAL_SERVER_ERROR));
 
-        assertThat("Incorrect exception", exception, is(3.0));
+        assertThat("Incorrect exception", httpStatus, is(HttpStatus.BAD_REQUEST));
     }
 
 }
