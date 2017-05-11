@@ -1,8 +1,10 @@
 package org.paradise.microservice.userpreference.functional;
 
+import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockserver.client.server.MockServerClient;
@@ -17,6 +19,7 @@ import org.mockserver.model.RegexBody;
 import org.mockserver.model.StringBody;
 import org.paradise.microservice.userpreference.App;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -49,6 +52,9 @@ public abstract class AbstractFunctionalTest {
 
     protected MockMvc mockMvc;
 
+    @Value("${local.server.port}")
+    private int port;
+
     static {
         mockServerClient = startClientAndServer(8000);
 
@@ -61,6 +67,12 @@ public abstract class AbstractFunctionalTest {
     @Before
     public void setUp() {
 
+        // ONLY reset to the standard baseURI (localhost), basePath (empty), standard port (8080), default authentication
+        // scheme (none) and default root path (empty string)
+//        RestAssured.reset();
+
+        RestAssured.port = port;
+
 //        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
 
         // This is a work around to stop the mocksever trust store getting in the way
@@ -70,6 +82,12 @@ public abstract class AbstractFunctionalTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         RestAssuredMockMvc.mockMvc(mockMvc);
+    }
+
+    @After
+    public void tearDown() {
+
+        mockServerClient.reset();
     }
 
     public static Body toJsonBody(Resource resource) {

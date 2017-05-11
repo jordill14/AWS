@@ -1,6 +1,5 @@
 package org.paradise.microservice.userpreference.functional;
 
-import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -12,7 +11,6 @@ import org.paradise.microservice.userpreference.Constants;
 import org.paradise.microservice.userpreference.domain.PreferenceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -31,17 +29,10 @@ public class UserPreferenceFunctionalTest extends AbstractFunctionalTest {
     public static final String APCN = "88886666";
     public static final String APCN_NEXT = "99997777";
 
-    @Value("${local.server.port}")
-    private int port;
-
     private HttpRequest httpRequest;
 
     @Before
-    public void setUp() {
-
-        RestAssured.reset();
-
-        RestAssured.port = port;
+    public void setUpForUserPreference() {
 
         // mock User Preference index item
         httpRequest = request()
