@@ -71,9 +71,14 @@ public abstract class AbstractFunctionalTest {
         // scheme (none) and default root path (empty string)
 //        RestAssured.reset();
 
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.basePath = "";
+        // Assign bound random port set in @SpringBootTest
         RestAssured.port = port;
 
-//        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
+        // This is important step for environment e.g. via Layer 7 API, which without it complaining
+        // can't access PKI key store
+        mockServerClient.retrieveExistingExpectations(request().withMethod("GET"));
 
         // This is a work around to stop the mocksever trust store getting in the way
         // This value will placed in the properties on the first request, however it is not used.
