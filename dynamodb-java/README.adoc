@@ -79,3 +79,4 @@ References
 - Implementing feature toggles for a Spring Boot application, _https://sdqali.in/series/feature-toggles/_
 - Integration Testing a Spring Boot Application, _https://blog.jayway.com/2014/07/04/integration-testing-a-spring-boot-application/_
 - Customize the Jackson ObjectMapper in Spring Boot / Spring MVC globally, _http://docs.spring.io/spring-boot/docs/current/reference/html/howto-spring-mvc.html#howto-customize-the-jackson-objectmapper_
+- Unit Test Spring MVC Rest Service: MockMVC, JUnit, Mockito, _http://memorynotfound.com/unit-test-spring-mvc-rest-service-junit-mockito_
