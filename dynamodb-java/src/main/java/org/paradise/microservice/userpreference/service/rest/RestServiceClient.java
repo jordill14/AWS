@@ -1,11 +1,11 @@
 package org.paradise.microservice.userpreference.service.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -27,12 +27,16 @@ public class RestServiceClient {
     private RestTemplate restTemplate;
 
     @Autowired
-    public RestServiceClient(@Qualifier("httpRequestInterceptor") HttpRequestInterceptor httpRequestInterceptor) {
+    public RestServiceClient(HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory) {
 
         restTemplate = new RestTemplate();
 
-        restTemplate.setRequestFactory(httpRequestInterceptor);
-        restTemplate.setMessageConverters(createHttpMessageConverter());
+        restTemplate.setRequestFactory(httpComponentsClientHttpRequestFactory);
+
+        // Default Spring Boot / MVC has already add FormHttpMessageConverter, StringHttpMessageConverter and
+        // MappingJackson2HttpMessageConverter in Message Converters list
+//        restTemplate.setMessageConverters(createHttpMessageConverter());
+
         restTemplate.setErrorHandler(createResponseErrorHandler());
     }
 

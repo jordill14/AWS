@@ -1,5 +1,4 @@
-package org.paradise.microservice.userpreference.service.rest;
-
+package org.paradise.microservice.userpreference.config;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.http.HttpHost;
@@ -9,36 +8,25 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.ProxyAuthenticationStrategy;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.Properties;
 
 /**
- * HttpRequestInterceptor for populating additional information to the request as required. Populates proxy settings if
- * present.
+ * Created by terrence on 13/5/17.
  */
-@Component
-@Qualifier("httpRequestInterceptor")
-public class HttpRequestInterceptor extends HttpComponentsClientHttpRequestFactory {
+@Configuration
+public class ProxyConfig {
 
     private static final String PROXY_HOST_PROPERTY = "http.proxyHost";
     private static final String PROXY_PORT_PROPERTY = "http.proxyPort";
     private static final String PROXY_USER_PROPERTY = "http.proxyUser";
     private static final String PROXY_PASSWORD_PROPERTY = "http.proxyPassword";
-    
-    public HttpRequestInterceptor() {
-        super();
-    }
-    
-    @Override
-    public ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) throws IOException {
 
+    @Bean
+    public HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory()  {
 
         /**
          * Consider using HttpClientBuilder.useSystemProperties() call in Apache HttpClient which use system properties
@@ -52,6 +40,7 @@ public class HttpRequestInterceptor extends HttpComponentsClientHttpRequestFacto
 
         String proxyHost = systemProperties.getProperty(PROXY_HOST_PROPERTY);
         Integer proxyPort = NumberUtils.toInt(systemProperties.getProperty(PROXY_PORT_PROPERTY), -1);
+
         String proxyUser = systemProperties.getProperty(PROXY_USER_PROPERTY);
         String proxyPassword = systemProperties.getProperty(PROXY_PASSWORD_PROPERTY);
 
@@ -71,9 +60,7 @@ public class HttpRequestInterceptor extends HttpComponentsClientHttpRequestFacto
             }
         }
 
-        this.setHttpClient(httpClientBuilder.build());
-
-        return super.createRequest(uri, httpMethod);
+        return new HttpComponentsClientHttpRequestFactory(httpClientBuilder.build());
     }
 
 }
