@@ -5,7 +5,9 @@ import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.mockserver.client.server.MockServerClient;
 import org.mockserver.matchers.Times;
@@ -55,7 +57,10 @@ public abstract class AbstractFunctionalTest {
     @Value("${local.server.port}")
     private int port;
 
-    static {
+
+    @BeforeClass
+    public static void beforeClass() {
+
         mockServerClient = startClientAndServer(8000);
 
         initMockDynamoDB();
@@ -91,10 +96,15 @@ public abstract class AbstractFunctionalTest {
 
     @After
     public void tearDown() {
-
         mockServerClient.reset();
     }
 
+    @AfterClass
+    public static void afterClass() {
+        mockServerClient.stop();
+    }
+
+    
     public static Body toJsonBody(Resource resource) {
 
         try {
