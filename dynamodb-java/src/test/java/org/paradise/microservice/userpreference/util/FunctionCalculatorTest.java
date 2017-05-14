@@ -77,14 +77,14 @@ public class FunctionCalculatorTest {
 
         IntStream.rangeClosed(1, 20)
                 .forEach(i -> {
-                    long lose = FunctionCalculator.F.apply(i);
+                    Long lose = FunctionCalculator.F.apply(i);
 
                     List<Integer> integerList = new ArrayList<>();
                     IntStream.rangeClosed(1, i).forEach(j -> integerList.add(j));
 
-                    long total = FunctionCalculator.FACTORIAL.apply(i);
+                    Long total = FunctionCalculator.FACTORIAL.apply(i);
 
-                    LOG.info(String.format(outputFormat, lose, total, 1.0 * lose / total, (1 - 1.0 * lose / total), i));
+                    LOG.info(String.format(outputFormat, lose, total, 1.0 * lose / total, (1 - lose.doubleValue() / total.doubleValue()), i));
                 });
 
         LOG.info(String.format("Taylor Series for e (Euler's number): 1 - 1 / e = %1.17f", 1 - 1.0 / Math.E));
