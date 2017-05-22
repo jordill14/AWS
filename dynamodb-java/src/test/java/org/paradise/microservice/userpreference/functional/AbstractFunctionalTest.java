@@ -104,7 +104,7 @@ public abstract class AbstractFunctionalTest {
         mockServerClient.stop();
     }
 
-    
+
     public static Body toJsonBody(Resource resource) {
 
         try {

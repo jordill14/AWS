@@ -34,6 +34,9 @@ spring.jackson:
   default-property-inclusion: non_null
   property-naming-strategy: SNAKE_CASE
 
+## Spring Boot JMX Bean settings, in case deploy multiple Spring Boot apps on a SAME Tomcat instance
+endpoints.jmx.unique-names: true
+
 feature.foo: false
 feature.bar: true
 
