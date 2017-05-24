@@ -1,4 +1,4 @@
-create table csv_import (
+create table IF NOT EXISTS csv_import (
   ID            INT(10) PRIMARY KEY,
   REQUEST       VARCHAR(32),
   DATAPAKID     TINYINT,
