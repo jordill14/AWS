@@ -91,6 +91,7 @@ sonarqube {
   }
 }
 
+// To upload artifacts to Nexus repo, run "gradle upload"
 uploadArchives {
     repositories {
         mavenDeployer {
