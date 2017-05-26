@@ -37,6 +37,12 @@ spring.jackson:
 ## Spring Boot JMX Bean settings, in case deploy multiple Spring Boot apps on a SAME Tomcat instance
 endpoints.jmx.unique-names: true
 
+## Spring Boot Redis support
+#spring.redis:
+#  host: localhost
+#  port: 6379
+#  password: secret
+
 feature.foo: false
 feature.bar: true
 
