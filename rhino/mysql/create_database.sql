@@ -1,0 +1,3 @@
+DROP DATABASE rhino;
+
+CREATE DATABASE rhino;
