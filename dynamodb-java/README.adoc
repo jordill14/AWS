@@ -61,6 +61,20 @@ objc[34888]: Class JavaLaunchHelper is implemented in both /Library/Java/JavaVir
 
 ----
 
+AWS SQS
+-------
+
+Need to have access AWS SQS to start running this application. Create an application.properties file, under src/main/resources directory, with:
+
+[source.console]
+----
+cloud.aws:
+  credentials.accessKey: AWS Access Key
+  credentials.secretKey: AWS Secret Key
+----
+
+then run application and all functional test, attributes in application.properties file ALL can inject in.
+
 DynamoDB Local
 --------------
 
