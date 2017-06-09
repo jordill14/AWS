@@ -1,7 +1,6 @@
 package org.paradise.microservice.userpreference.security;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import com.google.common.base.Splitter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -17,12 +16,27 @@ import java.io.IOException;
 @Component
 public class SessionAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    /**
+     * Authenticate login rquest and redirec to target URL, e.g., http://localhost:8080/login?URL=/health.
+     *
+     * @param request
+     * @param response
+     * @param authentication
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
-        response.setStatus(HttpStatus.CREATED.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        String redirectUrl = Splitter.on("&").withKeyValueSeparator("=").split(request.getQueryString())
+                .entrySet().stream()
+                .filter(map -> "URL".equals(map.getKey()))
+                .findFirst()
+                .get()
+                .getValue();
+
+        response.sendRedirect(redirectUrl);
     }
 
 }
