@@ -16,5 +16,6 @@ out/
 classes/
 src/main/java/com/ebay/
 src/main/resources/ebay/schema/generated/
+src/main/resources/application.properties
 *.log
 *.log.gz
