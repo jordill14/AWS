@@ -16,6 +16,8 @@ import java.io.IOException;
 @Component
 public class SessionAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    private static final String UNIFORM_RESOURCE_LOCATOR = "URL";
+    
     /**
      * Authenticate login rquest and redirec to target URL, e.g., http://localhost:8080/login?URL=/health.
      *
@@ -31,7 +33,7 @@ public class SessionAuthenticationSuccessHandler implements AuthenticationSucces
 
         String redirectUrl = Splitter.on("&").withKeyValueSeparator("=").split(request.getQueryString())
                 .entrySet().stream()
-                .filter(map -> "URL".equals(map.getKey()))
+                .filter(map -> UNIFORM_RESOURCE_LOCATOR.equals(map.getKey()))
                 .findFirst()
                 .get()
                 .getValue();
