@@ -200,6 +200,8 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: dependencyVersionSpringBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: dependencyVersionSpringBoot
 
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: dependencyVersionSpringBoot
+
     compile(group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: dependencyVersionSpringCloudAws) {
         exclude group: 'com.amazonaws'
     }

@@ -16,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-//@EnableRedisHttpSession
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
