@@ -6,7 +6,7 @@ This is an example showing a complete solution that how DynamoDB works in Java 8
 Highlights like Hash Key, Range Key, DynamoDBMapper, Pagination solution in DynamoDB, and using Mock Server to mock DynamoDB table and item operations.
 
 Hot Reload Java classes without restarting the container
-========================================================
+--------------------------------------------------------
 
 Configure IntelliJ IDEA then start running command in one terminal window at first:
 
@@ -59,6 +59,18 @@ objc[34888]: Class JavaLaunchHelper is implemented in both /Library/Java/JavaVir
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v1.5.2.RELEASE)
 
+----
+
+Redis server
+------------
+
+Redis Server need to be running when run Health Check functional test. Run Redis Server and CLI by using Docker image:
+
+[source.console]
+----
+𝜆 docker run --name session -d redis
+
+𝜆 docker run -it --link session:redis --rm redis redis-cli -h redis -p 6379
 ----
 
 References
