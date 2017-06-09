@@ -102,7 +102,7 @@ Redis Server need to be running when run Health Check functional test. Run Redis
 
 [source.console]
 ----
-𝜆 docker run --name session -d redis
+𝜆 docker run --name session -p 6379:6379 -d redis
 
 𝜆 docker run -it --link session:redis --rm redis redis-cli -h redis -p 6379
 ----
