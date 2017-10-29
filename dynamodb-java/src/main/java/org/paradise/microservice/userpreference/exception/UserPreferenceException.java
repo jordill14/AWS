@@ -10,7 +10,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class UserPreferenceException extends RuntimeException {
 
+    public UserPreferenceException(Throwable throwable) {
+
+        super(throwable);
+    }
+
     public UserPreferenceException(String msg, Throwable t) {
+
         super(msg, t);
     }
 

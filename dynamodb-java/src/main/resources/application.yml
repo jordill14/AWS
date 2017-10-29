@@ -43,6 +43,8 @@ endpoints.jmx.unique-names: true
 #  port: 6379
 #  password: secret
 
+app.configuration.file: s3://sandie-box/application-configuration.json
+
 feature.foo: false
 feature.bar: true
 
