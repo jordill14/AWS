@@ -11,4 +11,6 @@ cloud.aws:
   region.static: ap-southeast-2
   sqs.queue.name: foreverAndEver
 
+app.configuration.file: "s3://sandie-box/application-configuration.json"
+
 #spring.session.store-type: none

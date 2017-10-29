@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javaslang.control.Try;
 import org.paradise.microservice.userpreference.domain.AppConfiguration;
 import org.paradise.microservice.userpreference.exception.UserPreferenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -16,12 +18,14 @@ import java.util.Objects;
 @Service
 public class S3BucketService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(S3BucketService.class);
+
     private AppConfiguration appConfiguration;
 
     private LocalDateTime lastReadDateTime;
 
     @Value("${app.configuration.file}")
-    private String sessionConfigurationFile;
+    private String appConfigurationFile;
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -35,6 +39,8 @@ public class S3BucketService {
         // Application Configuration is NULL or configuration has expired
         if (Objects.isNull(appConfiguration)
                 || LocalDateTime.now().isAfter(lastReadDateTime.plusSeconds(appConfiguration.getExpiryInSeconds()))) {
+            LOG.debug("Get application configuration file [{}] from S3 bucket", appConfigurationFile);
+
             appConfiguration = readAppConfigurationFromS3();
             lastReadDateTime = LocalDateTime.now();
         }
@@ -44,7 +50,7 @@ public class S3BucketService {
 
     private AppConfiguration readAppConfigurationFromS3() {
 
-        Resource resource = resourceLoader.getResource(sessionConfigurationFile);
+        Resource resource = resourceLoader.getResource(appConfigurationFile);
 
         return Try.of(() -> objectMapper.readValue(resource.getInputStream(), AppConfiguration.class))
                 .getOrElseThrow(UserPreferenceException::new);

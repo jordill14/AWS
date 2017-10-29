@@ -17,6 +17,8 @@ cloud.aws:
   region.static: ap-southeast-2
   sqs.queue.name: foreverAndEver
 
+app.configuration.file: "s3://sandie-box/application-configuration.json"
+
 ## AWS DynamoDB
 dynamo:
   endpoint: "http://localhost:8000"
@@ -43,7 +45,6 @@ endpoints.jmx.unique-names: true
 #  port: 6379
 #  password: secret
 
-app.configuration.file: s3://sandie-box/application-configuration.json
 
 feature.foo: false
 feature.bar: true
