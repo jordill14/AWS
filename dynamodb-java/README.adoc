@@ -5,6 +5,19 @@ This is an example showing a complete solution that how DynamoDB works in Java 8
 
 Highlights like Hash Key, Range Key, DynamoDBMapper, Pagination solution in DynamoDB, and using Mock Server to mock DynamoDB table and item operations.
 
+Build
+-----
+
+Note: Need to have a Redis server running to get a successful build.
+
+[source.console]
+----
+𝜆 env | grep GRADLE_HOME
+GRADLE_HOME=/usr/local/gradle-3.5.1
+
+𝜆 eval $GRADLE_HOME/bin/gradle --parallel --max-workers=2 clean build
+----
+
 Hot Reload Java classes without restarting the container
 --------------------------------------------------------
 
