@@ -1,0 +1,7 @@
+{
+  "whitelist": [
+    "jazz.jarbarker@spamgourmet.com",
+    "tester@paradise.org"
+  ],
+  "expiry_in_seconds": 60
+}

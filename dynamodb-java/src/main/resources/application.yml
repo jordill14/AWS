@@ -18,6 +18,11 @@ cloud.aws:
   sqs.queue.name: foreverAndEver
 
 app.configuration.file: "s3://sandie-box/application-configuration.json"
+#app.configuration.file: classpath:session-configuration.json
+
+## Disable the automatic stack name detection for the application. Otherwise on EC2 instance, com.amazonaws.services.cloudformation.model.AmazonCloudFormationException: Stack for i-0e382a97791a4242a does not exist
+## (Service: AmazonCloudFormation error raised
+cloud.aws.stack.auto: false
 
 ## AWS DynamoDB
 dynamo:
