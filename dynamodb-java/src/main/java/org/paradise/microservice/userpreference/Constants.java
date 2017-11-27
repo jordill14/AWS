@@ -24,6 +24,8 @@ public final class Constants {
 
     public static final String JMS_TOPIC = "mailbox";
 
+    public static final int CONNECT_TIMEOUT = 10000;
+
     private Constants() {
 
     }
