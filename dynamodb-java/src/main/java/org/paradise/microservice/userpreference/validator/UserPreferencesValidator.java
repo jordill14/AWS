@@ -7,7 +7,7 @@ import org.springframework.validation.Validator;
 
 import java.util.Objects;
 
-public class UserPreferencesValidator implements Validator{
+public class UserPreferencesValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
