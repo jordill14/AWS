@@ -54,7 +54,7 @@ public class UserPreferencesValidatorTest {
         assertThat("Incorrect error code", errors.getAllErrors().get(1).getCode(), is("value.empty.error"));
 
         assertThat("Incorrect error message",
-                
+
                 getMessage(errors.getAllErrors().get(0).getCode(), new Object[] {errors.getFieldErrors().get(0).getField()}),
                 is("An internal error has occurred. [preferences] field can't be NULL."));
         assertThat("Incorrect error message",
