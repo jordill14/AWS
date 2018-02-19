@@ -21,12 +21,12 @@ Note: Need to have a Redis server running to get a successful build. For example
 𝜆 docker run -it --link redis:redis redis redis-cli -h localhost -p 6379
 ----
 
-Kick off the build by running:
+Kick off the build by running with Gradle version 4.5.1:
 
 [source.console]
 ----
 𝜆 env | grep GRADLE_HOME
-GRADLE_HOME=/usr/local/gradle-3.5.1
+GRADLE_HOME=/usr/local/gradle-4.5.1
 
 𝜆 eval $GRADLE_HOME/bin/gradle --parallel --max-workers=2 clean build
 ----

@@ -25,6 +25,17 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.6.1"
+    id "org.springframework.boot" version "1.5.2.RELEASE"
+    // dependency check plugin
+    id "org.owasp.dependencycheck" version "3.1.1"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.5.1'
+}
+
 repositories {
     maven(nexus)
     jcenter()
@@ -46,21 +57,17 @@ apply plugin: 'war'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'jdepend'
-apply plugin: 'org.springframework.boot'
 apply plugin: 'maven'
 
 // code quality plugins
+// apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
-apply plugin: 'org.sonarqube'
 
 // False Gradle alarm on this plugin:
 //     The Task.leftShift(Closure) method has been deprecated and is scheduled to be removed in Gradle 5.0. Please use Task.doLast(Action) instead.
 //     https://github.com/gradle/gradle/issues/899
 // release plugins
 apply plugin: 'net.researchgate.release'
-
-// dependency check plugin
-apply plugin: 'org.owasp.dependencycheck'
 
 // Jaxb generator tool. Only available on https://jcenter.bintray.com
 apply plugin: 'com.github.jacobono.jaxb'
