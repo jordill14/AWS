@@ -8,7 +8,20 @@ Highlights like Hash Key, Range Key, DynamoDBMapper, Pagination solution in Dyna
 Build
 -----
 
-Note: Need to have a Redis server running to get a successful build.
+Note: Need to have a Redis server running to get a successful build. For example, a Redis server runs in Docker:
+
+[source.console]
+----
+𝜆 docker run --name redis -p 6379:6379 -d redis
+
+𝜆 docker ps -a
+  CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                    PORTS                                            NAMES
+  a0bca794a434        redis                       "docker-entrypoint.s…"   2 months ago        Up 3 minutes              0.0.0.0:6379->6379/tcp                           redis
+
+𝜆 docker run -it --link redis:redis redis redis-cli -h localhost -p 6379
+----
+
+Kick off the build by running:
 
 [source.console]
 ----
