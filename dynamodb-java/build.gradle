@@ -60,7 +60,7 @@ apply plugin: 'jdepend'
 apply plugin: 'maven'
 
 // code quality plugins
-// apply plugin: 'findbugs'
+//apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 
 // False Gradle alarm on this plugin:
