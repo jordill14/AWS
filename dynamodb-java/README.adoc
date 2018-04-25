@@ -8,7 +8,9 @@ Highlights like Hash Key, Range Key, DynamoDBMapper, Pagination solution in Dyna
 Build
 -----
 
-Note: Need to have a Redis server running to get a successful build. For example, a Redis server runs in Docker:
+Note: Because of functional test has dependencies on Redis Server and DynamoDB. Using MockServer _http://www.mock-server.com/_ can mock DynamoDB RESTful interface, but can't on proprietary Redis API. So need to have a Redis server running on localhost to get a successful build.
+
+For example, run a Redis server in Docker:
 
 [source.console]
 ----
