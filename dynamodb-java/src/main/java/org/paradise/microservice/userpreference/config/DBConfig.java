@@ -2,8 +2,8 @@ package org.paradise.microservice.userpreference.config;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import org.paradise.microservice.userpreference.service.dynamodb.DynamoDBTableCreateMode;
-import org.paradise.microservice.userpreference.service.dynamodb.DynamoDBTableUtils;
+import org.paradise.microservice.userpreference.service.dynamodb.DynamoDatabaseTableCreateMode;
+import org.paradise.microservice.userpreference.service.dynamodb.DynamoDatabaseTableUtils;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceIndexTable;
 import org.paradise.microservice.userpreference.service.dynamodb.UserPreferenceTable;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class DBConfig {
     @Value("${dynamo.throughput.write.units}")
     private long writeThroughput;
     @Value("${dynamo.creation.mode}")
-    private DynamoDBTableCreateMode mode;
+    private DynamoDatabaseTableCreateMode mode;
     @Value("${dynamo.creation.timeout}")
     private long tableTimeout;
     @Value("${dynamo.userpreference.table}")
@@ -49,16 +49,16 @@ public class DBConfig {
 
         LOG.info("Init DynamoDB table");
 
-        if (DynamoDBTableCreateMode.DROP == mode) {
+        if (DynamoDatabaseTableCreateMode.DROP == mode) {
             LOG.info("Drop DynamoDB Table {} and Index Table {} if exists", tableName, indexTableName);
-            DynamoDBTableUtils.deleteTableIfExists(amazonDynamoDBClient, tableName);
-            DynamoDBTableUtils.deleteTableIfExists(amazonDynamoDBClient, indexTableName);
+            DynamoDatabaseTableUtils.deleteTableIfExists(amazonDynamoDBClient, tableName);
+            DynamoDatabaseTableUtils.deleteTableIfExists(amazonDynamoDBClient, indexTableName);
         }
 
         LOG.info("Create DynamoDB Table {} and Index Table {} if NOT exists", tableName, indexTableName);
-        DynamoDBTableUtils.createTableIfNotExists(
+        DynamoDatabaseTableUtils.createTableIfNotExists(
                 amazonDynamoDBClient, tableName, UserPreferenceTable.class, readThroughput, writeThroughput);
-        DynamoDBTableUtils.createTableIfNotExists(
+        DynamoDatabaseTableUtils.createTableIfNotExists(
                 amazonDynamoDBClient, indexTableName, UserPreferenceIndexTable.class, readThroughput, writeThroughput);
     }
 
