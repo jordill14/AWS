@@ -36,6 +36,11 @@
         <appender-ref ref="FILE"/>
     </logger>
 
+    <!-- Log SOAP request / response -->
+    <logger name="org.springframework.ws.client.MessageTracing.sent" level="TRACE">
+        <appender-ref ref="FILE"/>
+    </logger>
+
     <root level="WARN">
         <appender-ref ref="FILE"/>
     </root>
