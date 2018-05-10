@@ -1,0 +1,9 @@
+## bootstrap.yml or bootstrap.properties are ONLY used if you are using Spring Cloud and your application's configuration
+## is stored on remote configuration server e.g. Spring Cloud Config Server
+##
+## Generally Bootstrap only contains configuration:
+##  * location of the configuration server - spring.cloud.config.uri
+##  * name of the application - spring.application.name
+##  * some encryption/decryption information
+
+spring.application.name: dynamodb-java
