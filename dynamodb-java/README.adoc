@@ -157,3 +157,4 @@ References
 - Spring Boot Actuator: Production-ready features, _https://github.com/spring-projects/spring-boot/blob/master/spring-boot-docs/src/main/asciidoc/production-ready-features.adoc_
 - Common Spring Boot properties, _http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html_
 - Ajax and JWT Authentication Tutorial: An example using Spring Boot, _http://www.svlada.com/jwt-token-authentication-with-spring-boot/_
+- Using Logback with Spring Boot, _https://springframework.guru/using-logback-spring-boot/_
