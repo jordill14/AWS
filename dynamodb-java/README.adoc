@@ -66,11 +66,11 @@ Total time: 5.918 secs
 Waiting for changes to input files of tasks... (ctrl-d to exit)
 ----
 
-Run application in another terminal window secondly:
+Run application in another terminal window secondly, with "local "profile and "boostrap" properties:
 
 [source.console]
 ----
-𝜆 env SPRING_PROFILES_ACTIVE=local $GRADLE_HOME/bin/gradle bootRun
+𝜆 env SPRING_PROFILES_ACTIVE=local SPRING_CONFIG_LOCATION=src/main/resources/bootstrap.properties $GRADLE_HOME/bin/gradle bootRun
 The plus(Iterable<FileCollection>) method and using the '+' operator in conjunction with an Iterable<FileCollection> object have been deprecated and are scheduled to be removed in 3.0.  Please use the plus(FileCollection) method or the '+' operator with a FileCollection object instead.
 :compileJava UP-TO-DATE
 :processResources UP-TO-DATE
