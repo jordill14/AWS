@@ -1,0 +1,22 @@
+{
+  "name": "kms-nodejs",
+  "version": "1.0.0",
+  "description": "An example how AWS KMS encrypt / decrypt work in Node.js",
+  "main": "index.js",
+  "scripts": {
+    "build-ts": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run server",
+    "server": "node dist/server.js",
+    "watch-node": "nodemon dist/server.js",
+    "watch-ts": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.19.1",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  }
+}

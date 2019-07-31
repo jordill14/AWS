@@ -1,0 +1,16 @@
+Simple Node.js / Typescript Starter
+===================================
+
+A simple Node.js / Typescript Starter template project.
+
+Requirements
+------------
+
+- Node.js
+- Typescript
+
+
+References
+----------
+
+- TypeScript Node Starter Simplified, _https://codeburst.io/typescript-node-starter-simplified-60c7b7d99e27_
