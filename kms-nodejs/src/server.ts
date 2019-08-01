@@ -3,6 +3,8 @@ import * as inert from "inert";
 
 import { UAParser } from 'ua-parser-js';
 
+import { encrypt, decrypt } from "./service/crypto";
+
 const server: hapi.Server = new hapi.Server({
   //  In a docker container, localhost may not be accessible outside of the container
   // and using host: '0.0.0.0' is needed.
@@ -26,7 +28,23 @@ server.route({
   method: 'GET',
   path: '/',
   handler: (request, h) => {
-    return 'Hello from Node.js';
+    let word = 'abcdefg013456789';
+
+    encrypt(Buffer.from(word, 'utf-8'))
+      .then(decrypt)
+      .then(plaintext => {
+        console.log('Encrypt / Decrypt word is: [' + plaintext.toString() + ']');
+      });
+
+    return 'Hello from AWS KMS encrypt / decrypt demo';
+  }
+});
+
+server.route({
+  method: 'GET',
+  path: '/favicon.ico',
+  handler: (request, h) => {
+    return h.file('./public/favicon.ico')
   }
 });
 
