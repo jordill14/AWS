@@ -1,13 +1,14 @@
-Simple Node.js / Typescript Starter
-===================================
+Simple AWS KMS encrypt / decrypt demo
+=====================================
 
-A simple Node.js / Typescript Starter template project.
+A simple AWS KMS encrypt / decrypt demo, based on Node.js / Typescript Starter template project.
 
 Requirements
 ------------
 
 - Node.js
 - Typescript
+- AWS Free Tier account
 
 
 References
