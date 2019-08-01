@@ -1,7 +1,7 @@
 Simple AWS KMS encrypt / decrypt demo
 =====================================
 
-A simple AWS KMS encrypt / decrypt demo, based on Node.js / Typescript Starter template project.
+A simple AWS KMS encrypt / decrypt demo, based on Node.js / Typescript Starter template project, runs on localhost environment.
 
 Requirements
 ------------
