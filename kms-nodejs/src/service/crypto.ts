@@ -5,8 +5,10 @@ import { awsAccessKeyId, awsSecretAccessKey, awsRegion, kmsKeyId } from '../conf
 
 export function encrypt(buffer: Buffer) {
   const kms = new AWS.KMS({
-    accessKeyId: awsAccessKeyId,
-    secretAccessKey: awsSecretAccessKey,
+    // after put aws_access_key_id, aws_secret_access_key, aws_session_token into AWS default profile
+    // accessKeyId: awsAccessKeyId,
+    // secretAccessKey: awsSecretAccessKey,
+    // sessionToken: awsSessionToken
     region: awsRegion
   });
 
@@ -31,8 +33,10 @@ export function encrypt(buffer: Buffer) {
 
 export function decrypt(buffer: Buffer) {
   const kms = new AWS.KMS({
-    accessKeyId: awsAccessKeyId,
-    secretAccessKey: awsSecretAccessKey,
+    // after put aws_access_key_id, aws_secret_access_key, aws_session_token into AWS default profile
+    // accessKeyId: awsAccessKeyId,
+    // secretAccessKey: awsSecretAccessKey,
+    // sessionToken: awsSessionToken
     region: awsRegion
   });
 

@@ -33,7 +33,7 @@ server.route({
     encrypt(Buffer.from(word, 'utf-8'))
       .then(decrypt)
       .then(plaintext => {
-        console.log('Encrypt / Decrypt word is: [' + plaintext.toString() + ']');
+        console.log('encrypt / decrypt word: [' + plaintext.toString() + ']');
       });
 
     return 'Hello from AWS KMS encrypt / decrypt demo';

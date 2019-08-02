@@ -2,6 +2,8 @@
 export const awsAccessKeyId: string = '[Access Key Id]';
 // AWS Secret Access Key of AWS user
 export const awsSecretAccessKey: string = '[Secret Access Key]';
+// AWS Session Token of AWS user
+export const awsSessionToken: string = '[Session Token]';
 
 // AWS region
 export const awsRegion: string = 'ap-southeast-2';
