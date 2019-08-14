@@ -1,0 +1,6 @@
+{
+    "AppSyncApiName": "serverlessblogapi",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "APIKeyExpirationEpoch": "-1"
+}

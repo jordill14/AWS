@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "gatsby-starter-blog-dev-20190814195422-authRole",
+            "UnauthRoleArn": "arn:aws:iam::241268233967:role/gatsby-starter-blog-dev-20190814195422-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::241268233967:role/gatsby-starter-blog-dev-20190814195422-authRole",
+            "Region": "ap-southeast-2",
+            "DeploymentBucketName": "gatsby-starter-blog-dev-20190814195422-deployment",
+            "UnauthRoleName": "gatsby-starter-blog-dev-20190814195422-unauthRole",
+            "StackName": "gatsby-starter-blog-dev-20190814195422",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:241268233967:stack/gatsby-starter-blog-dev-20190814195422/7dff14a0-be79-11e9-8d0a-06bb5908bd18"
+        }
+    }
+}
