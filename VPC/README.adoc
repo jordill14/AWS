@@ -1,0 +1,25 @@
+AWS VPC
+=======
+
+Step by step setting up VPC in AWS and allow SSH access to EC2 instance.
+
+image::VPC - VPC.png[VPC]
+
+image::VPC - Subnets.png[Subnets]
+
+image::VPC - Route Tables.png[Route Tables]
+
+image::VPC - Route Tables Subnets.png[Route Tables Subnets]
+
+image::VPC - Internet Gateways.png[Internet Gateways]
+
+image::VPC - DHCP.png[DHCP]
+
+image::VPC - Network ACLs.png[Network ACLs]
+
+image::VPC - Security Groups.png[Security Groups]
+
+image::VPC - EC2.png[EC2]
+
+References
+----------
