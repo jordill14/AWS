@@ -25,7 +25,7 @@ image::VPC - Internet Gateways.png[Internet Gateways]
 
 DHCP Options Sets
 
-image::VPC - DHCP.png[DHCP]
+image::VPC - DHCP.png[DHCP]
 
 Network ACLs
 
