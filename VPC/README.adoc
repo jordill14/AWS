@@ -33,11 +33,11 @@ image::VPC - Network ACLs.png[Network ACLs]
 
 Security Groups
 
-image::VPC - Security Groups.png[Security Groups]
+image::VPC - Security Groups.png[Security Groups]
 
 EC2 instance
 
-image::VPC - EC2.png[EC2]
+image::VPC - EC2.png[EC2]
 
 References
 ----------
