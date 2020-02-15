@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Events:
+        HelloWorldApi:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+      Policies:
+      - SNSPublishMessagePolicy:
+          TopicName:
+            Fn::GetAtt:
+            - HelloWorldTopic
+            - TopicName
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN:
+            Ref: HelloWorldTopic
+      CodeUri: s3://hello-sam-tub/82e90195a0d71e26edd7f77431f46915
+  HelloWorldTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+      - Endpoint: terrence.miao@paradise.org
+        Protocol: email
