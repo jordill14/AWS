@@ -15,6 +15,8 @@ image::GitFlow CI CD.png[GitFlow CI / CD]
 
 image::GitFlow Git Credentials.png[GitFlow Git Credentials]
 
+Commands to run:
+
 [source.console]
 ----
 𝜆 aws cloudformation create-stack --profile personal --stack-name GitFlowDemo --template-body https://s3.amazonaws.com/devops-workshop-0526-2051/git-flow/aws-devops-workshop-environment-setup.template --capabilities CAPABILITY_IAM
