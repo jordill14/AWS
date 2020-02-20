@@ -17,7 +17,6 @@
   },
 
   "Resources" : {
-
     "WebAppRepo" : {
       "Type" : "AWS::CodeCommit::Repository",
       "Properties" : {
@@ -53,31 +52,30 @@
         "PolicyName": "CodeBuildPolicy",
         "PolicyDocument": {
           "Statement": [
-              {
-                  "Effect": "Allow",
-                  "Resource": [
-                      { "Fn::Join" : ["", [ "arn:aws:logs:", { "Ref": "AWS::Region" } , ":", {"Ref" : "AWS::AccountId"}, ":log-group:/aws/codebuild/WebAppRepo" ]] },
-                      { "Fn::Join" : ["", [ "arn:aws:logs:", { "Ref": "AWS::Region" } , ":", {"Ref" : "AWS::AccountId"}, ":log-group:/aws/codebuild/WebAppRepo:*" ]] }
-
-                  ],
-                  "Action": [
-                      "logs:CreateLogGroup",
-                      "logs:CreateLogStream",
-                      "logs:PutLogEvents"
-                  ]
-              },
-              {
-                  "Effect": "Allow",
-                  "Resource": [
-                    { "Fn::Join" : ["", [ "arn:aws:s3:::cicd-demo-", { "Ref": "AWS::Region" } , "-", {"Ref" : "AWS::AccountId"} ]] },
-                    { "Fn::Join" : ["", [ "arn:aws:s3:::cicd-demo-", { "Ref": "AWS::Region" } , "-", {"Ref" : "AWS::AccountId"}, "/*"  ]]}
-                  ],
-                  "Action": [
-                      "s3:PutObject",
-                      "s3:GetObject",
-                      "s3:GetObjectVersion"
-                  ]
-              }
+            {
+              "Effect": "Allow",
+              "Resource": [
+                { "Fn::Join" : ["", [ "arn:aws:logs:", { "Ref": "AWS::Region" } , ":", {"Ref" : "AWS::AccountId"}, ":log-group:/aws/codebuild/WebAppRepo" ]] },
+                { "Fn::Join" : ["", [ "arn:aws:logs:", { "Ref": "AWS::Region" } , ":", {"Ref" : "AWS::AccountId"}, ":log-group:/aws/codebuild/WebAppRepo:*" ]] }
+              ],
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Resource": [
+                { "Fn::Join" : ["", [ "arn:aws:s3:::cicd-demo-", { "Ref": "AWS::Region" } , "-", {"Ref" : "AWS::AccountId"} ]] },
+                { "Fn::Join" : ["", [ "arn:aws:s3:::cicd-demo-", { "Ref": "AWS::Region" } , "-", {"Ref" : "AWS::AccountId"}, "/*"  ]]}
+              ],
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:GetObjectVersion"
+              ]
+            }
           ]
         },
         "Roles": [{ "Ref": "CodeBuildTrustRole"}]
@@ -117,7 +115,7 @@
               "Effect" : "Allow",
               "Principal" : {
                 "Service": [
-                    "codedeploy.amazonaws.com"
+                  "codedeploy.amazonaws.com"
                 ]
               },
               "Action" : "sts:AssumeRole"
@@ -213,7 +211,7 @@
               "Effect": "Allow"
             },
             {
-            "Action": [
+              "Action": [
                 "codecommit:GetBranch",
                 "codecommit:GetCommit",
                 "codecommit:UploadArchive",
@@ -243,35 +241,35 @@
             },
             {
               "Action": [
-                  "codebuild:StartBuild",
-                  "codebuild:StopBuild",
-                  "codebuild:BatchGet*",
-                  "codebuild:Get*",
-                  "codebuild:List*",
-                  "codecommit:GetBranch",
-                  "codecommit:GetCommit",
-                  "codecommit:GetRepository",
-                  "codecommit:ListBranches",
-                  "s3:GetBucketLocation",
-                  "s3:ListAllMyBuckets"
+                "codebuild:StartBuild",
+                "codebuild:StopBuild",
+                "codebuild:BatchGet*",
+                "codebuild:Get*",
+                "codebuild:List*",
+                "codecommit:GetBranch",
+                "codecommit:GetCommit",
+                "codecommit:GetRepository",
+                "codecommit:ListBranches",
+                "s3:GetBucketLocation",
+                "s3:ListAllMyBuckets"
               ],
               "Effect": "Allow",
               "Resource": "*"
-          },
-          {
+            },
+            {
               "Action": [
-                  "logs:GetLogEvents"
+                "logs:GetLogEvents"
               ],
               "Effect": "Allow",
               "Resource": "arn:aws:logs:*:*:log-group:/aws/codebuild/*:log-stream:*"
-          }
+            }
           ]
         },
         "Roles": [{ "Ref": "CodePipelineTrustRole"}]
       }
     },
 
-"DevPipeline": {
+    "DevPipeline": {
       "Type": "AWS::CodePipeline::Pipeline",
       "DependsOn" : "S3Bucket",
       "Properties": {
@@ -296,9 +294,9 @@
                   }
                 ],
                 "Configuration": {
-                      "RepositoryName": "WebAppRepo",
-                      "BranchName": {"Ref":"DevBranchName"},
-                      "PollForSourceChanges": false
+                  "RepositoryName": "WebAppRepo",
+                  "BranchName": {"Ref":"DevBranchName"},
+                  "PollForSourceChanges": false
                 },
                 "RunOrder": 1
               }
@@ -362,9 +360,9 @@
           "Location": { "Fn::Join" : ["", [ "cicd-demo-", { "Ref": "AWS::Region" } , "-", {"Ref" : "AWS::AccountId"} ]] }
         }
       }
-    },    
-    
-"MasterPipeline": {
+    },
+
+    "MasterPipeline": {
       "Type": "AWS::CodePipeline::Pipeline",
       "DependsOn" : "S3Bucket",
       "Properties": {
@@ -389,9 +387,9 @@
                   }
                 ],
                 "Configuration": {
-                      "RepositoryName": "WebAppRepo",
-                      "BranchName": {"Ref":"MainBranchName"},
-                      "PollForSourceChanges": false
+                  "RepositoryName": "WebAppRepo",
+                  "BranchName": {"Ref":"MainBranchName"},
+                  "PollForSourceChanges": false
                 },
                 "RunOrder": 1
               }
@@ -455,7 +453,7 @@
           "Location": { "Fn::Join" : ["", [ "cicd-demo-", { "Ref": "AWS::Region" } , "-", {"Ref" : "AWS::AccountId"} ]] }
         }
       }
-    },    
+    },
 
     "AmazonCloudWatchEventRoleDevPipeline": {
       "Type": "AWS::IAM::Role",
@@ -472,104 +470,104 @@
             "Action": "sts:AssumeRole"
           }]
         },
-    "Path": "/",
-    "Policies": [{
-      "PolicyName": "cwe-pipeline-execution",
-      "PolicyDocument": {
-        "Version": "2012-10-17",
-      "Statement": [{
-        "Effect": "Allow",
-        "Action": "codepipeline:StartPipelineExecution",
-        "Resource": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:codepipeline:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":WebAppRepo-develop"
-            ]
-          ]
-        }
-      }]
+      "Path": "/",
+      "Policies": [{
+        "PolicyName": "cwe-pipeline-execution",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": "codepipeline:StartPipelineExecution",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:codepipeline:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":WebAppRepo-develop"
+                  ]
+                ]
+              }
+            }]
+          }
+        }]
       }
-    }]            
-    }
-  },
+    },
 
     "AmazonCloudWatchEventRuleDevPipeline": {
       "Type": "AWS::Events::Rule",
       "Properties": {
-          "EventPattern": {
-              "source": [
-                  "aws.codecommit"
-              ],
-              "detail-type": [
-                  "CodeCommit Repository State Change"
-              ],
-              "resources": [
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "resources": [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:codecommit:",
                   {
-                      "Fn::Join": [
-                          "",
-                          [
-                              "arn:aws:codecommit:",
-                              {
-                                  "Ref": "AWS::Region"
-                              },
-                              ":",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              ":WebAppRepo"
-                          ]
-                      ]
-                  }
-              ],
-              "detail": {
-                  "event": [
-                      "referenceCreated",
-                      "referenceUpdated"
-                  ],
-                  "referenceType": [
-                      "branch"
-                  ],
-                  "referenceName": [
-                    {"Ref":"DevBranchName"}
-                  ]
-              }
-          },
-          "Targets": [
-              {
-                  "Arn": {
-                      "Fn::Join": [
-                          "",
-                          [
-                              "arn:aws:codepipeline:",
-                              {
-                                  "Ref": "AWS::Region"
-                              },
-                              ":",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              ":WebAppRepo-develop"
-                          ]
-                      ]
+                    "Ref": "AWS::Region"
                   },
-                  "RoleArn": {
-                      "Fn::GetAtt": [
-                          "AmazonCloudWatchEventRoleDevPipeline",
-                          "Arn"
-                      ]
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
                   },
-                  "Id": "codepipeline-AppPipeline"
-              }
-          ]
+                  ":WebAppRepo"
+                ]
+              ]
+            }
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ],
+            "referenceType": [
+              "branch"
+            ],
+            "referenceName": [
+              {"Ref":"DevBranchName"}
+            ]
+          }
+        },
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:codepipeline:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":WebAppRepo-develop"
+                ]
+              ]
+            },
+            "RoleArn": {
+                "Fn::GetAtt": [
+                  "AmazonCloudWatchEventRoleDevPipeline",
+                  "Arn"
+                ]
+            },
+            "Id": "codepipeline-AppPipeline"
+          }
+        ]
       }
     },
 
@@ -588,104 +586,104 @@
             "Action": "sts:AssumeRole"
           }]
         },
-    "Path": "/",
-    "Policies": [{
-      "PolicyName": "cwe-pipeline-execution",
-      "PolicyDocument": {
-        "Version": "2012-10-17",
-      "Statement": [{
-        "Effect": "Allow",
-        "Action": "codepipeline:StartPipelineExecution",
-        "Resource": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:codepipeline:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":WebAppRepo-master"
-            ]
-          ]
-        }
-      }]
+        "Path": "/",
+        "Policies": [{
+          "PolicyName": "cwe-pipeline-execution",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": "codepipeline:StartPipelineExecution",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:codepipeline:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":WebAppRepo-master"
+                  ]
+                ]
+              }
+            }]
+          }
+        }]
       }
-    }]            
-    }
-  },
+    },
 
     "AmazonCloudWatchEventRuleMasterPipeline": {
       "Type": "AWS::Events::Rule",
       "Properties": {
-          "EventPattern": {
-              "source": [
-                  "aws.codecommit"
-              ],
-              "detail-type": [
-                  "CodeCommit Repository State Change"
-              ],
-              "resources": [
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "resources": [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:codecommit:",
                   {
-                      "Fn::Join": [
-                          "",
-                          [
-                              "arn:aws:codecommit:",
-                              {
-                                  "Ref": "AWS::Region"
-                              },
-                              ":",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              ":WebAppRepo"
-                          ]
-                      ]
-                  }
-              ],
-              "detail": {
-                  "event": [
-                      "referenceCreated",
-                      "referenceUpdated"
-                  ],
-                  "referenceType": [
-                      "branch"
-                  ],
-                  "referenceName": [
-                    {"Ref":"MainBranchName"}
-                  ]
-              }
-          },
-          "Targets": [
-              {
-                  "Arn": {
-                      "Fn::Join": [
-                          "",
-                          [
-                              "arn:aws:codepipeline:",
-                              {
-                                  "Ref": "AWS::Region"
-                              },
-                              ":",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              ":WebAppRepo-master"
-                          ]
-                      ]
+                      "Ref": "AWS::Region"
                   },
-                  "RoleArn": {
-                      "Fn::GetAtt": [
-                          "AmazonCloudWatchEventRoleMasterPipeline",
-                          "Arn"
-                      ]
+                  ":",
+                  {
+                      "Ref": "AWS::AccountId"
                   },
-                  "Id": "codepipeline-AppPipeline"
-              }
-          ]
+                  ":WebAppRepo"
+                ]
+              ]
+            }
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ],
+            "referenceType": [
+              "branch"
+            ],
+            "referenceName": [
+              {"Ref":"MainBranchName"}
+            ]
+          }
+        },
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:codepipeline:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":WebAppRepo-master"
+                ]
+              ]
+            },
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "AmazonCloudWatchEventRoleMasterPipeline",
+                "Arn"
+              ]
+            },
+            "Id": "codepipeline-AppPipeline"
+          }
+        ]
       }
     },
 
@@ -704,6 +702,5 @@
   },
 
   "Outputs" : {
-
   }
 }
