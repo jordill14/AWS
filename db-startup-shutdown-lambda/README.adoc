@@ -143,3 +143,4 @@ References
 ----------
 
 - Saving money by automatically shutting down RDS instances using AWS Lambda and AWS SAM, _https://medium.com/hatchsoftware/saving-money-by-automatically-shutting-down-rds-instances-using-aws-lambda-and-aws-sam-925fd86592b5_
+- Setting up CI/CD for Lambda Functions using AWS CodePipeline, _https://medium.com/hatchsoftware/setting-up-ci-cd-for-lambda-functions-using-aws-codepipeline-880567769dde_
