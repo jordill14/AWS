@@ -144,3 +144,8 @@ References
 
 - Saving money by automatically shutting down RDS instances using AWS Lambda and AWS SAM, _https://medium.com/hatchsoftware/saving-money-by-automatically-shutting-down-rds-instances-using-aws-lambda-and-aws-sam-925fd86592b5_
 - Setting up CI/CD for Lambda Functions using AWS CodePipeline, _https://medium.com/hatchsoftware/setting-up-ci-cd-for-lambda-functions-using-aws-codepipeline-880567769dde_
+
+- AWS CDK setup for autoscaling with ec2 spot instances, _https://jelinden.fi/blog/aws-cdk-setup-for-autoscaling-with-ec2-spot-instances/xi7mNppZg_
+
+- AWS CDK Part 1: How to create a custom VPC, _https://github.com/TerrenceMiao/db-startup-shutdown-lambda.git_
+- AWS CDK Part 2: How to create an S3 Bucket, _https://blog.codecentric.de/en/2019/10/aws-cdk-part-2-s3-bucket/_
