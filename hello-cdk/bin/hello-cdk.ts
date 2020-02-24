@@ -2,23 +2,30 @@
 
 import 'source-map-support/register';
 
-import * as core from '@aws-cdk/core';
-
+import { App } from '@aws-cdk/core';
 import { VpcStack } from "../lib/vpc-stack";
+import { EC2Stack } from '../lib/ec2-stack';
 import { S3Stack } from '../lib/s3-stack';
 import { RDSStack } from "../lib/rds-stack";
 
-const app = new core.App();
+const app = new App();
 
+// VPC
 const vpcStack = new VpcStack(app, 'VpcStack')
 
-new S3Stack(app, 'S3Stack', {
-    vpc: vpcStack.vpc
+// EC2 Instance
+new EC2Stack(app, 'EC2Stack', {
+	vpc: vpcStack.vpc
 });
 
+// S3 Bucket
+new S3Stack(app, 'S3Stack', {
+  vpc: vpcStack.vpc
+});
 
+// RDS
 new RDSStack(app, 'RDSStack', {
-    vpc: vpcStack.vpc
+  vpc: vpcStack.vpc
 });
 
 app.synth();

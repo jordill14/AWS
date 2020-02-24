@@ -3,39 +3,39 @@ import { Bucket, BucketEncryption, BlockPublicAccess, StorageClass } from '@aws-
 import { Vpc, GatewayVpcEndpointAwsService } from '@aws-cdk/aws-ec2';
 
 export interface S3StackProps extends StackProps {
-    vpc: Vpc;
+  vpc: Vpc;
 }
 
 export class S3Stack extends Stack {
-    readonly reportBucket: Bucket;
+	readonly reportBucket: Bucket;
 
-    constructor(scope: Construct, id: string, props?: S3StackProps) {
-        super(scope, id, props);
+	constructor(scope: Construct, id: string, props?: S3StackProps) {
+		super(scope, id, props);
 
-        // props?.vpc.addGatewayEndpoint('s3-trigger-gateway', {
-        //     service: GatewayVpcEndpointAwsService.S3,
-        //     subnets: [{
-        //         subnetName: this._isolatedSubnetName1;
-        //     }]
-        // });
+		// props?.vpc.addGatewayEndpoint('s3-trigger-gateway', {
+		//   service: GatewayVpcEndpointAwsService.S3,
+		//   subnets: [{
+		//     subnetName: this._isolatedSubnetName1;
+		//   }]
+		// });
 
-        new Bucket(this, 'WorkingBucket', {
-            versioned: false,
-            bucketName: 'auto-aws-db-shutdown-deployment-artifacts-bucket',
-            encryption: BucketEncryption.KMS_MANAGED,
-            publicReadAccess: false,
-            blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-            removalPolicy: RemovalPolicy.DESTROY,
-            lifecycleRules: [{
-                expiration: Duration.days(365),
-                transitions: [{
-                    storageClass: StorageClass.INFREQUENT_ACCESS,
-                    transitionAfter: Duration.days(30)
-                }, {
-                    storageClass: StorageClass.GLACIER,
-                    transitionAfter: Duration.days(90)
-                }]
-            }]
-        });
-    }
+		new Bucket(this, 'WorkingBucket', {
+			versioned: false,
+			bucketName: 'auto-aws-db-shutdown-deployment-artifacts-bucket',
+			encryption: BucketEncryption.KMS_MANAGED,
+			publicReadAccess: false,
+			blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+			removalPolicy: RemovalPolicy.DESTROY,
+			lifecycleRules: [{
+				expiration: Duration.days(365),
+				transitions: [{
+					storageClass: StorageClass.INFREQUENT_ACCESS,
+					transitionAfter: Duration.days(30)
+				}, {
+					storageClass: StorageClass.GLACIER,
+					transitionAfter: Duration.days(90)
+				}]
+			}]
+		});
+	}
 }
