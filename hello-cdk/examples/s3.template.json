@@ -1,0 +1,18 @@
+{
+  "Resources": {
+    "WorkingBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "db-startup-shutdown-lambda-bucket",
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    }
+  }
+}

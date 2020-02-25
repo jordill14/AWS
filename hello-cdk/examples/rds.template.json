@@ -1,0 +1,75 @@
+{
+  "Resources": {
+    "MySQLSecret": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "GenerateSecretString": {
+          "PasswordLength": 16
+        }
+      }
+    },
+    "MySQLInstanceSubnetGroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for MySQL Instance database",
+        "SubnetIds": [
+          "subnet-0ed0369cd6a8c6dac",
+          "subnet-0602e2a7d12848158",
+          "subnet-0900c59c3768a165d"
+        ]
+      }
+    },
+    "MySQLInstanceSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for MySQL Instance database",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": "vpc-0d83888137eb9f66c"
+      }
+    },
+    "MySQLInstance": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBInstanceClass": "db.t2.micro",
+        "AllocatedStorage": "5",
+        "CopyTagsToSnapshot": true,
+        "DBInstanceIdentifier": "db-startup-shutdown-lambda-mysql",
+        "DBSubnetGroupName": {
+          "Ref": "MySQLInstanceSubnetGroup"
+        },
+        "DeletionProtection": false,
+        "Engine": "mysql",
+        "MasterUsername": "admin",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "MySQLSecret"
+              },
+              ":SecretString:::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "MySQLInstanceSecurityGroup",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    }
+  }
+}
