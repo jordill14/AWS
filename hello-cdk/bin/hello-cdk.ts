@@ -4,6 +4,7 @@ import 'source-map-support/register';
 
 import { App } from '@aws-cdk/core';
 import { VpcStack } from "../lib/vpc-stack";
+import { IAMStack } from "../lib/iam-stack";
 import { EC2Stack } from '../lib/ec2-stack';
 import { S3Stack } from '../lib/s3-stack';
 import { RDSStack } from "../lib/rds-stack";
@@ -12,6 +13,9 @@ const app = new App();
 
 // VPC
 const vpcStack = new VpcStack(app, 'VpcStack')
+
+// IAM
+new IAMStack(app, 'IAMStack');
 
 // EC2 Instance
 new EC2Stack(app, 'EC2Stack', {

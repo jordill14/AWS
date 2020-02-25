@@ -10,7 +10,7 @@ interface RDSStackProps extends StackProps {
 export class RDSStack extends Stack {
 
 	readonly secret: ISecret;
-	readonly mySQLInstance: DatabaseInstance;
+	readonly sqlInstance: DatabaseInstance;
 
 	constructor(scope: Construct, id: string, props: RDSStackProps) {
 		super(scope, id, props);
@@ -22,10 +22,10 @@ export class RDSStack extends Stack {
 		//   }
 		// });
 
-		this.secret = new Secret(this, "testdbSecret", {
+		this.secret = new Secret(this, "MySQL Password", {
 			generateSecretString: {
-				// generateStringKey: 'adminPwd12345678'
-				passwordLength: 16
+				passwordLength: 16,
+				excludeCharacters: '"@/\\;'
 			}
 		});
 
@@ -33,7 +33,7 @@ export class RDSStack extends Stack {
 		//   secretArn: 'arn:aws:secretsmanager:ap-southeast-2:123456789012:secret:testdbSecret-A9I8jp',
 		// });
 
-		this.mySQLInstance = new DatabaseInstance(this, 'MySQL Instance', {
+		this.sqlInstance = new DatabaseInstance(this, 'MySQL Instance', {
 			// engine: DatabaseInstanceEngine.MYSQL,
 			// instanceClass: InstanceType.of(InstanceClass.T2, InstanceSize.SMALL),
 			// vpc: props.vpc,
@@ -52,10 +52,12 @@ export class RDSStack extends Stack {
 			engine: DatabaseInstanceEngine.MYSQL,
 			instanceClass: InstanceType.of(InstanceClass.T2, InstanceSize.SMALL),
 			instanceIdentifier: 'testdb',
+			vpc: props.vpc,
+			vpcPlacement: { subnetType: SubnetType.ISOLATED },
+			allocatedStorage: 5,
 			masterUsername: 'admin',
 			masterUserPassword: this.secret.secretValue,
 			deletionProtection: false,
-			vpc: props.vpc
 		});
 	}
 }
