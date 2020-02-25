@@ -4,6 +4,7 @@
       "Type": "AWS::SecretsManager::Secret",
       "Properties": {
         "GenerateSecretString": {
+          "ExcludeCharacters": "\"@/\\;",
           "PasswordLength": 16
         }
       }
@@ -22,7 +23,31 @@
     "MySQLInstanceSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Security group for MySQL Instance database",
+        "GroupDescription": "Security group for MySQL database",
+        "GroupName": "mysql-access-sg",
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "10.215.246.160/27",
+            "Description": "Allow MySQL inbound traffic from AZ-2a",
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306
+          },
+          {
+            "CidrIp": "10.215.247.32/27",
+            "Description": "Allow MySQL inbound traffic from AZ-2b",
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306
+          },
+          {
+            "CidrIp": "10.215.247.160/27",
+            "Description": "Allow MySQL inbound traffic from AZ-2c",
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306
+          }
+        ],
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
