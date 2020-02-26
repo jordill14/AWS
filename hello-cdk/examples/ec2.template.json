@@ -58,12 +58,12 @@
                 {
                   "Ref": "AWS::Partition"
                 },
-                ":iam::aws:policy/AmazonSSMManagedInstanceCore"
+                ":iam::004385754915:policy/baseline-ssm-session-manager"
               ]
             ]
           }
         ],
-        "RoleName": "CustomAmazonSSMManagedInstanceCore"
+        "RoleName": "CustomSSMSessionManagerRole"
       }
     },
     "EC2InstanceInstanceProfile": {
