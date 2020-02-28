@@ -23,7 +23,7 @@ Startup and shutdown AWS RDS with Lambda
 Invoking app.lambdaHandler (nodejs12.x)
 
 Fetching lambci/lambda:nodejs12.x Docker container image......
-Mounting /Users/terrence/tmp/automatic-aws-db-shutdown/shut-down as /var/task:ro,delegated inside runtime container
+Mounting /Users/terrence/tmp/automatic-aws-db-shutdown/shutdown as /var/task:ro,delegated inside runtime container
 START RequestId: 8bdaa279-ebcf-1d90-3888-989318612005 Version: $LATEST
 END RequestId: 8bdaa279-ebcf-1d90-3888-989318612005
 REPORT RequestId: 8bdaa279-ebcf-1d90-3888-989318612005	Init Duration: 218.07 ms	Duration: 371.26 ms	Billed Duration: 400 ms	Memory Size: 128 MB	Max Memory Used: 59 MB
@@ -39,7 +39,7 @@ REPORT RequestId: 8bdaa279-ebcf-1d90-3888-989318612005	Init Duration: 218.07 ms	
 Invoking app.lambdaHandler (nodejs12.x)
 
 Fetching lambci/lambda:nodejs12.x Docker container image......
-Mounting /Users/terrence/tmp/automatic-aws-db-shutdown/start-up as /var/task:ro,delegated inside runtime container
+Mounting /Users/terrence/tmp/automatic-aws-db-shutdown/startup as /var/task:ro,delegated inside runtime container
 START RequestId: 5de4dd12-7003-13e7-97c8-0b1dcbf8fb09 Version: $LATEST
 END RequestId: 5de4dd12-7003-13e7-97c8-0b1dcbf8fb09
 REPORT RequestId: 5de4dd12-7003-13e7-97c8-0b1dcbf8fb09	Init Duration: 215.72 ms	Duration: 515.23 ms	Billed Duration: 600 ms	Memory Size: 128 MB	Max Memory Used: 58 MB
