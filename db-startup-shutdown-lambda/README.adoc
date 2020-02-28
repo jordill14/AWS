@@ -51,20 +51,20 @@ REPORT RequestId: 5de4dd12-7003-13e7-97c8-0b1dcbf8fb09	Init Duration: 215.72 ms	
 
 [console.source]
 ----
-𝜆 sam package --profile personal --template-file template.yaml --s3-bucket auto-aws-db-shutdown-deployment-artifacts-bucket --output-template-file outputTemplate.yaml
+𝜆 sam package --profile personal --template-file template.yaml --s3-bucket auto-aws-db-shutdown-deployment-artifacts-bucket --output-template-file db-startup-shutdown-lambda.template
 Uploading to ce5a18943bd319014d6e8c1bd3be393e  596 / 596.0  (100.00%)
 Uploading to d31b171ea79cbf6bca71eeb99f1acfaf  598 / 598.0  (100.00%)
 
-Successfully packaged artifacts and wrote output template to file outputTemplate.yaml.
+Successfully packaged artifacts and wrote output template to file db-startup-shutdown-lambda.template.
 Execute the following command to deploy the packaged template
-sam deploy --template-file /Users/terrence/tmp/automatic-aws-db-shutdown/outputTemplate.yaml --stack-name <YOUR STACK NAME>
+sam deploy --template-file /Users/terrence/tmp/automatic-aws-db-shutdown/db-startup-shutdown-lambda.template --stack-name <YOUR STACK NAME>
 ----
 
 - Deploy AWS Lambda functions
 
 [console.source]
 ----
-𝜆 sam deploy --profile personal --template-file outputTemplate.yaml --stack-name auto-db-shutdown-stack --capabilities CAPABILITY_IAM
+𝜆 sam deploy --profile personal --template-file db-startup-shutdown-lambda.template --stack-name auto-db-shutdown-stack --capabilities CAPABILITY_IAM
 
 	Deploying with following values
 	===============================
