@@ -1,0 +1,100 @@
+{
+  "Resources": {
+    "PostgreSQLSecret": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "GenerateSecretString": {
+          "ExcludeCharacters": "\"@/\\;",
+          "PasswordLength": 16
+        }
+      }
+    },
+    "PostgreSQLInstanceSubnetGroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for PostgreSQL Instance database",
+        "SubnetIds": [
+          "subnet-0ed0369cd6a8c6dac",
+          "subnet-0602e2a7d12848158",
+          "subnet-0900c59c3768a165d"
+        ]
+      }
+    },
+    "PostgreSQLInstanceSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for PostgreSQL database",
+        "GroupName": "postgresql-access-sg",
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "10.215.246.160/27",
+            "Description": "Allow PostgreSQL inbound traffic from AZ-2a",
+            "IpProtocol": "tcp",
+            "FromPort": 5432,
+            "ToPort": 5432
+          },
+          {
+            "CidrIp": "10.215.247.32/27",
+            "Description": "Allow PostgreSQL inbound traffic from AZ-2b",
+            "IpProtocol": "tcp",
+            "FromPort": 5432,
+            "ToPort": 5432
+          },
+          {
+            "CidrIp": "10.215.247.160/27",
+            "Description": "Allow PostgreSQL inbound traffic from AZ-2c",
+            "IpProtocol": "tcp",
+            "FromPort": 5432,
+            "ToPort": 5432
+          }
+        ],
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": "vpc-0d83888137eb9f66c"
+      }
+    },
+    "PostgreSQLInstance": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBInstanceClass": "db.t2.micro",
+        "AllocatedStorage": "5",
+        "CopyTagsToSnapshot": true,
+        "DBInstanceIdentifier": "db-startup-shutdown-lambda-postgresql",
+        "DBSubnetGroupName": {
+          "Ref": "PostgreSQLInstanceSubnetGroup"
+        },
+        "DeletionProtection": false,
+        "Engine": "postgres",
+        "MasterUsername": "master",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgreSQLSecret"
+              },
+              ":SecretString:::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "PostgreSQLInstanceSecurityGroup",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    }
+  }
+}
