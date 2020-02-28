@@ -22,7 +22,7 @@ Resources:
         Variables:
           SNS_TOPIC_ARN:
             Ref: HelloWorldTopic
-      CodeUri: s3://hello-sam-tub/82e90195a0d71e26edd7f77431f46915
+      CodeUri: s3://hello-world/hello-world-lambda.zip
   HelloWorldTopic:
     Type: AWS::SNS::Topic
     Properties:
