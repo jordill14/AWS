@@ -2,12 +2,18 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Automatic database shut down and start up Lambda functions
 Parameters:
-  InstanceID:
+  MySQLInstanceID:
     Type: String
-    Default: testdb
-  InstanceARN:
+    Default: db-startup-shutdown-lambda-mysql
+  MySQLInstanceARN:
     Type: String
-    Default: arn:aws:rds:ap-southeast-2:123456789012:db:testdb
+    Default: arn:aws:rds:ap-southeast-2:123456789012:db:db-startup-shutdown-lambda-mysql
+  PostgreSQLInstanceID:
+    Type: String
+    Default: db-startup-shutdown-lambda-postgresql
+  PostgreSQLInstanceARN:
+    Type: String
+    Default: arn:aws:rds:ap-southeast-2:123456789012:db:db-startup-shutdown-lambda-postgresql
 Globals:
   Function:
     MemorySize: 128
@@ -15,20 +21,21 @@ Globals:
     Handler: app.lambdaHandler
     Runtime: nodejs12.x
     Environment:
-      Variables: 
-        INSTANCE_IDENTIFIER: !Ref InstanceID
+      Variables:
+        - MYSQL_INSTANCE_IDENTIFIER: !Ref MySQLInstanceID
+        - POSTGRESQL_INSTANCE_IDENTIFIER: !Ref: PostgreSQLInstanceID
 Resources:
   DBShutDownFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: shut-down/
+      CodeUri: shutdown/
       Policies:
         - Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
                 - rds:StopDBInstance
-              Resource: !Ref InstanceARN
+              Resource: !Ref MySQLInstanceARN
       Events:
         Schedule1:
           Type: Schedule
@@ -40,14 +47,14 @@ Resources:
   DBStartUpFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: start-up/
+      CodeUri: startup/
       Policies:
         - Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
                 - rds:StartDBInstance
-              Resource: !Ref InstanceARN
+              Resource: !Ref MySQLInstanceARN
       Events:
         Schedule1:
           Type: Schedule
@@ -60,5 +67,5 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
-        - Endpoint: terrence.miao@auspost.com.au
+        - Endpoint: terrence.miao@paradise.org
           Protocol: email
