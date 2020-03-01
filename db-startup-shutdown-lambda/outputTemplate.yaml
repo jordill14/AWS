@@ -22,22 +22,24 @@ Globals:
     Runtime: nodejs12.x
     Environment:
       Variables:
-        MYSQL_INSTANCE_IDENTIFIER: !Ref MySQLInstanceID
-        POSTGRESQL_INSTANCE_IDENTIFIER: !Ref PostgreSQLInstanceID
+        MYSQL_INSTANCE_IDENTIFIER:
+          Ref: MySQLInstanceID
+        POSTGRESQL_INSTANCE_IDENTIFIER:
+          Ref: PostgreSQLInstanceID
 Resources:
   DBShutDownFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: shutdown/
+      CodeUri: s3://db-startup-shutdown-lambda-bucket/56a6acb1121c5833dac467101638b835
       Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - rds:StopDBInstance
-              Resource:
-                - !Ref MySQLInstanceARN
-                - !Ref PostgreSQLInstanceARN
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - rds:StopDBInstance
+          Resource:
+          - Ref: MySQLInstanceARN
+          - Ref: PostgreSQLInstanceARN
       Events:
         Schedule1:
           Type: Schedule
@@ -45,20 +47,21 @@ Resources:
             Schedule: cron(0 17 ? * MON-FRI *)
       DeadLetterQueue:
         Type: SNS
-        TargetArn: !Ref DBFunctionsDeadLetterTopic
+        TargetArn:
+          Ref: DBFunctionsDeadLetterTopic
   DBStartUpFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: startup/
+      CodeUri: s3://db-startup-shutdown-lambda-bucket/89924289a28e6e4d5306d1bf49ba13f5
       Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - rds:StartDBInstance
-              Resource:
-                - !Ref MySQLInstanceARN
-                - !Ref PostgreSQLInstanceARN
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - rds:StartDBInstance
+          Resource:
+          - Ref: MySQLInstanceARN
+          - Ref: PostgreSQLInstanceARN
       Events:
         Schedule1:
           Type: Schedule
@@ -66,10 +69,11 @@ Resources:
             Schedule: cron(0 5 ? * MON-FRI *)
       DeadLetterQueue:
         Type: SNS
-        TargetArn: !Ref DBFunctionsDeadLetterTopic
+        TargetArn:
+          Ref: DBFunctionsDeadLetterTopic
   DBFunctionsDeadLetterTopic:
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
-        - Endpoint: terrence.miao@paradise.org
-          Protocol: email
+      - Endpoint: terrence.miao@paradise.org
+        Protocol: email
