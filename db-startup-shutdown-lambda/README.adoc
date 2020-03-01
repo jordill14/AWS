@@ -139,6 +139,18 @@ Successfully created/updated stack - auto-db-shutdown-stack in None
 𝜆 aws s3 rb --profile personal s3://auto-aws-db-shutdown-deployment-artifacts-bucket --force
 ----
 
+- Settings
+
+** Project name: `db-startup-shutdown-lambda`
+** Code Pipeline name: `db-startup-shutdown-lambda-pipeline`
+** Code Pipeline role: `AWSCodePipelineServiceRole-db-startup-shutdown-lambda`
+** Code Build role: `codebuild-db-startup-shutdown-lambda-service-role`
+** Code Build policy: `codebuild-db-startup-shutdown-lambda-service-policy`
+** Cloudformation role: `cfn-db-startup-shutdown-lambda-pipeline-role`
+** Cloudformation policy: `cfn-db-startup-shutdown-lambda-pipeline-policy`
+** Cloudformation stack name: `db-startup-shutdown-lambda-stack`
+** Cloudformation changeset name: `db-startup-shutdown-lambda-changeset`
+
 References
 ----------
 
