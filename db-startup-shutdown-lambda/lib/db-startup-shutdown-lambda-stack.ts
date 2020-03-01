@@ -15,16 +15,20 @@ export class DbStartupShutdownLambdaStack extends Stack {
   public readonly shutDownLambdaCode: CfnParametersCode;
 
   constructor(scope: Construct, id: string, props: DbStartupShutdownLambdaStackProps) {
+
     super(scope, id, props);
 
     this.shutDownLambdaCode = Code.fromCfnParameters();
-    this.buildEventTriggeredLambdaFunction("DBShutDown", props.instanceId, props.instanceARN, "rds:StopDBInstance", "0 17 ? * MON-FRI *", this.shutDownLambdaCode);
+    this.buildEventTriggeredLambdaFunction("DBShutDown",
+      props.instanceId, props.instanceARN, "rds:StopDBInstance", "0 20 ? * MON-FRI *", this.shutDownLambdaCode);
 
     this.startUpLambdaCode = Code.fromCfnParameters();
-    this.buildEventTriggeredLambdaFunction("DBStartUp", props.instanceId, props.instanceARN, "rds:StartDBInstance", "0 5 ? * MON-FRI *", this.startUpLambdaCode);
+    this.buildEventTriggeredLambdaFunction("DBStartUp",
+      props.instanceId, props.instanceARN, "rds:StartDBInstance", "0 8 ? * MON-FRI *", this.startUpLambdaCode);
   }
 
   private buildEventTriggeredLambdaFunction(name: string, instanceId: string, instanceARN: string, instanceAction: string, scheduleExpression: string, lambdaCode: CfnParametersCode): Function {
+
     const lambdaFn = this.buildLambdaFunction(`${name}Function`, "app", lambdaCode, instanceId);
 
     const instanceActionPolicy = this.buildPolicy(instanceAction, instanceARN);
@@ -37,19 +41,21 @@ export class DbStartupShutdownLambdaStack extends Stack {
   }
 
   private buildLambdaFunction(id: string, filename: string, code: CfnParametersCode, instanceId: string): Function {
+
     return new Function(this, id, {
       code: code,
       handler: filename + '.lambdaHandler',
       memorySize: 128,
       timeout: Duration.seconds(300),
-      runtime: Runtime.NODEJS_10_X,
+      runtime: Runtime.NODEJS_12_X,
       environment: {
-          INSTANCE_IDENTIFIER: instanceId
+        INSTANCE_IDENTIFIER: instanceId
       }
     });
   }
 
   private buildPolicy(actionToAllow: string, instanceARN: string): PolicyStatement {
+
     return new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [actionToAllow],
@@ -58,6 +64,7 @@ export class DbStartupShutdownLambdaStack extends Stack {
   }
 
   private buildEventRule(id: string, scheduleExpression: string): Rule {
+
     return new Rule(this, id, {
       schedule: Schedule.expression('cron(' + scheduleExpression + ')')
     });

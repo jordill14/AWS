@@ -16,7 +16,7 @@ export class DbStartupShutdownLambdaPipelineStack extends Stack {
     super(scope, id, props);
 
     // Source action
-    const oauthToken = SecretValue.secretsManager('/db-startup-shutdown-lambda/github/token', {jsonField: 'github-token'});
+    const oauthToken = SecretValue.secretsManager('/db-startup-shutdown-lambda/github/token', { jsonField: 'github-token' });
     const githubRepo = StringParameter.valueFromLookup(this, "/db-startup-shutdown-lambda/github/repo");
     const githubOwner = StringParameter.valueFromLookup(this, "/db-startup-shutdown-lambda/github/owner");
 
@@ -32,8 +32,10 @@ export class DbStartupShutdownLambdaPipelineStack extends Stack {
 
     // Build actions
     const lambdaTemplateFileName = 'LambdaStack.template.json';
+
     const cdkBuild = this.createCDKBuildProject('CdkBuild', lambdaTemplateFileName);
     const cdkBuildOutput = new Artifact('CdkBuildOutput');
+
     const cdkBuildAction = new CodeBuildAction({
       actionName: 'CDK_Build',
       project: cdkBuild,
@@ -41,7 +43,7 @@ export class DbStartupShutdownLambdaPipelineStack extends Stack {
       outputs: [cdkBuildOutput],
     });
 
-    const shutDownLambdaBuild = this.createLambdaBuildProject('ShutDownLambdaBuild', 'lambda/shut-down');
+    const shutDownLambdaBuild = this.createLambdaBuildProject('ShutDownLambdaBuild', 'shutdown');
     const shutDownLambdaBuildOutput = new Artifact('ShutDownLambdaBuildOutput');
     const shutDownLambdaBuildAction = new CodeBuildAction({
       actionName: 'Shut_Down_Lambda_Build',
@@ -50,7 +52,7 @@ export class DbStartupShutdownLambdaPipelineStack extends Stack {
       outputs: [shutDownLambdaBuildOutput],
     });
 
-    const startUpLambdaBuild = this.createLambdaBuildProject('StartUpLambdaBuild', 'lambda/start-up');
+    const startUpLambdaBuild = this.createLambdaBuildProject('StartUpLambdaBuild', 'startup');
     const startUpLambdaBuildOutput = new Artifact('StartUpLambdaBuildOutput');
     const startUpLambdaBuildAction = new CodeBuildAction({
       actionName: 'Start_Up_Lambda_Build',
@@ -97,6 +99,7 @@ export class DbStartupShutdownLambdaPipelineStack extends Stack {
   }
 
   private createCDKBuildProject(id: string, templateFilename: string) {
+
     return new PipelineProject(this, id, {
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
@@ -122,7 +125,7 @@ export class DbStartupShutdownLambdaPipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: LinuxBuildImage.UBUNTU_14_04_NODEJS_10_1_0,
+        buildImage: LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1,
       },
     });
   }
@@ -139,7 +142,7 @@ export class DbStartupShutdownLambdaPipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: LinuxBuildImage.UBUNTU_14_04_NODEJS_10_1_0,
+        buildImage: LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1,
       },
     })
   }
