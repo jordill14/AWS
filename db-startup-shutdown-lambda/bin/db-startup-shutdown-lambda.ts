@@ -2,8 +2,8 @@ import 'source-map-support/register';
 
 import cdk = require('@aws-cdk/core');
 
-import { LambdaStack } from '../lib/db-startup-shutdown-lambda-stack';
-import { PipelineStack } from "../lib/db-startup-shutdown-lambda-pipeline-stack";
+import { DbStartupShutdownLambdaStack } from '../lib/db-startup-shutdown-lambda-stack';
+import { DbStartupShutdownLambdaPipelineStack } from "../lib/db-startup-shutdown-lambda-pipeline-stack";
 
 const accountId = '[YOUR AWS ACCOUNT ID]';
 const region = '[YOUR AWS REGION]';
@@ -11,7 +11,7 @@ const instanceId = '[YOUR RDS DB INSTANCE ID]';
 const instanceARN = '[YOUR RDS DB INSTANCE ARN';
 
 const app = new cdk.App();
-const lambdaStack = new LambdaStack(app, 'LambdaStack', {
+const lambdaStack = new DbStartupShutdownLambdaStack(app, 'Lambda Stack', {
   env: {
     account: accountId,
     region: region
@@ -20,7 +20,7 @@ const lambdaStack = new LambdaStack(app, 'LambdaStack', {
   instanceARN: instanceARN
 });
 
-new PipelineStack(app, 'PipelineStack', {
+new DbStartupShutdownLambdaPipelineStack(app, 'lambda Pipeline Stack', {
   env: {
     account: accountId,
     region: region

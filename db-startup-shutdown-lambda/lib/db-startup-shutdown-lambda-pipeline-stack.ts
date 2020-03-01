@@ -10,7 +10,7 @@ export interface DbStartupShutdownLambdaPipelineStackProps extends StackProps {
   readonly shutDownLambdaCode: CfnParametersCode;
 }
 
-export class PipelineStack extends Stack {
+export class DbStartupShutdownLambdaPipelineStack extends Stack {
 
   constructor(scope: Construct, id: string, props: DbStartupShutdownLambdaPipelineStackProps) {
     super(scope, id, props);
