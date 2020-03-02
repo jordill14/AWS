@@ -1,23 +1,29 @@
 import 'source-map-support/register';
 
-import cdk = require('@aws-cdk/core');
+import { App } from '@aws-cdk/core';
 
 import { DbStartupShutdownLambdaStack } from '../lib/db-startup-shutdown-lambda-stack';
 import { DbStartupShutdownLambdaPipelineStack } from "../lib/db-startup-shutdown-lambda-pipeline-stack";
 
-const accountId = '[YOUR AWS ACCOUNT ID]';
-const region = '[YOUR AWS REGION]';
-const instanceId = '[YOUR RDS DB INSTANCE ID]';
-const instanceARN = '[YOUR RDS DB INSTANCE ARN';
+const accountId = '123456789012';
+const region = 'ap-southeast-2';
 
-const app = new cdk.App();
+const mysqlInstanceId = 'db-startup-shutdown-lambda-mysql';
+const mysqlInstanceARN = 'arn:aws:rds:ap-southeast-2:123456789012:db:db-startup-shutdown-lambda-mysql';
+const postgresqlInstanceId = 'db-startup-shutdown-lambda-postgresql';
+const postgresqlInstanceARN = 'arn:aws:rds:ap-southeast-2:123456789012:db:db-startup-shutdown-lambda-postgresql';
+
+const app = new App();
+
 const lambdaStack = new DbStartupShutdownLambdaStack(app, 'LambdaStack', {
   env: {
     account: accountId,
     region: region
   },
-  instanceId: instanceId,
-  instanceARN: instanceARN
+  mysqlInstanceId: mysqlInstanceId,
+  mysqlInstanceARN: mysqlInstanceARN,
+  postgresqlInstanceId: postgresqlInstanceId,
+  postgresqlInstanceARN: postgresqlInstanceARN,
 });
 
 new DbStartupShutdownLambdaPipelineStack(app, 'LambdaPipelineStack', {
@@ -25,8 +31,8 @@ new DbStartupShutdownLambdaPipelineStack(app, 'LambdaPipelineStack', {
     account: accountId,
     region: region
   },
-  startUpLambdaCode: lambdaStack.startUpLambdaCode,
-  shutDownLambdaCode: lambdaStack.shutDownLambdaCode,
+  startUpLambdaCode: lambdaStack.startupLambdaCode,
+  shutDownLambdaCode: lambdaStack.shutdownLambdaCode,
 });
 
 app.synth();

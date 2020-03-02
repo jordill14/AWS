@@ -5,42 +5,50 @@ import { PolicyStatement, Effect } from "@aws-cdk/aws-iam";
 import { Rule, Schedule } from "@aws-cdk/aws-events";
 
 export interface DbStartupShutdownLambdaStackProps extends StackProps {
-  readonly instanceId: string;
-  readonly instanceARN: string;
+  readonly mysqlInstanceId: string;
+  readonly mysqlInstanceARN: string;
+  readonly postgresqlInstanceId: string;
+  readonly postgresqlInstanceARN: string;
 }
 
 export class DbStartupShutdownLambdaStack extends Stack {
 
-  public readonly startUpLambdaCode: CfnParametersCode;
-  public readonly shutDownLambdaCode: CfnParametersCode;
+  public readonly startupLambdaCode: CfnParametersCode;
+  public readonly shutdownLambdaCode: CfnParametersCode;
 
   constructor(scope: Construct, id: string, props: DbStartupShutdownLambdaStackProps) {
 
     super(scope, id, props);
 
-    this.shutDownLambdaCode = Code.fromCfnParameters();
+    this.shutdownLambdaCode = Code.fromCfnParameters();
     this.buildEventTriggeredLambdaFunction("DBShutDown",
-      props.instanceId, props.instanceARN, "rds:StopDBInstance", "0 20 ? * MON-FRI *", this.shutDownLambdaCode);
+      props.mysqlInstanceId, props.mysqlInstanceARN, props.postgresqlInstanceId, props.postgresqlInstanceARN,
+      "rds:StopDBInstance", "0 20 ? * MON-FRI *", this.shutdownLambdaCode);
 
-    this.startUpLambdaCode = Code.fromCfnParameters();
+    this.startupLambdaCode = Code.fromCfnParameters();
     this.buildEventTriggeredLambdaFunction("DBStartUp",
-      props.instanceId, props.instanceARN, "rds:StartDBInstance", "0 8 ? * MON-FRI *", this.startUpLambdaCode);
+      props.mysqlInstanceId, props.mysqlInstanceARN, props.postgresqlInstanceId, props.postgresqlInstanceARN,
+      "rds:StartDBInstance", "0 8 ? * MON-FRI *", this.startupLambdaCode);
   }
 
-  private buildEventTriggeredLambdaFunction(name: string, instanceId: string, instanceARN: string, instanceAction: string, scheduleExpression: string, lambdaCode: CfnParametersCode): Function {
+  private buildEventTriggeredLambdaFunction(name: string,
+    mysqlInstanceId: string, mysqlInstanceARN: string, postgresqlInstanceId: string, postgresqlInstanceARN: string,
+    instanceAction: string, scheduleExpression: string, lambdaCode: CfnParametersCode): Function {
 
-    const lambdaFn = this.buildLambdaFunction(`${name}Function`, "app", lambdaCode, instanceId);
+    const lambdaFunction = this.buildLambdaFunction(`${name}Function`, "app", lambdaCode,
+      mysqlInstanceId, postgresqlInstanceId);
 
-    const instanceActionPolicy = this.buildPolicy(instanceAction, instanceARN);
-    lambdaFn.addToRolePolicy(instanceActionPolicy);
+    const rolePolicy = this.buildRolePolicy(instanceAction, mysqlInstanceARN, postgresqlInstanceARN);
+    lambdaFunction.addToRolePolicy(rolePolicy);
 
     const eventRule = this.buildEventRule(`${name}Rule`, scheduleExpression);
-    eventRule.addTarget(new LambdaFunction(lambdaFn));
+    eventRule.addTarget(new LambdaFunction(lambdaFunction));
 
-    return lambdaFn;
+    return lambdaFunction;
   }
 
-  private buildLambdaFunction(id: string, filename: string, code: CfnParametersCode, instanceId: string): Function {
+  private buildLambdaFunction(id: string, filename: string, code: CfnParametersCode,
+    mysqlInstanceId: string, postgresqlInstanceId: string): Function {
 
     return new Function(this, id, {
       code: code,
@@ -49,17 +57,19 @@ export class DbStartupShutdownLambdaStack extends Stack {
       timeout: Duration.seconds(300),
       runtime: Runtime.NODEJS_12_X,
       environment: {
-        INSTANCE_IDENTIFIER: instanceId
+        MYSQL_INSTANCE_IDENTIFIER: mysqlInstanceId,
+        POSTGRESQL_INSTANCE_IDENTIFIER: postgresqlInstanceId
       }
     });
   }
 
-  private buildPolicy(actionToAllow: string, instanceARN: string): PolicyStatement {
+  private buildRolePolicy(actionToAllow: string,
+    mysqlInstanceARN: string, postgresqlInstanceARN: string): PolicyStatement {
 
     return new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [actionToAllow],
-      resources: [instanceARN]
+      resources: [mysqlInstanceARN, postgresqlInstanceARN]
     });
   }
 
