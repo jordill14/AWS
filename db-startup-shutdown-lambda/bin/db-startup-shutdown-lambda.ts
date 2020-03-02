@@ -11,7 +11,7 @@ const instanceId = '[YOUR RDS DB INSTANCE ID]';
 const instanceARN = '[YOUR RDS DB INSTANCE ARN';
 
 const app = new cdk.App();
-const lambdaStack = new DbStartupShutdownLambdaStack(app, 'Lambda Stack', {
+const lambdaStack = new DbStartupShutdownLambdaStack(app, 'LambdaStack', {
   env: {
     account: accountId,
     region: region
@@ -20,7 +20,7 @@ const lambdaStack = new DbStartupShutdownLambdaStack(app, 'Lambda Stack', {
   instanceARN: instanceARN
 });
 
-new DbStartupShutdownLambdaPipelineStack(app, 'lambda Pipeline Stack', {
+new DbStartupShutdownLambdaPipelineStack(app, 'LambdaPipelineStack', {
   env: {
     account: accountId,
     region: region
