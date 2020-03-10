@@ -1,0 +1,189 @@
+Resources:
+  DBShutDownFunctionServiceRoleB1BD55A0:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: LambdaStack/DBShutDownFunction/ServiceRole/Resource
+  DBShutDownFunctionServiceRoleDefaultPolicy849D01C4:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: rds:StopDBInstance
+            Effect: Allow
+            Resource:
+              - arn:aws:rds:ap-southeast-2:910235227582:db:db-startup-shutdown-lambda-mysql
+              - arn:aws:rds:ap-southeast-2:910235227582:db:db-startup-shutdown-lambda-postgresql
+        Version: "2012-10-17"
+      PolicyName: DBShutDownFunctionServiceRoleDefaultPolicy849D01C4
+      Roles:
+        - Ref: DBShutDownFunctionServiceRoleB1BD55A0
+    Metadata:
+      aws:cdk:path: LambdaStack/DBShutDownFunction/ServiceRole/DefaultPolicy/Resource
+  DBShutDownFunction30374006:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: DBShutDownFunctionLambdaSourceBucketNameParameter1F125AFB
+        S3Key:
+          Ref: DBShutDownFunctionLambdaSourceObjectKeyParameterAB86E0A2
+      Handler: app.lambdaHandler
+      Role:
+        Fn::GetAtt:
+          - DBShutDownFunctionServiceRoleB1BD55A0
+          - Arn
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          MYSQL_INSTANCE_IDENTIFIER: db-startup-shutdown-lambda-mysql
+          POSTGRESQL_INSTANCE_IDENTIFIER: db-startup-shutdown-lambda-postgresql
+      MemorySize: 128
+      Timeout: 300
+    DependsOn:
+      - DBShutDownFunctionServiceRoleDefaultPolicy849D01C4
+      - DBShutDownFunctionServiceRoleB1BD55A0
+    Metadata:
+      aws:cdk:path: LambdaStack/DBShutDownFunction/Resource
+  DBShutDownFunctionAllowEventRuleLambdaStackDBShutDownRuleA5574F3243D4E29C:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - DBShutDownFunction30374006
+          - Arn
+      Principal: events.amazonaws.com
+      SourceArn:
+        Fn::GetAtt:
+          - DBShutDownRule931DFB56
+          - Arn
+    Metadata:
+      aws:cdk:path: LambdaStack/DBShutDownFunction/AllowEventRuleLambdaStackDBShutDownRuleA5574F32
+  DBShutDownRule931DFB56:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: cron(0 20 ? * MON-FRI *)
+      State: ENABLED
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - DBShutDownFunction30374006
+              - Arn
+          Id: Target0
+    Metadata:
+      aws:cdk:path: LambdaStack/DBShutDownRule/Resource
+  DBStartUpFunctionServiceRoleF091D8E3:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: LambdaStack/DBStartUpFunction/ServiceRole/Resource
+  DBStartUpFunctionServiceRoleDefaultPolicyF1320FA6:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: rds:StartDBInstance
+            Effect: Allow
+            Resource:
+              - arn:aws:rds:ap-southeast-2:910235227582:db:db-startup-shutdown-lambda-mysql
+              - arn:aws:rds:ap-southeast-2:910235227582:db:db-startup-shutdown-lambda-postgresql
+        Version: "2012-10-17"
+      PolicyName: DBStartUpFunctionServiceRoleDefaultPolicyF1320FA6
+      Roles:
+        - Ref: DBStartUpFunctionServiceRoleF091D8E3
+    Metadata:
+      aws:cdk:path: LambdaStack/DBStartUpFunction/ServiceRole/DefaultPolicy/Resource
+  DBStartUpFunction263987D9:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: DBStartUpFunctionLambdaSourceBucketNameParameter493CEB79
+        S3Key:
+          Ref: DBStartUpFunctionLambdaSourceObjectKeyParameterB0FD657B
+      Handler: app.lambdaHandler
+      Role:
+        Fn::GetAtt:
+          - DBStartUpFunctionServiceRoleF091D8E3
+          - Arn
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          MYSQL_INSTANCE_IDENTIFIER: db-startup-shutdown-lambda-mysql
+          POSTGRESQL_INSTANCE_IDENTIFIER: db-startup-shutdown-lambda-postgresql
+      MemorySize: 128
+      Timeout: 300
+    DependsOn:
+      - DBStartUpFunctionServiceRoleDefaultPolicyF1320FA6
+      - DBStartUpFunctionServiceRoleF091D8E3
+    Metadata:
+      aws:cdk:path: LambdaStack/DBStartUpFunction/Resource
+  DBStartUpFunctionAllowEventRuleLambdaStackDBStartUpRuleEC81FBAB2D00F440:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - DBStartUpFunction263987D9
+          - Arn
+      Principal: events.amazonaws.com
+      SourceArn:
+        Fn::GetAtt:
+          - DBStartUpRule67BD65C2
+          - Arn
+    Metadata:
+      aws:cdk:path: LambdaStack/DBStartUpFunction/AllowEventRuleLambdaStackDBStartUpRuleEC81FBAB
+  DBStartUpRule67BD65C2:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: cron(0 8 ? * MON-FRI *)
+      State: ENABLED
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - DBStartUpFunction263987D9
+              - Arn
+          Id: Target0
+    Metadata:
+      aws:cdk:path: LambdaStack/DBStartUpRule/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=1.26.0,@aws-cdk/assets=1.26.0,@aws-cdk/aws-applicationautoscaling=1.26.0,@aws-cdk/aws-autoscaling=1.26.0,@aws-cdk/aws-autoscaling-common=1.26.0,@aws-cdk/aws-autoscaling-hooktargets=1.26.0,@aws-cdk/aws-cloudformation=1.26.0,@aws-cdk/aws-cloudwatch=1.26.0,@aws-cdk/aws-codebuild=1.26.0,@aws-cdk/aws-codepipeline=1.26.0,@aws-cdk/aws-codepipeline-actions=1.26.0,@aws-cdk/aws-ec2=1.26.0,@aws-cdk/aws-ecr=1.26.0,@aws-cdk/aws-ecr-assets=1.26.0,@aws-cdk/aws-ecs=1.26.0,@aws-cdk/aws-elasticloadbalancingv2=1.26.0,@aws-cdk/aws-events=1.26.0,@aws-cdk/aws-events-targets=1.26.0,@aws-cdk/aws-iam=1.26.0,@aws-cdk/aws-kms=1.26.0,@aws-cdk/aws-lambda=1.26.0,@aws-cdk/aws-logs=1.26.0,@aws-cdk/aws-s3=1.26.0,@aws-cdk/aws-s3-assets=1.26.0,@aws-cdk/aws-servicediscovery=1.26.0,@aws-cdk/aws-sns=1.26.0,@aws-cdk/aws-sns-subscriptions=1.26.0,@aws-cdk/aws-sqs=1.26.0,@aws-cdk/aws-ssm=1.26.0,@aws-cdk/core=1.26.0,@aws-cdk/cx-api=1.26.0,@aws-cdk/region-info=1.26.0,jsii-runtime=node.js/v12.13.1
+Parameters:
+  DBShutDownFunctionLambdaSourceBucketNameParameter1F125AFB:
+    Type: String
+  DBShutDownFunctionLambdaSourceObjectKeyParameterAB86E0A2:
+    Type: String
+  DBStartUpFunctionLambdaSourceBucketNameParameter493CEB79:
+    Type: String
+  DBStartUpFunctionLambdaSourceObjectKeyParameterB0FD657B:
+    Type: String
+

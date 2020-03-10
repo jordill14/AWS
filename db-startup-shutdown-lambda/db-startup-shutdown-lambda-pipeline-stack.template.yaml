@@ -1,0 +1,982 @@
+Resources:
+  BuildRoleB7C66CB2:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/Build/Role/Resource
+  BuildRoleDefaultPolicyEAC4E6D6:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :logs:ap-southeast-2:910235227582:log-group:/aws/codebuild/
+                    - Ref: Build45A36621
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :logs:ap-southeast-2:910235227582:log-group:/aws/codebuild/
+                    - Ref: Build45A36621
+                    - :*
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+              - s3:PutObject*
+              - s3:Abort*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: BuildRoleDefaultPolicyEAC4E6D6
+      Roles:
+        - Ref: BuildRoleB7C66CB2
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/Build/Role/DefaultPolicy/Resource
+  Build45A36621:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/nodejs:10.14.1
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+      ServiceRole:
+        Fn::GetAtt:
+          - BuildRoleB7C66CB2
+          - Arn
+      Source:
+        BuildSpec: >-
+          {
+            "version": "0.2",
+            "phases": {
+              "install": {
+                "commands": [
+                  "npm install",
+                  "npm install -g cdk"
+                ]
+              },
+              "build": {
+                "commands": [
+                  "npm run build",
+                  "npm run cdk synth -- -o dist"
+                ]
+              }
+            },
+            "artifacts": {
+              "base-directory": "dist",
+              "files": [
+                "LambdaStack.template.json"
+              ]
+            }
+          }
+        Type: CODEPIPELINE
+      EncryptionKey:
+        Fn::GetAtt:
+          - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+          - Arn
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/Build/Resource
+  ShutdownLambdaBuildRole802FA553:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/ShutdownLambdaBuild/Role/Resource
+  ShutdownLambdaBuildRoleDefaultPolicy857D5281:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :logs:ap-southeast-2:910235227582:log-group:/aws/codebuild/
+                    - Ref: ShutdownLambdaBuild9326338E
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :logs:ap-southeast-2:910235227582:log-group:/aws/codebuild/
+                    - Ref: ShutdownLambdaBuild9326338E
+                    - :*
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+              - s3:PutObject*
+              - s3:Abort*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: ShutdownLambdaBuildRoleDefaultPolicy857D5281
+      Roles:
+        - Ref: ShutdownLambdaBuildRole802FA553
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/ShutdownLambdaBuild/Role/DefaultPolicy/Resource
+  ShutdownLambdaBuild9326338E:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/nodejs:10.14.1
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+      ServiceRole:
+        Fn::GetAtt:
+          - ShutdownLambdaBuildRole802FA553
+          - Arn
+      Source:
+        BuildSpec: >-
+          {
+            "version": "0.2",
+            "artifacts": {
+              "base-directory": "shutdown",
+              "files": [
+                "*.js"
+              ]
+            }
+          }
+        Type: CODEPIPELINE
+      EncryptionKey:
+        Fn::GetAtt:
+          - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+          - Arn
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/ShutdownLambdaBuild/Resource
+  StartupLambdaBuildRole6475D410:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/StartupLambdaBuild/Role/Resource
+  StartupLambdaBuildRoleDefaultPolicyA04B91B3:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :logs:ap-southeast-2:910235227582:log-group:/aws/codebuild/
+                    - Ref: StartupLambdaBuildFE5711B9
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :logs:ap-southeast-2:910235227582:log-group:/aws/codebuild/
+                    - Ref: StartupLambdaBuildFE5711B9
+                    - :*
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+              - s3:PutObject*
+              - s3:Abort*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: StartupLambdaBuildRoleDefaultPolicyA04B91B3
+      Roles:
+        - Ref: StartupLambdaBuildRole6475D410
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/StartupLambdaBuild/Role/DefaultPolicy/Resource
+  StartupLambdaBuildFE5711B9:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/nodejs:10.14.1
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+      ServiceRole:
+        Fn::GetAtt:
+          - StartupLambdaBuildRole6475D410
+          - Arn
+      Source:
+        BuildSpec: >-
+          {
+            "version": "0.2",
+            "artifacts": {
+              "base-directory": "startup",
+              "files": [
+                "*.js"
+              ]
+            }
+          }
+        Type: CODEPIPELINE
+      EncryptionKey:
+        Fn::GetAtt:
+          - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+          - Arn
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/StartupLambdaBuild/Resource
+  dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87:
+    Type: AWS::KMS::Key
+    Properties:
+      KeyPolicy:
+        Statement:
+          - Action:
+              - kms:Create*
+              - kms:Describe*
+              - kms:Enable*
+              - kms:List*
+              - kms:Put*
+              - kms:Update*
+              - kms:Revoke*
+              - kms:Disable*
+              - kms:Get*
+              - kms:Delete*
+              - kms:ScheduleKeyDeletion
+              - kms:CancelKeyDeletion
+              - kms:GenerateDataKey
+              - kms:TagResource
+              - kms:UntagResource
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :iam::910235227582:root
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineRoleF60B30C8
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - StartupLambdaBuildRole6475D410
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - StartupLambdaBuildRole6475D410
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - ShutdownLambdaBuildRole802FA553
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - ShutdownLambdaBuildRole802FA553
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - BuildRoleB7C66CB2
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - BuildRoleB7C66CB2
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineDeployRole833B7F9D
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineDeployCodePipelineActionRole47B02DD0
+                  - Arn
+            Resource: "*"
+        Version: "2012-10-17"
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/ArtifactsBucketEncryptionKey/Resource
+  dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              KMSMasterKeyID:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                  - Arn
+              SSEAlgorithm: aws:kms
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/ArtifactsBucket/Resource
+  dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKeyAliasF4CE81D8:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: alias/codepipeline-lambdapipelinestackdbstartupshutdownlambdapipeline9048de21
+      TargetKeyId:
+        Fn::GetAtt:
+          - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+          - Arn
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/ArtifactsBucketEncryptionKeyAlias/Resource
+  dbstartupshutdownlambdapipelineRoleF60B30C8:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Role/Resource
+  dbstartupshutdownlambdapipelineRoleDefaultPolicy61B51497:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+              - s3:PutObject*
+              - s3:Abort*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineBuildStartupLambdaBuildCodePipelineActionRoleB7442153
+                - Arn
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineBuildShutdownLambdaBuildCodePipelineActionRoleA22EDA1D
+                - Arn
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineBuildCodePipelineActionRole6C038142
+                - Arn
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineDeployCodePipelineActionRole47B02DD0
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: dbstartupshutdownlambdapipelineRoleDefaultPolicy61B51497
+      Roles:
+        - Ref: dbstartupshutdownlambdapipelineRoleF60B30C8
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Role/DefaultPolicy/Resource
+  dbstartupshutdownlambdapipelineBD8B13CE:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - dbstartupshutdownlambdapipelineRoleF60B30C8
+          - Arn
+      Stages:
+        - Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: "1"
+              Configuration:
+                Owner: TerrenceMiao
+                Repo: db-startup-shutdown-lambda
+                Branch: master
+                OAuthToken: "{{resolve:secretsmanager:/db-startup-shutdown-lambda/github/token:SecretString:github-token::}}"
+                PollForSourceChanges: false
+              Name: Source
+              OutputArtifacts:
+                - Name: SourceOutput
+              RunOrder: 1
+          Name: Source
+        - Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName:
+                  Ref: StartupLambdaBuildFE5711B9
+              InputArtifacts:
+                - Name: SourceOutput
+              Name: Startup_Lambda_Build
+              OutputArtifacts:
+                - Name: StartupLambdaBuildOutput
+              RoleArn:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineBuildStartupLambdaBuildCodePipelineActionRoleB7442153
+                  - Arn
+              RunOrder: 1
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName:
+                  Ref: ShutdownLambdaBuild9326338E
+              InputArtifacts:
+                - Name: SourceOutput
+              Name: Shutdown_Lambda_Build
+              OutputArtifacts:
+                - Name: ShutdownLambdaBuildOutput
+              RoleArn:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineBuildShutdownLambdaBuildCodePipelineActionRoleA22EDA1D
+                  - Arn
+              RunOrder: 1
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName:
+                  Ref: Build45A36621
+              InputArtifacts:
+                - Name: SourceOutput
+              Name: Build
+              OutputArtifacts:
+                - Name: BuildOutput
+              RoleArn:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineBuildCodePipelineActionRole6C038142
+                  - Arn
+              RunOrder: 1
+          Name: Build
+        - Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: "1"
+              Configuration:
+                StackName: LambdaDeploymentStack
+                Capabilities: CAPABILITY_NAMED_IAM
+                RoleArn:
+                  Fn::GetAtt:
+                    - dbstartupshutdownlambdapipelineDeployRole833B7F9D
+                    - Arn
+                ParameterOverrides: '{"DBStartUpFunctionLambdaSourceBucketNameParameter493CEB79":{"Fn::GetArtifactAtt":["StartupLambdaBuildOutput","BucketName"]},"DBStartUpFunctionLambdaSourceObjectKeyParameterB0FD657B":{"Fn::GetArtifactAtt":["StartupLambdaBuildOutput","ObjectKey"]},"DBShutDownFunctionLambdaSourceBucketNameParameter1F125AFB":{"Fn::GetArtifactAtt":["ShutdownLambdaBuildOutput","BucketName"]},"DBShutDownFunctionLambdaSourceObjectKeyParameterAB86E0A2":{"Fn::GetArtifactAtt":["ShutdownLambdaBuildOutput","ObjectKey"]}}'
+                ActionMode: CREATE_UPDATE
+                TemplatePath: BuildOutput::LambdaStack.template.json
+              InputArtifacts:
+                - Name: StartupLambdaBuildOutput
+                - Name: ShutdownLambdaBuildOutput
+                - Name: BuildOutput
+              Name: Deploy
+              RoleArn:
+                Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineDeployCodePipelineActionRole47B02DD0
+                  - Arn
+              RunOrder: 1
+          Name: Deploy
+      ArtifactStore:
+        EncryptionKey:
+          Id:
+            Fn::GetAtt:
+              - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+              - Arn
+          Type: KMS
+        Location:
+          Ref: dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+        Type: S3
+      Name: db-startup-shutdown-lambda-pipeline
+    DependsOn:
+      - dbstartupshutdownlambdapipelineRoleDefaultPolicy61B51497
+      - dbstartupshutdownlambdapipelineRoleF60B30C8
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Resource
+  dbstartupshutdownlambdapipelineSourceWebhookResourceC0040080:
+    Type: AWS::CodePipeline::Webhook
+    Properties:
+      Authentication: GITHUB_HMAC
+      AuthenticationConfiguration:
+        SecretToken: "{{resolve:secretsmanager:/db-startup-shutdown-lambda/github/token:SecretString:github-token::}}"
+      Filters:
+        - JsonPath: $.ref
+          MatchEquals: refs/heads/{Branch}
+      TargetAction: Source
+      TargetPipeline:
+        Ref: dbstartupshutdownlambdapipelineBD8B13CE
+      TargetPipelineVersion: 1
+      RegisterWithThirdParty: true
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Source/Source/WebhookResource
+  dbstartupshutdownlambdapipelineBuildStartupLambdaBuildCodePipelineActionRoleB7442153:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :iam::910235227582:root
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Build/Startup_Lambda_Build/CodePipelineActionRole/Resource
+  dbstartupshutdownlambdapipelineBuildStartupLambdaBuildCodePipelineActionRoleDefaultPolicy6A61708F:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - codebuild:BatchGetBuilds
+              - codebuild:StartBuild
+              - codebuild:StopBuild
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - StartupLambdaBuildFE5711B9
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: dbstartupshutdownlambdapipelineBuildStartupLambdaBuildCodePipelineActionRoleDefaultPolicy6A61708F
+      Roles:
+        - Ref: dbstartupshutdownlambdapipelineBuildStartupLambdaBuildCodePipelineActionRoleB7442153
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Build/Startup_Lambda_Build/CodePipelineActionRole/DefaultPolicy/Resource
+  dbstartupshutdownlambdapipelineBuildShutdownLambdaBuildCodePipelineActionRoleA22EDA1D:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :iam::910235227582:root
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Build/Shutdown_Lambda_Build/CodePipelineActionRole/Resource
+  dbstartupshutdownlambdapipelineBuildShutdownLambdaBuildCodePipelineActionRoleDefaultPolicy67B407EE:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - codebuild:BatchGetBuilds
+              - codebuild:StartBuild
+              - codebuild:StopBuild
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - ShutdownLambdaBuild9326338E
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: dbstartupshutdownlambdapipelineBuildShutdownLambdaBuildCodePipelineActionRoleDefaultPolicy67B407EE
+      Roles:
+        - Ref: dbstartupshutdownlambdapipelineBuildShutdownLambdaBuildCodePipelineActionRoleA22EDA1D
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Build/Shutdown_Lambda_Build/CodePipelineActionRole/DefaultPolicy/Resource
+  dbstartupshutdownlambdapipelineBuildCodePipelineActionRole6C038142:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :iam::910235227582:root
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Build/Build/CodePipelineActionRole/Resource
+  dbstartupshutdownlambdapipelineBuildCodePipelineActionRoleDefaultPolicyF0B383A2:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - codebuild:BatchGetBuilds
+              - codebuild:StartBuild
+              - codebuild:StopBuild
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - Build45A36621
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: dbstartupshutdownlambdapipelineBuildCodePipelineActionRoleDefaultPolicyF0B383A2
+      Roles:
+        - Ref: dbstartupshutdownlambdapipelineBuildCodePipelineActionRole6C038142
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Build/Build/CodePipelineActionRole/DefaultPolicy/Resource
+  dbstartupshutdownlambdapipelineDeployCodePipelineActionRole47B02DD0:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :iam::910235227582:root
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Deploy/Deploy/CodePipelineActionRole/Resource
+  dbstartupshutdownlambdapipelineDeployCodePipelineActionRoleDefaultPolicy9254960B:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: iam:PassRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineDeployRole833B7F9D
+                - Arn
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+          - Action:
+              - cloudformation:CreateStack
+              - cloudformation:DescribeStack*
+              - cloudformation:GetStackPolicy
+              - cloudformation:GetTemplate*
+              - cloudformation:SetStackPolicy
+              - cloudformation:UpdateStack
+              - cloudformation:ValidateTemplate
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - :cloudformation:ap-southeast-2:910235227582:stack/LambdaDeploymentStack/*
+        Version: "2012-10-17"
+      PolicyName: dbstartupshutdownlambdapipelineDeployCodePipelineActionRoleDefaultPolicy9254960B
+      Roles:
+        - Ref: dbstartupshutdownlambdapipelineDeployCodePipelineActionRole47B02DD0
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Deploy/Deploy/CodePipelineActionRole/DefaultPolicy/Resource
+  dbstartupshutdownlambdapipelineDeployRole833B7F9D:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: cloudformation.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Deploy/Deploy/Role/Resource
+  dbstartupshutdownlambdapipelineDeployRoleDefaultPolicy7429A6F9:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dbstartupshutdownlambdapipelineArtifactsBucketB3624C5C
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - dbstartupshutdownlambdapipelineArtifactsBucketEncryptionKey26412A87
+                - Arn
+          - Action: "*"
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: dbstartupshutdownlambdapipelineDeployRoleDefaultPolicy7429A6F9
+      Roles:
+        - Ref: dbstartupshutdownlambdapipelineDeployRole833B7F9D
+    Metadata:
+      aws:cdk:path: LambdaPipelineStack/db-startup-shutdown-lambda-pipeline/Deploy/Deploy/Role/DefaultPolicy/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=1.26.0,@aws-cdk/assets=1.26.0,@aws-cdk/aws-applicationautoscaling=1.26.0,@aws-cdk/aws-autoscaling=1.26.0,@aws-cdk/aws-autoscaling-common=1.26.0,@aws-cdk/aws-autoscaling-hooktargets=1.26.0,@aws-cdk/aws-cloudformation=1.26.0,@aws-cdk/aws-cloudwatch=1.26.0,@aws-cdk/aws-codebuild=1.26.0,@aws-cdk/aws-codepipeline=1.26.0,@aws-cdk/aws-codepipeline-actions=1.26.0,@aws-cdk/aws-ec2=1.26.0,@aws-cdk/aws-ecr=1.26.0,@aws-cdk/aws-ecr-assets=1.26.0,@aws-cdk/aws-ecs=1.26.0,@aws-cdk/aws-elasticloadbalancingv2=1.26.0,@aws-cdk/aws-events=1.26.0,@aws-cdk/aws-events-targets=1.26.0,@aws-cdk/aws-iam=1.26.0,@aws-cdk/aws-kms=1.26.0,@aws-cdk/aws-lambda=1.26.0,@aws-cdk/aws-logs=1.26.0,@aws-cdk/aws-s3=1.26.0,@aws-cdk/aws-s3-assets=1.26.0,@aws-cdk/aws-servicediscovery=1.26.0,@aws-cdk/aws-sns=1.26.0,@aws-cdk/aws-sns-subscriptions=1.26.0,@aws-cdk/aws-sqs=1.26.0,@aws-cdk/aws-ssm=1.26.0,@aws-cdk/core=1.26.0,@aws-cdk/cx-api=1.26.0,@aws-cdk/region-info=1.26.0,jsii-runtime=node.js/v12.13.1
+
