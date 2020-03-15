@@ -34,9 +34,9 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: DBShutDownFunctionLambdaSourceBucketNameParameter
+          Ref: DBShutDownFunctionLambdaSourceBucketNameParameter1F125AFB
         S3Key:
-          Ref: DBShutDownFunctionLambdaSourceObjectKeyParameter
+          Ref: DBShutDownFunctionLambdaSourceObjectKeyParameterAB86E0A2
       Handler: app.lambdaHandler
       Role:
         Fn::GetAtt:
@@ -113,9 +113,9 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: DBStartUpFunctionLambdaSourceBucketNameParameter
+          Ref: DBStartUpFunctionLambdaSourceBucketNameParameter493CEB79
         S3Key:
-          Ref: DBStartUpFunctionLambdaSourceObjectKeyParameter
+          Ref: DBStartUpFunctionLambdaSourceObjectKeyParameterB0FD657B
       Handler: app.lambdaHandler
       Role:
         Fn::GetAtt:
@@ -156,16 +156,16 @@ Resources:
               - Arn
           Id: Target0
 Parameters:
-  DBShutDownFunctionLambdaSourceBucketNameParameter:
+  DBShutDownFunctionLambdaSourceBucketNameParameter1F125AFB:
     Type: String
     Default: db-startup-shutdown-lambda-bucket
-  DBShutDownFunctionLambdaSourceObjectKeyParameter:
+  DBShutDownFunctionLambdaSourceObjectKeyParameterAB86E0A2:
     Type: String
     Default: shutdown.zip
-  DBStartUpFunctionLambdaSourceBucketNameParameter:
+  DBStartUpFunctionLambdaSourceBucketNameParameter493CEB79:
     Type: String
     Default: db-startup-shutdown-lambda-bucket
-  DBStartUpFunctionLambdaSourceObjectKeyParameter:
+  DBStartUpFunctionLambdaSourceObjectKeyParameterB0FD657B:
     Type: String
     Default: startup.zip
 

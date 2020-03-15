@@ -663,13 +663,13 @@ Resources:
                 Provider: CloudFormation
                 Version: "1"
               Configuration:
-                StackName: LambdaDeploymentStack
+                StackName: db-startup-shutdown-lambda
                 Capabilities: CAPABILITY_NAMED_IAM
                 RoleArn:
                   Fn::GetAtt:
                     - dbstartupshutdownlambdapipelineDeployRole
                     - Arn
-                ParameterOverrides: '{"DBStartUpFunctionLambdaSourceBucketNameParameter":{"Fn::GetArtifactAtt":["StartupLambdaBuildOutput","BucketName"]},"DBStartUpFunctionLambdaSourceObjectKeyParameter":{"Fn::GetArtifactAtt":["StartupLambdaBuildOutput","ObjectKey"]},"DBShutDownFunctionLambdaSourceBucketNameParameter":{"Fn::GetArtifactAtt":["ShutdownLambdaBuildOutput","BucketName"]},"DBShutDownFunctionLambdaSourceObjectKeyParameter":{"Fn::GetArtifactAtt":["ShutdownLambdaBuildOutput","ObjectKey"]}}'
+                ParameterOverrides: '{"DBStartUpFunctionLambdaSourceBucketNameParameter493CEB79":{"Fn::GetArtifactAtt":["StartupLambdaBuildOutput","BucketName"]},"DBStartUpFunctionLambdaSourceObjectKeyParameterB0FD657B":{"Fn::GetArtifactAtt":["StartupLambdaBuildOutput","ObjectKey"]},"DBShutDownFunctionLambdaSourceBucketNameParameter1F125AFB":{"Fn::GetArtifactAtt":["ShutdownLambdaBuildOutput","BucketName"]},"DBShutDownFunctionLambdaSourceObjectKeyParameterAB86E0A2":{"Fn::GetArtifactAtt":["ShutdownLambdaBuildOutput","ObjectKey"]}}'
                 ActionMode: CREATE_UPDATE
                 TemplatePath: BuildOutput::LambdaStack.template.json
               InputArtifacts:
@@ -873,7 +873,7 @@ Resources:
                 - ""
                 - - "arn:"
                   - Ref: AWS::Partition
-                  - :cloudformation:ap-southeast-2:004385754915:stack/LambdaDeploymentStack/*
+                  - :cloudformation:ap-southeast-2:004385754915:stack/db-startup-shutdown-lambda/*
         Version: "2012-10-17"
       PolicyName: dbstartupshutdownlambdapipelineDeployCodePipelineActionRoleDefaultPolicy
       Roles:
