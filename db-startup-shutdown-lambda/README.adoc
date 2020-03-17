@@ -179,7 +179,7 @@ Set up Github repo in Parameter Store in AWS Systems Manager.
 [console.source]
 ----
 𝜆 aws ssm put-parameter --profile personal --name /db-startup-shutdown-lambda/github/repo  --description "Github Repository Name" --type String --value db-startup-shutdown-lambda
-𝜆 aws ssm put-parameter --profile personal --name /db-startup-shutdown-lambda/github/owner --description "Github Owner Name"      --type String --value TerrenceMiao
+𝜆 aws ssm put-parameter --profile personal --name /db-startup-shutdown-lambda/github/owner --description "Github Owner Name"      --type String --value BillSalvor
 ----
 
 Add Github Token in AWS Secret Manager.
@@ -545,7 +545,7 @@ References
 
 - AWS CDK setup for autoscaling with ec2 spot instances, _https://jelinden.fi/blog/aws-cdk-setup-for-autoscaling-with-ec2-spot-instances/xi7mNppZg_
 
-- AWS CDK Part 1: How to create a custom VPC, _https://github.com/TerrenceMiao/db-startup-shutdown-lambda.git_
+- AWS CDK Part 1: How to create a custom VPC, _https://github.com/BillSalvor/db-startup-shutdown-lambda.git_
 - AWS CDK Part 2: How to create an S3 Bucket, _https://blog.codecentric.de/en/2019/10/aws-cdk-part-2-s3-bucket/_
 - AWS CDK Part 3: How to create an RDS instance, _https://blog.codecentric.de/en/2019/11/aws-cdk-part-3-how-to-create-an-rds-instance/_
 - AWS CDK Part 4: How to create Lambdas, _https://blog.codecentric.de/en/2019/11/aws-cdk-part-4-create-lambdas/_
