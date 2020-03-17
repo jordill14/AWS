@@ -590,7 +590,7 @@ Resources:
                 Provider: GitHub
                 Version: "1"
               Configuration:
-                Owner: TerrenceMiao
+                Owner: BillSalvor
                 Repo: db-startup-shutdown-lambda
                 Branch: master
                 OAuthToken: "{{resolve:secretsmanager:/db-startup-shutdown-lambda/github/token:SecretString:github-token::}}"
