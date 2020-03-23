@@ -25,6 +25,10 @@ Resources:
             Resource:
               - arn:aws:rds:ap-southeast-2:004385754915:db:db-startup-shutdown-lambda-mysql
               - arn:aws:rds:ap-southeast-2:004385754915:db:db-startup-shutdown-lambda-postgresql
+          - Action: sns:Publish
+            Effect: Allow
+            Resource:
+              - arn:aws:sns:ap-southeast-2:004385754915:db-startup-shutdown-lambda-dlq-DBFunctionsDeadLetterTopic
         Version: "2012-10-17"
       PolicyName: DBShutDownFunctionServiceRoleDefaultPolicy
       Roles:
@@ -49,6 +53,8 @@ Resources:
           POSTGRESQL_INSTANCE_IDENTIFIER: db-startup-shutdown-lambda-postgresql
       MemorySize: 128
       Timeout: 300
+      DeadLetterConfig:
+        TargetArn: arn:aws:sns:ap-southeast-2:004385754915:db-startup-shutdown-lambda-dlq-DBFunctionsDeadLetterTopic
     DependsOn:
       - DBShutDownFunctionServiceRoleDefaultPolicy
       - DBShutDownFunctionServiceRole
@@ -68,7 +74,7 @@ Resources:
   DBShutDownRule:
     Type: AWS::Events::Rule
     Properties:
-      ScheduleExpression: cron(0 20 ? * MON-FRI *)
+      ScheduleExpression: cron(0 23 ? * MON-FRI *)
       State: ENABLED
       Targets:
         - Arn:
@@ -102,12 +108,14 @@ Resources:
             Resource:
               - arn:aws:rds:ap-southeast-2:004385754915:db:db-startup-shutdown-lambda-mysql
               - arn:aws:rds:ap-southeast-2:004385754915:db:db-startup-shutdown-lambda-postgresql
+          - Action: sns:Publish
+            Effect: Allow
+            Resource:
+              - arn:aws:sns:ap-southeast-2:004385754915:db-startup-shutdown-lambda-dlq-DBFunctionsDeadLetterTopic
         Version: "2012-10-17"
       PolicyName: DBStartUpFunctionServiceRoleDefaultPolicy
       Roles:
         - Ref: DBStartUpFunctionServiceRole
-    Metadata:
-      aws:cdk:path: LambdaStack/DBStartUpFunction/ServiceRole/DefaultPolicy/Resource
   DBStartUpFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -128,6 +136,8 @@ Resources:
           POSTGRESQL_INSTANCE_IDENTIFIER: db-startup-shutdown-lambda-postgresql
       MemorySize: 128
       Timeout: 300
+      DeadLetterConfig:
+        TargetArn: arn:aws:sns:ap-southeast-2:004385754915:db-startup-shutdown-lambda-dlq-DBFunctionsDeadLetterTopic
     DependsOn:
       - DBStartUpFunctionServiceRoleDefaultPolicy
       - DBStartUpFunctionServiceRole
@@ -147,7 +157,7 @@ Resources:
   DBStartUpRule:
     Type: AWS::Events::Rule
     Properties:
-      ScheduleExpression: cron(0 8 ? * MON-FRI *)
+      ScheduleExpression: cron(0 1 ? * MON-FRI *)
       State: ENABLED
       Targets:
         - Arn:
@@ -168,4 +178,3 @@ Parameters:
   DBStartUpFunctionLambdaSourceObjectKeyParameterB0FD657B:
     Type: String
     Default: startup.zip
-
