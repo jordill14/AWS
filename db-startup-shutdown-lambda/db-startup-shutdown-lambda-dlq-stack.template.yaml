@@ -1,0 +1,8 @@
+Resources:
+  DBFunctionsDeadLetterTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: db-startup-shutdown-lambda-dlq-DBFunctionsDeadLetterTopic
+      Subscription:
+      - Endpoint: terrence.miao@auspost.com.au
+        Protocol: email
