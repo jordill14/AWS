@@ -29,8 +29,15 @@
             ]
           }
         ],
-        "RoleName": "db-startup-shutdown-lambd-dbstartupshutdownlambdap-1UCLXS34OY7MT"
+        "RoleName": {
+          "Ref": "RoleNameRef"
+        }
       }
+    }
+  },
+  "Parameters": {
+    "RoleNameRef": {
+      "Type": "String"
     }
   }
 }
