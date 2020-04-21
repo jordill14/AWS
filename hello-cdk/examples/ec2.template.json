@@ -4,7 +4,7 @@
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Allow ssh access to ec2 instances from restricted places",
-        "GroupName": "ssh-limited-access-sg",
+        "GroupName": "ssh-limited-access-sg-web-tier",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -14,7 +14,7 @@
         ],
         "SecurityGroupIngress": [
           {
-            "CidrIp": "155.144.114.41/32",
+            "CidrIp": "59.102.44.38/32",
             "Description": "allow limited ssh access",
             "FromPort": 22,
             "IpProtocol": "tcp",
@@ -63,7 +63,7 @@
             ]
           }
         ],
-        "RoleName": "CustomSSMSessionManagerRole"
+        "RoleName": "CustomSSMSessionManagerRoleWebTier"
       }
     },
     "EC2InstanceInstanceProfile": {
@@ -102,11 +102,11 @@
             ]
           }
         ],
-        "SubnetId": "subnet-0d71ad120c2aeb9b4",
+        "SubnetId": "subnet-034d3b054d9e20005",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "EC2Stack/EC2 Instance"
+            "Value": "EC2 Instance (Web Tier)"
           }
         ],
         "UserData": {
