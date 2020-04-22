@@ -4,7 +4,7 @@
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Allow ssh access to ec2 instances from restricted places",
-        "GroupName": "ssh-limited-access-sg-web-tier",
+        "GroupName": "ssh-limited-access-sg-app-tier",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -21,7 +21,7 @@
             "ToPort": 22
           }
         ],
-        "VpcId": "vpc-0d83888137eb9f66c"
+        "VpcId": "vpc-01618482ba949bb9e"
       }
     },
     "IAMRole": {
@@ -58,12 +58,12 @@
                 {
                   "Ref": "AWS::Partition"
                 },
-                ":iam::004385754915:policy/baseline-ssm-session-manager"
+                ":iam::254184710243:policy/baseline-ssm-session-manager"
               ]
             ]
           }
         ],
-        "RoleName": "CustomSSMSessionManagerRoleWebTier"
+        "RoleName": "CustomSSMSessionManagerRoleAppTier"
       }
     },
     "EC2InstanceInstanceProfile": {
@@ -102,15 +102,29 @@
             ]
           }
         ],
-        "SubnetId": "subnet-034d3b054d9e20005",
+        "SubnetId": "subnet-0450f36923a5ca9cd",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "EC2 Instance (Web Tier)"
+            "Value": "EC2 Instance (App Tier)"
           }
         ],
         "UserData": {
-          "Fn::Base64": "#!/bin/bash"
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -xe\n",
+                "\n",
+                "useradd -g wheel SSM_pwr_user\n",
+                "echo \"SSM_pwr_user ALL=(ALL) NOPASSWD:ALL\" > /etc/sudoers.d/SSM_pwr_user\n",
+                "\n",
+                "yum install -y nmap-ncat.x86_64\n",
+                "yum install -y nmap.x86_64\n",
+                "\n"
+              ]
+            ]
+          }
         }
       },
       "DependsOn": [
