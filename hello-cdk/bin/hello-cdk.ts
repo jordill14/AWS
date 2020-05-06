@@ -8,6 +8,7 @@ import { IAMStack } from "../lib/iam-stack";
 import { EC2Stack } from '../lib/ec2-stack';
 import { S3Stack } from '../lib/s3-stack';
 import { RDSStack } from "../lib/rds-stack";
+import { BeanstalkStack } from "../lib/beanstalk-stack";
 
 const app = new App();
 
@@ -29,6 +30,11 @@ new S3Stack(app, 'S3Stack', {
 
 // RDS
 new RDSStack(app, 'RDSStack', {
+  vpc: vpcStack.vpc
+});
+
+// Elastic Beanstalk
+new BeanstalkStack(app, 'BeanstalkStack', {
   vpc: vpcStack.vpc
 });
 
