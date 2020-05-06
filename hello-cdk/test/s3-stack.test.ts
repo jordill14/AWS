@@ -13,5 +13,5 @@ test('Empty Stack', () => {
     // THEN
     expectCDK(stack).to(matchTemplate({
         "Resources": {}
-    }, MatchStyle.EXACT))
+    }, MatchStyle.SUPERSET))
 });
