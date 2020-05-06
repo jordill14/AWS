@@ -35,7 +35,7 @@ export class BeanstalkStack extends Stack {
         optionName: 'IamInstanceProfile',
         // Here you could reference an instance profile by ARN (e.g. myIamInstanceProfile.attrArn)
         // For the default setup, leave this as is (it is assumed this role exists)
-        // https://stackoverflow.com/a/55033663/6894670
+        // Environment failed to launch as it entered Terminated state https://stackoverflow.com/a/55033663/6894670
         value: 'aws-elasticbeanstalk-ec2-role',
       },
       {
