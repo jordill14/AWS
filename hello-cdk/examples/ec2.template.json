@@ -54,11 +54,11 @@
             "Fn::Join": [
               "",
               [
-                "arn:",
+                "arn:aws:iam::",
                 {
-                  "Ref": "AWS::Partition"
+                  "Ref": "AWS::AccountId"
                 },
-                ":iam::254184710243:policy/baseline-ssm-session-manager"
+                ":policy/baseline-ssm-session-manager"
               ]
             ]
           }
