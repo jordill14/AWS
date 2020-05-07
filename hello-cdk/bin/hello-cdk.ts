@@ -34,8 +34,7 @@ new RDSStack(app, 'RDSStack', {
 });
 
 // Elastic Beanstalk
-new BeanstalkStack(app, 'BeanstalkStack', {
-  vpc: vpcStack.vpc
-});
+// new BeanstalkStack(app, 'BeanstalkStack', { vpc: vpcStack.vpc });
+new BeanstalkStack(app, 'BeanstalkStack');
 
 app.synth();

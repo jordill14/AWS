@@ -1,0 +1,103 @@
+{
+  "Parameters": {
+    "AssetParameters00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589S3Bucket7EFF5D01": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589\"",
+      "Default": "cdktoolkit-stagingbucket-zcv2uyhmuscl"
+    },
+    "AssetParameters00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589S3VersionKey9B4ED7DB": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589\"",
+      "Default": "assets/||00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589.zip"
+    },
+    "AssetParameters00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589ArtifactHash01A59914": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589\"",
+      "Default": "00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589"
+    }
+  },
+  "Resources": {
+    "Application": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName": "MyApp"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeanstalkStack/Application"
+      }
+    },
+    "AppVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "ApplicationName": "MyApp",
+        "SourceBundle": {
+          "S3Bucket": {
+            "Ref": "AssetParameters00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589S3Bucket7EFF5D01"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [{
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589S3VersionKey9B4ED7DB"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters00df33aa5ec47a71c9b74b9dc298ab0dc38a14697137abedb69d050de25c4589S3VersionKey9B4ED7DB"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "Application"
+      ]
+    },
+    "Environment": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "ApplicationName": "MyApp",
+        "EnvironmentName": "MySampleEnvironment",
+        "OptionSettings": [{
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "InstanceType",
+            "Value": "t3.small"
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": "aws-elasticbeanstalk-ec2-role"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:container:nodejs",
+            "OptionName": "NodeVersion",
+            "Value": "10.16.3"
+          }
+        ],
+        "SolutionStackName": "64bit Amazon Linux 2018.03 v4.14.3 running Node.js",
+        "VersionLabel": {
+          "Ref": "AppVersion"
+        }
+      }
+    }
+  }
+}

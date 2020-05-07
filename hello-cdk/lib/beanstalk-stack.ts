@@ -9,7 +9,7 @@ interface BeanstalkStackProps extends StackProps {
 
 export class BeanstalkStack extends Stack {
 
-  constructor(scope: Construct, id: string, props?: BeanstalkStackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     // Construct an S3 asset from the ZIP located from directory up
@@ -36,6 +36,16 @@ export class BeanstalkStack extends Stack {
         // Here you could reference an instance profile by ARN (e.g. myIamInstanceProfile.attrArn)
         // For the default setup, leave this as is (it is assumed this role exists)
         // Environment failed to launch as it entered Terminated state https://stackoverflow.com/a/55033663/6894670
+
+        // An work around approach is in Elastic Beanstalk console, create Java Sample Application at first, then
+        // "aws-elasticbeanstalk-ec2-role" ec2 role, "aws-elasticbeanstalk-service-role" elasticbeanstalk role,
+        // and "AWSServiceRoleForAutoScaling" autoscaling Service-Linked role. Next create Node.js Sample Application,
+        // then AWSElasticBeanstalkMulticontainerDocker, AWSElasticBeanstalkWebTier and AWSElasticBeanstalkWorkerTier
+        // policies added in "aws-elasticbeanstalk-ec2-role"; AWSElasticBeanstalkEnhancedHealth and AWSElasticBeanstalkService
+        // policies added in "aws-elasticbeanstalk-service-role".
+
+        // After this Elastic Beanstalk created, AWSServiceRoleForElasticBeanstalk and AWSServiceRoleForElasticLoadBalancing
+        // Service-Linked roles are also created. Destroy Elastic Beanstalk app won't delete ALL these roles
         value: 'aws-elasticbeanstalk-ec2-role',
       },
       {
