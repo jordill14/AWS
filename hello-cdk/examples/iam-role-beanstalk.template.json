@@ -25,11 +25,7 @@
             "Fn::Join": [
               "",
               [
-                "arn:aws:iam::",
-                {
-                  "Ref": "AWS::AccountId"
-                },
-                ":policy/baseline-ssm-session-manager"
+                "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
               ]
             ]
           }
