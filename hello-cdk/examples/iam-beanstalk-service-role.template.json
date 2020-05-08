@@ -1,0 +1,41 @@
+{
+  "Resources": {
+    "IAMRole": {
+      "Description": "IAM Role for Elastic Beanstalk application",
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "elasticbeanstalk.amazonaws.com"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "sts:ExternalId": "elasticbeanstalk"
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Path": "/",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkEnhancedHealth",
+          "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkService"
+        ],
+        "RoleName": {
+          "Ref": "RoleNameRef"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "RoleNameRef": {
+      "Type": "String",
+      "Default": "aws-elasticbeanstalk-service-role"
+    }
+  }
+}
