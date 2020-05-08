@@ -21,9 +21,6 @@
       "Type": "AWS::ElasticBeanstalk::Application",
       "Properties": {
         "ApplicationName": "MyApp"
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeanstalkStack/Application"
       }
     },
     "AppVersion": {
