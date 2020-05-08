@@ -46,6 +46,11 @@ export class BeanstalkStack extends Stack {
 
         // After this Elastic Beanstalk created, AWSServiceRoleForElasticBeanstalk and AWSServiceRoleForElasticLoadBalancing
         // Service-Linked roles are also created. Destroy Elastic Beanstalk app won't delete ALL these roles
+
+        // Service roles, instance profiles, and user policies - The best way to get a properly configured service
+        // role and instance profile is to create an environment running a sample application in the Elastic Beanstalk
+        // console or by using the Elastic Beanstalk Command Line Interface (EB CLI)
+        // https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html
         value: 'aws-elasticbeanstalk-ec2-role',
       },
       {
