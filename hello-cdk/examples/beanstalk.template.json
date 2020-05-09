@@ -55,7 +55,7 @@
     "ApplicationID": {
       "Description": "Application ID for the application service, which is used for the stack URL: [ApplicationID]-[ApEnvId].ap-southeast-2.elasticbeanstalk.com",
       "Type": "String",
-      "Default": "nodejs-beanstalk"
+      "Default": "nodejs"
     },
     "ApEnvID": {
       "Description": "Runtime Environment ID",
@@ -285,7 +285,16 @@
       "Properties": {
         "Description": "IAM Role for Elastic Beanstalk application",
         "RoleName": {
-          "Fn::Sub": "aws-beanstalk-nodejs-ec2-role"
+          "Fn::Join": [
+            "",
+            [
+              "aws-beanstalk-",
+              {
+                "Ref": "ApplicationID"
+              },
+              "-ec2-role"
+            ]
+          ]
         },
         "AssumeRolePolicyDocument": {
           "Statement": [{
@@ -323,7 +332,18 @@
     "ElasticBeanstalkInstanceProfile": {
       "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
-        "InstanceProfileName": "aws-beanstalk-nodejs-instance-profile",
+        "InstanceProfileName": {
+          "Fn::Join": [
+            "",
+            [
+              "aws-beanstalk-",
+              {
+                "Ref": "ApplicationID"
+              },
+              "-instance-profile"
+            ]
+          ]
+        },
         "Path": "/",
         "Roles": [{
           "Ref": "ElasticBeanstalkEC2Role"
@@ -419,6 +439,15 @@
                       },
                       "PrimaryELBSubnetID"
                     ]
+                  },
+                  {
+                    "Fn::FindInMap": [
+                      "EnvironmentsMap",
+                      {
+                        "Ref": "ApEnvID"
+                      },
+                      "ThirdELBSubnetID"
+                    ]
                   }
                 ]
               ]
@@ -447,6 +476,15 @@
                       },
                       "SecondaryEC2SubnetID"
                     ]
+                  },
+                  {
+                    "Fn::FindInMap": [
+                      "EnvironmentsMap",
+                      {
+                        "Ref": "ApEnvID"
+                      },
+                      "ThirdEC2SubnetID"
+                    ]
                   }
                 ]
               ]
@@ -460,7 +498,7 @@
           {
             "Namespace": "aws:autoscaling:asg",
             "OptionName": "MaxSize",
-            "Value": "2"
+            "Value": "3"
           },
           {
             "Namespace": "aws:autoscaling:launchconfiguration",
@@ -511,7 +549,7 @@
           {
             "Namespace": "aws:elb:policies",
             "OptionName": "Stickiness cookie Expiration",
-            "Value": "3600"
+            "Value": "600"
           },
           {
             "Namespace": "aws:elasticbeanstalk:environment",
