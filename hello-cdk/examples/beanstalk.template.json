@@ -288,7 +288,7 @@
           "Fn::Join": [
             "",
             [
-              "aws-beanstalk-",
+              "aws-elasticbeanstalk-",
               {
                 "Ref": "ApplicationID"
               },
@@ -336,7 +336,7 @@
           "Fn::Join": [
             "",
             [
-              "aws-beanstalk-",
+              "aws-elasticbeanstalk-",
               {
                 "Ref": "ApplicationID"
               },
@@ -355,7 +355,16 @@
       "Properties": {
         "Description": "IAM Service Role for Elastic Beanstalk application",
         "RoleName": {
-          "Fn::Sub": "aws-beanstalk-nodejs-service-role"
+          "Fn::Join": [
+            "",
+            [
+              "aws-elasticbeanstalk-",
+              {
+                "Ref": "ApplicationID"
+              },
+              "-service-role"
+            ]
+          ]
         },
         "AssumeRolePolicyDocument": {
           "Statement": [
