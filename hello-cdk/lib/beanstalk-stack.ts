@@ -1,24 +1,25 @@
 import { StackProps, Stack, Construct } from '@aws-cdk/core';
-import { Instance, InstanceClass, InstanceSize, InstanceType, Peer, Port, SecurityGroup, Vpc, AmazonLinuxImage, AmazonLinuxGeneration } from "@aws-cdk/aws-ec2";
+import { Role } from '@aws-cdk/aws-iam';
 import { CfnApplication, CfnEnvironment, CfnApplicationVersion } from '@aws-cdk/aws-elasticbeanstalk';
 import { Asset } from '@aws-cdk/aws-s3-assets';
 
 interface BeanstalkStackProps extends StackProps {
-  vpc: Vpc;
+  role: Role;
 }
 
 export class BeanstalkStack extends Stack {
 
   constructor(scope: Construct, id: string, props?: StackProps) {
+
     super(scope, id, props);
 
     // Construct an S3 asset from the ZIP located from directory up
     // Download Beanstalk examples from https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/tutorials.html
-    const elbZipArchive = new Asset(this, 'MyElbAppZip', {
+    const zipArchive = new Asset(this, 'AppNodejsZip', {
       path: `${__dirname}/../app-nodejs.zip`,
     });
 
-    const appName = 'MyApp';
+    const appName = 'AppNodejs';
     const app = new CfnApplication(this, 'Application', {
       applicationName: appName,
     });
@@ -52,6 +53,7 @@ export class BeanstalkStack extends Stack {
         // console or by using the Elastic Beanstalk Command Line Interface (EB CLI)
         // https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html
         value: 'aws-elasticbeanstalk-ec2-role',
+        // value: props.role.roleName,
       },
       {
         namespace: 'aws:elasticbeanstalk:container:nodejs',
@@ -65,14 +67,14 @@ export class BeanstalkStack extends Stack {
     const appVersionProps = new CfnApplicationVersion(this, 'AppVersion', {
       applicationName: appName,
       sourceBundle: {
-        s3Bucket: elbZipArchive.s3BucketName,
-        s3Key: elbZipArchive.s3ObjectKey,
+        s3Bucket: zipArchive.s3BucketName,
+        s3Key: zipArchive.s3ObjectKey,
       },
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const elbEnv = new CfnEnvironment(this, 'Environment', {
-      environmentName: 'MySampleEnvironment',
+      environmentName: 'AppNodejsEnvironment',
       applicationName: app.applicationName || appName,
       // Elastic Beanstalk supported platforms in Node.js
       // https://docs.aws.amazon.com/elasticbeanstalk/latest/platforms/platforms-supported.html#platforms-supported.nodejs
