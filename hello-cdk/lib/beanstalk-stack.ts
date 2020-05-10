@@ -53,7 +53,7 @@ export class BeanstalkStack extends Stack {
         // console or by using the Elastic Beanstalk Command Line Interface (EB CLI)
         // https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html
 
-        // CDK doesn't work when try to pass new created role in Beanstalk stack
+        // CDK doesn't work when try to pass new created, customized role in Beanstalk stack. Have to use the default one
         // value: props.role.roleName,
         value: 'aws-elasticbeanstalk-ec2-role',
       },
