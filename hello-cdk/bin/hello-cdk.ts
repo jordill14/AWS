@@ -38,10 +38,8 @@ new RDSStack(app, 'RDSStack', {
 });
 
 // Elastic Beanstalk
-new BeanstalkStack(app, 'BeanstalkStack');
-// CDK doesn't work when try to pass new created role in Beanstalk stack
-// new BeanstalkStack(app, 'BeanstalkStack', {
-  // role: iamBeanstalkEC2RoleStack.role
-// });
+new BeanstalkStack(app, 'BeanstalkStack', {
+  role: iamBeanstalkEC2RoleStack.role
+});
 
 app.synth();

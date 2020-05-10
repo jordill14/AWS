@@ -9,7 +9,7 @@ interface BeanstalkStackProps extends StackProps {
 
 export class BeanstalkStack extends Stack {
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: BeanstalkStackProps) {
 
     super(scope, id, props);
 
@@ -52,8 +52,10 @@ export class BeanstalkStack extends Stack {
         // role and instance profile is to create an environment running a sample application in the Elastic Beanstalk
         // console or by using the Elastic Beanstalk Command Line Interface (EB CLI)
         // https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html
-        value: 'aws-elasticbeanstalk-ec2-role',
+
+        // CDK doesn't work when try to pass new created role in Beanstalk stack
         // value: props.role.roleName,
+        value: 'aws-elasticbeanstalk-ec2-role',
       },
       {
         namespace: 'aws:elasticbeanstalk:container:nodejs',

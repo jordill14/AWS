@@ -8,7 +8,7 @@ export class IAMBeanstalkEC2RoleStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const roleName = 'custom-aws-beanstalk-ec2-role';
+    const roleName = 'custom-aws-elasticbeanstalk-ec2-role';
     this.role = new Role(this, 'IAM Role for Elastic Beanstalk application', {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
       roleName: roleName,
