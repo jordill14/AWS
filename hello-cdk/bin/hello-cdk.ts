@@ -38,6 +38,8 @@ new RDSStack(app, 'RDSStack', {
 });
 
 // Elastic Beanstalk
-new BeanstalkStack(app, 'BeanstalkStack');
+new BeanstalkStack(app, 'BeanstalkStack', {
+  instanceProfile: iamBeanstalkEC2RoleStack.instanceProfile
+});
 
 app.synth();

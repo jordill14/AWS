@@ -8,31 +8,14 @@ import { Asset } from '@aws-cdk/aws-s3-assets';
 import { Role, ServicePrincipal, ManagedPolicy, CfnInstanceProfile } from '@aws-cdk/aws-iam';
 
 interface BeanstalkStackProps extends StackProps {
-  role: Role;
+  instanceProfile: CfnInstanceProfile;
 }
 
 export class BeanstalkStack extends Stack {
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: BeanstalkStackProps) {
 
     super(scope, id, props);
-
-    // EC2 role Beanstalk application assume as
-    const roleName = 'custom-aws-elasticbeanstalk-ec2-role';
-    const role = new Role(this, 'IAM Role for Elastic Beanstalk application', {
-      assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
-      roleName: roleName,
-    });
-
-    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkMulticontainerDocker'));
-    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkWebTier'));
-    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkWorkerTier'));
-    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
-
-    // Instance Profile which will allow the application to use the EC2 role
-    const instanceProfile = new CfnInstanceProfile(this, 'Elastic Beanstalk Instance Profile', {
-      roles: [role.roleName],
-    });
 
     // Construct an S3 asset from the ZIP located from directory up
     // Download Beanstalk examples from https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/tutorials.html
@@ -82,7 +65,7 @@ export class BeanstalkStack extends Stack {
         // https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html
 
         // Use customised IAM Instance Profile
-        value: instanceProfile.attrArn,
+        value: props.instanceProfile.attrArn,
       },
       {
         namespace: 'aws:elasticbeanstalk:container:nodejs',
