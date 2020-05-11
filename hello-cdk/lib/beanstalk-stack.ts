@@ -1,7 +1,11 @@
-import { StackProps, Stack, Construct } from '@aws-cdk/core';
-import { Role } from '@aws-cdk/aws-iam';
+//
+// Custom IAM Permissions in an Elastic Beanstalk Application through AWS CDK
+// https://medium.com/@joshmustill/custom-iam-permissions-in-an-elastic-beanstalk-application-through-aws-cdk-6b3fe74026b8
+//
+import { Aws, StackProps, Stack, Construct } from '@aws-cdk/core';
 import { CfnApplication, CfnEnvironment, CfnApplicationVersion } from '@aws-cdk/aws-elasticbeanstalk';
 import { Asset } from '@aws-cdk/aws-s3-assets';
+import { Role, ServicePrincipal, ManagedPolicy, CfnInstanceProfile } from '@aws-cdk/aws-iam';
 
 interface BeanstalkStackProps extends StackProps {
   role: Role;
@@ -9,9 +13,26 @@ interface BeanstalkStackProps extends StackProps {
 
 export class BeanstalkStack extends Stack {
 
-  constructor(scope: Construct, id: string, props: BeanstalkStackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
 
     super(scope, id, props);
+
+    // EC2 role Beanstalk application assume as
+    const roleName = 'custom-aws-elasticbeanstalk-ec2-role';
+    const role = new Role(this, 'IAM Role for Elastic Beanstalk application', {
+      assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
+      roleName: roleName,
+    });
+
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkMulticontainerDocker'));
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkWebTier'));
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkWorkerTier'));
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
+
+    // Instance Profile which will allow the application to use the EC2 role
+    const instanceProfile = new CfnInstanceProfile(this, 'Elastic Beanstalk Instance Profile', {
+      roles: [role.roleName],
+    });
 
     // Construct an S3 asset from the ZIP located from directory up
     // Download Beanstalk examples from https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/tutorials.html
@@ -23,6 +44,13 @@ export class BeanstalkStack extends Stack {
     const app = new CfnApplication(this, 'Application', {
       applicationName: appName,
     });
+
+    // Build the Elastic Beanstalk app and environment from a custom ZIP
+    // Start with the environment settings and options
+    const envVars = [
+      ['Region', Aws.REGION || 'ap-southeast-2'],
+      ['Timezone', 'Australia/Melbourne'],
+    ];
 
     // Example of some options which can be configured
     const optionSettingProperties: CfnEnvironment.OptionSettingProperty[] = [
@@ -53,15 +81,19 @@ export class BeanstalkStack extends Stack {
         // console or by using the Elastic Beanstalk Command Line Interface (EB CLI)
         // https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html
 
-        // CDK doesn't work when try to pass new created, customized role in Beanstalk stack. Have to use the default one
-        // value: props.role.roleName,
-        value: 'aws-elasticbeanstalk-ec2-role',
+        // Use customised IAM Instance Profile
+        value: instanceProfile.attrArn,
       },
       {
         namespace: 'aws:elasticbeanstalk:container:nodejs',
         optionName: 'NodeVersion',
         value: '10.16.3',
       },
+      ...envVars.map(([optionName, value]) => ({
+        namespace: 'aws:elasticbeanstalk:application:environment',
+        optionName,
+        value,
+      })),
     ];
 
     // Create an app version from the S3 asset defined above

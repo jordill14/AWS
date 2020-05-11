@@ -38,8 +38,6 @@ new RDSStack(app, 'RDSStack', {
 });
 
 // Elastic Beanstalk
-new BeanstalkStack(app, 'BeanstalkStack', {
-  role: iamBeanstalkEC2RoleStack.role
-});
+new BeanstalkStack(app, 'BeanstalkStack');
 
 app.synth();
