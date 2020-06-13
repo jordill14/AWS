@@ -10,6 +10,7 @@ import { EC2Stack } from '../lib/ec2-stack';
 import { S3Stack } from '../lib/s3-stack';
 import { RDSStack } from "../lib/rds-stack";
 import { BeanstalkStack } from "../lib/beanstalk-stack";
+import { LambdaStack } from "../lib/lambda-stack";
 
 const app = new App();
 
@@ -41,5 +42,8 @@ new RDSStack(app, 'RDSStack', {
 new BeanstalkStack(app, 'BeanstalkStack', {
   instanceProfile: iamBeanstalkEC2RoleStack.instanceProfile
 });
+
+// Lambda
+new LambdaStack(app, 'LambdaStack');
 
 app.synth();

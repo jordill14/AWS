@@ -6,19 +6,26 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## Useful commands
 
- * `npm run build`                   compile typescript to js
- * `npm run watch`                   watch for changes and compile
- * `npm run test`                    perform the jest unit tests
+ * `npm run build`                                            compile typescript to js
+ * `npm run watch`                                            watch for changes and compile
+ * `npm run test`                                             perform the jest unit tests
 
- * `cdk init --language`             initialize your new AWS CDK app
+ * `cdk init --language`                                      initialize your new AWS CDK app
 
- * `npx npm-check-updates -u`        Updating your language dependencies
+ * `npx npm-check-updates -u`                                 Updating your language dependencies
  *
- * `cdk deploy [stack] --profile my` deploy this stack to your default AWS account/region
- * `cdk diff`                        compare deployed stack with current state
- * `cdk synth`                       emits the synthesized CloudFormation template
- * `cdk bootstrap`                   Run when error raised: This stack uses assets, so the toolkit stack must be deployed to the environment with command **cdk bootstrap aws://aws-account/aws-region**
- * `cdk destroy stack`               Delete stack(s)
+ * `cdk deploy [stack] --require-approval never --profile my` deploy this stack e.g. **LambdaStack** to your default AWS account/region
+ * `cdk diff`                                                 compare deployed stack with current state
+ * `cdk synth`                                                emits the synthesized CloudFormation template
+ * `cdk bootstrap`                                            Run when error raised: This stack uses assets, so the toolkit stack must be deployed to the environment with command **cdk bootstrap aws://aws-account/aws-region**
+ * `cdk destroy stack`                                        Delete stack(s)
+
+## Test
+
+```
+𝜆 curl -X GET https://4puq7ndw08.execute-api.ap-southeast-2.amazonaws.com/prod/
+{"widgets":[]}
+```
 
 References
 ----------
