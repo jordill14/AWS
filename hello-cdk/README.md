@@ -31,3 +31,5 @@ References
 ----------
 
 - Getting Started With the AWS CDK, _https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html_
+- Creating a serverless application using the AWS CDK, _https://docs.aws.amazon.com/cdk/latest/guide/serverless_example.html_
+- Creating a code pipeline using the AWS CDK, _https://docs.aws.amazon.com/cdk/latest/guide/codepipeline_example.html_
