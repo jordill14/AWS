@@ -8,6 +8,7 @@ export class WidgetService extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
+    // lambda
     const bucket = new Bucket(this, "WidgetStore");
 
     const handler = new Function(this, "WidgetHandler", {
@@ -19,9 +20,10 @@ export class WidgetService extends Construct {
       }
     });
 
-    // was: handler.role);
+    // was: handler.role
     bucket.grantReadWrite(handler);
 
+    // api gateway
     const api = new RestApi(this, "widgets-api", {
       restApiName: "Widget Service",
       description: "This service serves widgets."
