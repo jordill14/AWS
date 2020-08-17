@@ -12,8 +12,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
  * `cdk init --language`                                      initialize your new AWS CDK app
 
- * `npx npm-check-updates -u`                                 Updating your language dependencies
- *
+ * `npx npm-check-updates -u`                                 Updating your language dependencies (require nodejs 12.x)
+
  * `cdk deploy [stack] --require-approval never --profile my` deploy this stack e.g. **LambdaStack** to your default AWS account/region
  * `cdk diff`                                                 compare deployed stack with current state
  * `cdk synth`                                                emits the synthesized CloudFormation template
