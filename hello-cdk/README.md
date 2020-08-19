@@ -24,7 +24,7 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ```
 𝜆 curl -X GET https://4puq7ndw08.execute-api.ap-southeast-2.amazonaws.com/prod/
-{"widgets":[]}
+{"widgets":["1497389522768.jpg"]}
 ```
 
 References
