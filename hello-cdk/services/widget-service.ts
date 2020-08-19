@@ -12,9 +12,9 @@ export class WidgetService extends Construct {
     const bucket = new Bucket(this, "WidgetStore");
 
     const handler = new Function(this, "WidgetHandler", {
-      runtime: Runtime.NODEJS_10_X, // So we can use async in "widgets.js" file
-      code: Code.asset("resources"),
-      handler: "widgets.main",
+      runtime: Runtime.NODEJS_10_X,
+      code: Code.asset("resources/widget"), // from "resources/" directory
+      handler: "widgets.main",              // widgets.js file
       environment: {
         BUCKET: bucket.bucketName
       }

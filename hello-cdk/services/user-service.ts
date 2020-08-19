@@ -18,7 +18,7 @@ export class UserService extends Construct {
     const helloUserHandler = new Function(this, "HelloUserHandler", {
       runtime: Runtime.NODEJS_10_X,
       code: Code.fromAsset("resources/user"), // from "resources/" directory
-      handler: "helloUser.handler"       // helloUser.js file
+      handler: "helloUser.handler"            // helloUser.js file
     });
 
     // Hello User lambda integration
@@ -31,7 +31,7 @@ export class UserService extends Construct {
     const createUserHandler = new Function(this, "CreateUserHandler", {
       runtime: Runtime.NODEJS_10_X,
       code: Code.fromAsset("resources/user"), // from "resources/" directory
-      handler: "createUser.handler",     // createUser.js file
+      handler: "createUser.handler",          // createUser.js file
       environment: {
         'TABLE_NAME': 'usersTable'
       }
@@ -47,7 +47,7 @@ export class UserService extends Construct {
     const readUserHandler = new Function(this, "ReadUserHandler", {
       runtime: Runtime.NODEJS_10_X,
       code: Code.fromAsset("resources/user"), // from "resources/" directory
-      handler: "readUser.handler",       // readUser.js file
+      handler: "readUser.handler",            // readUser.js file
       environment: {
         'TABLE_NAME': 'usersTable'
       }
