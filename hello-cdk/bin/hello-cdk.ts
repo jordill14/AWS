@@ -11,6 +11,7 @@ import { S3Stack } from '../lib/s3-stack';
 import { RDSStack } from "../lib/rds-stack";
 import { BeanstalkStack } from "../lib/beanstalk-stack";
 import { LambdaStack } from "../lib/lambda-stack";
+import { DynamodbStack } from "../lib/dynamodb-stack";
 
 const app = new App();
 
@@ -45,5 +46,8 @@ new BeanstalkStack(app, 'BeanstalkStack', {
 
 // Lambda
 new LambdaStack(app, 'LambdaStack');
+
+// Dynamodb
+new DynamodbStack(app, 'DynamodbStack');
 
 app.synth();

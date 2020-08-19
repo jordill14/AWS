@@ -16,7 +16,7 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
  * `cdk deploy [stack] --require-approval never --profile my` deploy this stack e.g. **LambdaStack** to your default AWS account/region
  * `cdk diff`                                                 compare deployed stack with current state
- * `cdk synth`                                                emits the synthesized CloudFormation template
+ * `cdk synth [stack]`                                        emits the synthesized CloudFormation template
  * `cdk bootstrap`                                            Run when error raised: This stack uses assets, so the toolkit stack must be deployed to the environment with command **cdk bootstrap aws://aws-account/aws-region**
  * `cdk destroy stack`                                        Delete stack(s)
 

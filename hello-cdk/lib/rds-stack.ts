@@ -50,7 +50,7 @@ export class RDSStack extends Stack {
 			// masterUserPassword: this.secret.secretValue,
 			// port: 3306
 			engine: DatabaseInstanceEngine.MYSQL,
-			instanceClass: InstanceType.of(InstanceClass.T2, InstanceSize.SMALL),
+			instanceType: InstanceType.of(InstanceClass.T2, InstanceSize.SMALL),
 			instanceIdentifier: 'testdb',
 			vpc: props.vpc,
 			vpcPlacement: { subnetType: SubnetType.ISOLATED },
